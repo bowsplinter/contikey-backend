@@ -20,7 +20,21 @@ Install python packages with:
 
 `pip install -r /path/to/requirements.txt`
 
-Edit settings.py file with your local database information (create database for project using mysql)
+Install MariaDB Server:
+
+`brew install mariadb`
+
+MariaDB is also compatible with the mySQL Workbench editor.
+Launch the MySQL Workbench application and go to Database > Connect to Database (Ctrl+U) from the menu bar.
+Enter the following details:
+`Hostname: mydboard.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com
+Port: 3306
+Username: dboard
+Password: db1234567`
+
+Or if mySQL Workbench isn't working, run on terminal:
+`mysql -h mydboard.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com -P 3306 -u dboard -p`
+and enter the `db1234567` when prompted for the password
 
 To run projects
 
@@ -28,4 +42,4 @@ To run projects
 
 `python manage.py runserver`
 
-
+`eb open`
