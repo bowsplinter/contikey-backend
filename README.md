@@ -2,9 +2,9 @@
 
 ###Developer Installations
 
-Install `virutalenv` and `mkvirtualenv`. `mkvirtualenv` is a wrapper around `virtualenv` and makes it easier to use but is optional.
+Install `virtualenv` and `virtualenvwrapper`. `virtualenvwrapper` is a wrapper around `virtualenv` and makes it easier to use but is optional.
 
-Create virutal environment for project:
+Create virtual environment for project:
 
 `mkvirtualenv <name>`
 
@@ -12,7 +12,7 @@ If you have both python 2 and 3 installed, use this to use python 3 instead:
 
 `mkvirtualenv --python=/usr/local/bin/python3`
 
-Clone and cd to directory and activate virutalenv with:
+Clone and cd to directory and activate virtualenv with:
 
 `workon <name>`
 
