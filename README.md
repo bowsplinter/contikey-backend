@@ -1,20 +1,18 @@
 # dboard-backend
 
-###Developer Installations
+### Developer Installations
 
 Install `virtualenv` and `virtualenvwrapper`. `virtualenvwrapper` is a wrapper around `virtualenv` and makes it easier to use but is optional.
 
-Create virtual environment for project:
+Clone this project and cd into it.
+
+Create and activate virtual environment for project with:
 
 `mkvirtualenv <name>`
 
 If you have both python 2 and 3 installed, use this to use python 3 instead:
 
-`mkvirtualenv --python=/usr/local/bin/python3`
-
-Clone and cd to directory and activate virtualenv with:
-
-`workon <name>`
+`mkvirtualenv --python=/usr/local/bin/python3 <name>`
 
 Install python packages with:
 
@@ -41,10 +39,18 @@ Or if mySQL Workbench isn't working, run on terminal:
 `mysql -h mydboard.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com -P 3306 -u dboard -p`
 and enter `db1234567` when prompted for the password
 
-To run projects
+### Usage
+
+To run projects:
 
 `python manage.py migrate`
 
 `python manage.py runserver`
 
 `eb open`
+
+To exit the virtual environment:
+`deactivate`
+
+To activate it in future uses:
+`workon <name>`
