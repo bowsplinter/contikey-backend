@@ -46,5 +46,3 @@ To run projects
 `python manage.py migrate`
 
 `python manage.py runserver`
-
-`eb open`
