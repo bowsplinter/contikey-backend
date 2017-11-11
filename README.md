@@ -1,38 +1,76 @@
 # dboard-backend
 
-### Developer Installations
+## Developer Installations
+
+### Project setup
 
 Install `virtualenv` and `virtualenvwrapper`. `virtualenvwrapper` is a wrapper around `virtualenv` and makes it easier to use but is optional.
 
 Clone this project and cd into it.
 
-Create and activate virtual environment for project with:
-
+Create and activate virtual environment for project:  
 `mkvirtualenv <name>`
 
-If you have both python 2 and 3 installed, use this to use python 3 instead:
-
+If you have both python 2 and 3 installed, use this to use python 3 instead:  
 `mkvirtualenv --python=/usr/local/bin/python3 <name>`
 
-Install python packages with:
-
+Install python packages:  
 `pip install -r /path/to/requirements.txt`
 
-Install MariaDB Server:
+Run the project:  
+`python manage.py runserver`
 
+View the site at `http://127.0.0.1:8000`.
+
+### Database setup
+
+#### For local development:
+Install MariaDB:  
 `brew install mariadb`
+
+Start MariaDB and its command line:  
+`brew services start mariadb`  
+`mysql -u root -p`
+
+Enter your password when prompted. You should see the prompt:  
+`MySQL [(none)]>`
+
+Set up database and user:
+
+```
+> CREATE DATABASE db_name;
+> CREATE USER username@localhost IDENTIFIED BY 'password'; 
+> GRANT ALL PRIVILEGES ON db_name.* TO username@localhost;
+> FLUSH PRIVILEGES;
+```
+
+Open `.env.py` and enter your credentials correspondingly. Port can be left as an empty string to use the default port number. This file is not tracked by git.
+
+Apply migrations to create tables (in normal command line):  
+`pip install sqlparse` this is needed to run raw SQL  
+`python manage.py migrate`
+
+Check that tables are created (in MariaDB command line):
+
+```
+MySQL [(none)]> USE db_name;
+MySQL [db_name]> SHOW TABLES;
+```
+
+If you see a list of tables, congrats everything worked!!
+
+#### For AWS:
 
 MariaDB is also compatible with the mySQL Workbench editor.
 Launch the MySQL Workbench application and go to Database > Connect to Database (Ctrl+U) from the menu bar.
 Enter the following details:
 
-`Hostname: mydboard.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com`
-
-`Port: 3306`
-
-`Username: dboard`
-
-`Password: db1234567`
+```
+Hostname: mydboard.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com
+Port: 3306
+Username: dboard
+Password: db1234567
+```
 
 Or if mySQL Workbench isn't working, run on terminal:
 
