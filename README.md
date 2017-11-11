@@ -44,7 +44,17 @@ Set up database and user:
 > FLUSH PRIVILEGES;
 ```
 
-Open `.env.py` and enter your credentials correspondingly. Port can be left as an empty string to use the default port number. This file is not tracked by git.
+Create a file `.env.py` in the root folder and paste the following into it, entering your credentials correspondingly. Port can be left as an empty string to use the default port number. This file is not tracked by git.
+
+```
+settings = {
+    'RDS_DB_NAME': 'db_name',
+    'RDS_USERNAME': 'username',
+    'RDS_PASSWORD': 'password',
+    'RDS_HOSTNAME': 'localhost',
+    'RDS_PORT': '',
+}
+```
 
 Apply migrations to create tables (in normal command line):  
 `pip install sqlparse` this is needed to run raw SQL  
