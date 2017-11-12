@@ -25,12 +25,15 @@ SECRET_KEY = 'x7s!wa+(19g91=$9ds_f4bd086v=5l%kzgpa+t(vvwu-o4yomp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dboard-env.esirkfakz3.ap-southeast-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['dboard-env.esirkfakz3.ap-southeast-1.elasticbeanstalk.com',
+                '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    # 'App.apps.AppsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,6 +69,13 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAdminUser',
+    ],
+    'PAGE_SIZE': 10
+}
 
 WSGI_APPLICATION = 'dboard.wsgi.application'
 

@@ -46,8 +46,6 @@ To run projects:
 `python manage.py migrate`
 
 `python manage.py runserver`
-<<<<<<< HEAD
-=======
 
 `eb open`
 
@@ -56,4 +54,5 @@ To exit the virtual environment:
 
 To activate it in future uses:
 `workon <name>`
->>>>>>> 277c452c0f0f6bbdde8acf22d944c7e86a4d2d8b
+
+To define the models and link it to endpoints, refer to http://www.django-rest-framework.org/tutorial/1-serialization/
