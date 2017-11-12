@@ -39,7 +39,7 @@ Set up database and user:
 
 ```
 > CREATE DATABASE db_name;
-> CREATE USER username@localhost IDENTIFIED BY 'password'; 
+> CREATE USER username@localhost IDENTIFIED BY 'password';
 > GRANT ALL PRIVILEGES ON db_name.* TO username@localhost;
 > FLUSH PRIVILEGES;
 ```
