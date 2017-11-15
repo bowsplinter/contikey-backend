@@ -57,7 +57,6 @@ settings = {
 ```
 
 Apply migrations to create tables (in normal command line):  
-`pip install sqlparse` this is needed to run raw SQL  
 `python manage.py migrate`
 
 Check that tables are created (in MariaDB command line):
