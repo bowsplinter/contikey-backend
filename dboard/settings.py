@@ -32,8 +32,13 @@ ALLOWED_HOSTS = ['dboard-env.esirkfakz3.ap-southeast-1.elasticbeanstalk.com',
 # Application definition
 
 INSTALLED_APPS = [
-    'rest_framework',
-    # 'App.apps.AppsConfig',
+    'article',
+    'channel',
+    'comment',
+    'notification',
+    'stats',
+    'tag',
+    'user',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
