@@ -28,8 +28,7 @@ class Migration(migrations.Migration):
                 ON DELETE SET NULL,
             FOREIGN KEY (shared_from_article_id) REFERENCES article(article_id)
                 ON UPDATE CASCADE
-                ON DELETE SET NULL,
-            CONSTRAINT different_article CHECK (shared_from_article_id != article_id)
+                ON DELETE SET NULL
         );""",
         "DROP TABLE article"
       )
