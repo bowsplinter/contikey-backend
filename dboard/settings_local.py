@@ -8,6 +8,6 @@ DATABASES = {
         'USER': settings['RDS_USERNAME'],
         'PASSWORD': settings['RDS_PASSWORD'],
         'HOST': settings['RDS_HOSTNAME'],
-        'PORT': settings['RDS_PORT'],
+        'PORT': settings['RDS_PORT']
     }
 }

@@ -44,7 +44,7 @@ Set up database and user:
 > FLUSH PRIVILEGES;
 ```
 
-Create a file `.env.py` in the root folder and paste the following into it, entering your credentials correspondingly. Port can be left as an empty string to use the default port number. This file is not tracked by git.
+Create a file `env.py` in the root folder and paste the following into it, entering your credentials correspondingly. Port can be left as an empty string to use the default port number. This file is not tracked by git.
 
 ```
 settings = {

@@ -15,14 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from rest_framework import routers
-from dboard.app import views
-
-# Because we're using viewsets instead of views, we can automatically
-# generate the URL conf for our API, by simply registering the viewsets
-# with a router class.
-router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
