@@ -8,7 +8,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-      ('channel', '0001_init_entity_table')
+      ('channel', '0001_create_channel_table')
     ]
 
     operations = [

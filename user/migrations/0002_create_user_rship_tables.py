@@ -8,10 +8,10 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-      ('user', '0001_init_entity_table'),
-      ('tag', '0001_init_entity_table'),
-      ('channel', '0001_init_entity_table'),
-      ('article', '0001_init_entity_table'),
+      ('user', '0001_create_user_table'),
+      ('tag', '0001_create_tag_table'),
+      ('channel', '0001_create_channel_table'),
+      ('article', '0001_create_article_table'),
     ]
 
     operations = [
@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             user_id INT,
             friend_id INT,
             PRIMARY KEY (user_id, friend_id),
-            FOREIGN KEY (user_id) REFERENCES user(user_id) 
+            FOREIGN KEY (user_id) REFERENCES user(user_id)
                 ON DELETE CASCADE,
             FOREIGN KEY (friend_id) REFERENCES user(user_id)
                 ON DELETE CASCADE,
