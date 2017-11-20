@@ -1,4 +1,4 @@
-from dboard.settings import *
+from .base import *
 from env import settings
 
 DATABASES = {
