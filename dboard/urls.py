@@ -20,5 +20,7 @@ from django.contrib import admin
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^user/', include('user.urls'))
+    url(r'^user/', include('user.urls')),
+    url(r'^channel/', include('channel.urls')),
+    url(r'^article/', include('article.urls')),
 ]
