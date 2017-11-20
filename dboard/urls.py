@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^comments/', include('comment.urls')),
     url(r'^stats/', include('stats.urls')),
     url(r'^tag/', include('tag.urls', namespace='tag')),
+    url(r'^user/', include('user.urls')),
 ]
