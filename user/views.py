@@ -1,5 +1,40 @@
 from django.http import JsonResponse
 from django.db import connection
+from django.views.decorators.csrf import csrf_exempt
+from . import facebook as fb
+
+@csrf_exempt
+def login(request):
+  if request.method != 'POST':
+    return JsonResponse({'code': 400, 'error': 'request method not supported. use POST instead'})
+
+  accessToken = request.POST.get('accessToken', None)
+  if accessToken == None:
+    return JsonResponse({'code': 400, 'error': 'accessToken required'})
+
+  facebook_id = fb.inspectUserToken(accessToken)
+  if not facebook_id:
+    return JsonResponse({'code': 400, 'error': 'invalid accessToken'})
+
+  # check if user exists, else fetch fb profile and create user
+  with connection.cursor() as cursor:
+    selectUser = cursor.execute("SELECT * FROM user WHERE facebook_id = %s", [facebook_id])
+    if selectUser:
+      newUser = False
+    else:
+      newUser = True
+      u = fb.getUserInfo(accessToken)
+      cursor.execute("INSERT INTO user (facebook_id, name, email, photo) VALUES (%s, %s, %s, %s)",
+        [facebook_id, u['name'], u['email'], u['photo']])
+      # TODO: add user friends
+    cursor.execute("SELECT * FROM user WHERE facebook_id = %s", [facebook_id])
+    user = _fetchAll(cursor)[0]
+
+  # create session and store user_id
+  # TODO: delete previous sessions (?)
+  request.session.create()
+  request.session['user_id'] = user['user_id']
+  return JsonResponse({'code': 200, 'user': user, 'new_user': newUser, 'session_key': request.session.session_key})
 
 def profile(request, user_id = 'me'):
   if user_id == 'me':
