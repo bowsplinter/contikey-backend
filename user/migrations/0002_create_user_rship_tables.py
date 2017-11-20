@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
         """CREATE TABLE user_likes_article (
             user_id INT NOT NULL,
             article_id INT NOT NULL,
-            likeStatus TINYINT CHECK(likeStatus=1 OR likeStatus=-1),
+            like_status TINYINT CHECK(like_status=1 OR like_status=-1),
             PRIMARY KEY (user_id, article_id),
             FOREIGN KEY (user_id) REFERENCES user(user_id)
                 ON UPDATE CASCADE
