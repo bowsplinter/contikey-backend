@@ -27,4 +27,6 @@ urlpatterns = [
     url(r'^stats/', include('stats.urls')),
     url(r'^tag/', include('tag.urls', namespace='tag')),
     url(r'^user/', include('user.urls')),
+    url(r'^channel/', include('channel.urls')),
+    url(r'^article/', include('article.urls')),
 ]
