@@ -28,11 +28,11 @@ search_by_article: gets 10 closest matches by article title
 def get_profile(request):
     user_id = request.session['user_id']
     articles = articles_per_user(user_id)
-    likes = likes_per_article()
+    likes = likes_per_article(request.data['article_id'])
     result = {'user_id': user_id, 'articles': articles, 'likes': likes}
     return Response(result ,status=status.HTTP_200_OK)
 
-def articles_per_user(request):
+def articles_per_user(user_id):
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT count(*)
@@ -42,12 +42,12 @@ def articles_per_user(request):
         result = dictfetchall(cursor)
     return result
 
-def likes_per_article(request):
+def likes_per_article(article_id):
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT count(*)
             FROM user_likes_article
             WHERE article_id = %s;
-        """, request.data['article_id'])
+        """, article_id)
         result = dictfetchall(cursor)
-    return Response(result ,status=status.HTTP_200_OK)
+    return result
