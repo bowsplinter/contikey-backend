@@ -6,6 +6,7 @@ urlpatterns = [
   # POST /user/login
   url(r'^login/$', views.login, name='login'),
   # POST /user/logout
+  url(r'^logout/$', views.logout, name='logout'),
   # GET /user/
   url(r'^$', views.profile, name='profile'),
   # GET /user/2

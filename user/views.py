@@ -33,6 +33,16 @@ def login(request):
   request.session['user_id'] = user['user_id'] # store user_id in session data
   return JsonResponse({'code': 200, 'user': user, 'new_user': newUser})
 
+@csrf_exempt
+def logout(request):
+  if request.method != 'POST':
+    return JsonResponse({'code': 400, 'error': 'request method not supported. use POST instead'})
+  if request.session.session_key == None:
+    return JsonResponse({'code': 400, 'error': 'no existing session or session expired'})
+  
+  request.session.flush() # delete session from DB and remove user's session cookie
+  return JsonResponse({'code': 200, 'success': True})
+
 def profile(request, user_id = 'me'):
   if user_id == 'me':
     try: # get user's user_id from session key
