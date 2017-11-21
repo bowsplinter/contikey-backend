@@ -24,7 +24,7 @@ def article_comments(request):
 
     elif request.method == 'POST':
         comment_text = data['comment_text']
-        user_id = data['user_id']
+        user_id = request.session['user_id']
         article_id = data['article_id']
 
         with connection.cursor() as cursor:
@@ -33,3 +33,19 @@ def article_comments(request):
                 VALUES (%s, %s, %s, %s, NOW())
             """, [comment_text, user_id, article_id])
         return Response(result ,status=status.HTTP_201_CREATED)
+
+"""
+* Delete the user's own comment in an article
+"""
+@api_view(['DELETE'])
+def delete_comment(request):
+    user_id = request.session['user_id']
+    comment_id = request.data['comment_id']
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            DELETE FROM comment
+            WHERE user_id = %s
+            AND comment_id = %s
+        """, [user_id, comment_id])
+    return Response(result ,status=status.HTTP_200_OK)
