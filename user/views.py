@@ -30,15 +30,15 @@ def login(request):
     cursor.execute("SELECT * FROM user WHERE facebook_id = %s", [facebook_id])
     user = _fetchAll(cursor)[0]
 
-  # create session and store user_id
-  # TODO: delete previous sessions (?)
-  request.session.create()
-  request.session['user_id'] = user['user_id']
-  return JsonResponse({'code': 200, 'user': user, 'new_user': newUser, 'session_key': request.session.session_key})
+  request.session['user_id'] = user['user_id'] # store user_id in session data
+  return JsonResponse({'code': 200, 'user': user, 'new_user': newUser})
 
 def profile(request, user_id = 'me'):
   if user_id == 'me':
-    user_id = 1 #.should get user's user_id from session key
+    try: # get user's user_id from session key
+      user_id = request.session['user_id']
+    except:
+      return JsonResponse({'code':400, 'error': 'no existing session or session expired'})
 
   with connection.cursor() as cursor:
     cursor.execute("SELECT * FROM user WHERE user_id = %s", [user_id])
