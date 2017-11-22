@@ -23,4 +23,6 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^notifications/', include('notification.urls', namespace='notification')),
     url(r'^user/', include('user.urls')),
+    url(r'^comments/', include('comment.urls'))
+    url(r'^stats/', include('stats.urls'))
 ]
