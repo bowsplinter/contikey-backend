@@ -27,6 +27,11 @@ def userid_get_friends(user_id):
             [user_id, user_id])
         return dictfetchall(cursor)
 
+def userid_get_following(user_id):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM user_follows_channel WHERE user_id = %s", [user_id])
+        return dictfetchall(cursor)
+
 def insert_user(data):
     with connection.cursor() as cursor:
         cursor.execute("""

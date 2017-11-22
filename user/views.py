@@ -64,6 +64,10 @@ def user_channels(request, user_id = 'me'):
 def user_friends(request, user_id = 'me'):
     return get_template(request, user_id, sql.userid_get_friends)
 
+@api_view(['GET'])
+def user_following(request, user_id = 'me'):
+    return get_template(request, user_id, sql.userid_get_following)
+
 def get_template(request, user_id, sqlfunc):
     if user_id == 'me':
         try: # get user's user_id from session key
