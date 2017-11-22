@@ -9,7 +9,7 @@ def get_notification_detail(self, user_id):
             WHERE user_id = %s;
         """, [user_id])
         data = dictfetchall(cursor)
-    return {"status": 200,"data": data}
+    return {"data": data}
 
 def add_notification(self, data):
     text = data['text']

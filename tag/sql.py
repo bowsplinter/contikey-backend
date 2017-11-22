@@ -8,7 +8,7 @@ def get_tag_list(self):
             FROM tag;
         """)
         data = dictfetchall(cursor)
-    return {"status": 200,"data": data}
+    return {"data": data}
 
 def add_tag(self, data):
     label = data['label']
