@@ -13,4 +13,10 @@ urlpatterns = [
   url(r'^(?P<user_id>[0-9]+)/$', views.profile, name='profile'),
   # GET /user/2/channels/
   url(r'^(?P<user_id>[0-9]+)/channels/$', views.channels, name='user_channels'),
+
+  # TODO:
+  # POST /user/update - to update bio
+  # GET /user/2/friends
+  # GET /user/2/following
+  # GET /user/channels
 ]
