@@ -24,7 +24,8 @@ def login(request):
         u = fb.getUserInfo(accessToken)
         u['facebook_id'] = facebook_id
         user_id = sql.insert_user(u)
-        # TODO: add user friends
+        if u.get('friends'):
+            sql.insert_user_friends(user_id, [friend['id'] for friend in u['friends']])
     user = sql.userid_get_user(user_id)[0]
 
     request.session['user_id'] = user['user_id'] # store user_id in session data

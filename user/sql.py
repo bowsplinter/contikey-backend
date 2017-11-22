@@ -41,3 +41,14 @@ def insert_user(data):
         cursor.execute("SELECT LAST_INSERT_ID()")
         user_id = cursor.fetchone()[0]
         return user_id
+
+def insert_user_friends(user_id, friend_fbid_list):
+    for friend_fbid in friend_fbid_list:
+        friend_userid = facebookid_get_user(friend_fbid)[0]['user_id']
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO user_friends (user_id, friend_id)
+                VALUES (%s, %s)""",
+                [user_id, friend_userid])
+    return True
+
