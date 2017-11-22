@@ -57,9 +57,19 @@ def get_template(request, user_id, sqlfunc = None):
         res['data'] = sqlfunc(user_id)
     return Response(res)
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 def user_detail(request, user_id = 'me'):
-    return get_template(request, user_id)
+    if request.method == 'GET':
+        return get_template(request, user_id)
+    elif request.method == 'DELETE':
+        try:
+            user_id = request.session['user_id']
+        except:
+            return Response({'error': 'no existing session or session expired'}, status=status.HTTP_400_BAD_REQUEST)
+        success = sql.delete_user(user_id)
+        if success:
+            request.session.flush()
+        return Response({'success': bool(success)})
 
 @api_view(['GET'])
 def user_channels(request, user_id = 'me'):

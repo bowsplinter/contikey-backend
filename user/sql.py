@@ -52,3 +52,7 @@ def insert_user_friends(user_id, friend_fbid_list):
                 [user_id, friend_userid])
     return True
 
+def delete_user(user_id):
+    with connection.cursor() as cursor:
+        d = cursor.execute("DELETE FROM user WHERE user_id = %s", [user_id])
+        return d
