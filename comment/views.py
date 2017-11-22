@@ -29,6 +29,7 @@ def article_comments(request, article_id):
                     INSERT INTO comment(comment_text, user_id, article_id, created_at)
                     VALUES (%s, %s, %s, %s, NOW())
                 """, [comment_text, user_id, article_id])
+                result = dictfetchall(cursor)
             return Response(result ,status=status.HTTP_201_CREATED)
     `   else:
             return Response(result, status=status.HTTP_401_UNAUTHORIZED)
@@ -46,6 +47,7 @@ def delete_comment(request, comment_id):
                 WHERE user_id = %s
                 AND comment_id = %s
             """, [user_id, comment_id])
+            result = dictfetchall(cursor)
         return Response(result ,status=status.HTTP_200_OK)
 `   else:
         return Response(result, status=status.HTTP_401_UNAUTHORIZED)
