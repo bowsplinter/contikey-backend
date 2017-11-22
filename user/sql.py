@@ -16,6 +16,17 @@ def facebookid_get_user(facebook_id):
         cursor.execute("SELECT * FROM user WHERE facebook_id = %s", [facebook_id])
         return dictfetchall(cursor)
 
+def userid_get_friends(user_id):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT * FROM user WHERE user_id IN (
+                SELECT friend_id FROM user_friends WHERE user_id = %s
+                UNION
+                SELECT user_id FROM user_friends WHERE friend_id = %s
+            )""", 
+            [user_id, user_id])
+        return dictfetchall(cursor)
+
 def insert_user(data):
     with connection.cursor() as cursor:
         cursor.execute("""
