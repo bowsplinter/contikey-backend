@@ -1,12 +1,13 @@
 from django.db import connection
 from functions import dictfetchall
 
-def get_notification_detail(self):
+def get_notification_detail(self, user_id):
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT *
-            FROM notification;
-        """)
+            FROM notification
+            WHERE user_id = %s;
+        """, [user_id])
         data = dictfetchall(cursor)
     return {"status": 200,"data": data}
 

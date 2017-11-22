@@ -7,5 +7,5 @@ class notification_detail(APIView):
     """
     List all snippets, or create a new snippet.
     """
-    def get(self, request, format=None):
-        return Response(get_notification_detail(self))
+    def get(self, request, user_id, format=None):
+        return Response(get_notification_detail(self, user_id))
