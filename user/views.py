@@ -58,20 +58,13 @@ def user_detail(request, user_id = 'me'):
 
 @api_view(['GET'])
 def user_channels(request, user_id = 'me'):
-    if user_id == 'me':
-        try: # get user's user_id from session key
-            user_id = request.session['user_id']
-        except:
-            return Response({'error': 'no existing session or session expired'}, status=status.HTTP_400_BAD_REQUEST)
-
-    user = sql.userid_get_user(user_id)
-    if not user:
-        return Response({'error': 'user not found'}, status=status.HTTP_404_NOT_FOUND)
-    channels = sql.userid_get_channels(user_id)
-    return Response({'user': user[0], 'data': channels})
+    return get_template(request, user_id, sql.userid_get_channels)
 
 @api_view(['GET'])
 def user_friends(request, user_id = 'me'):
+    return get_template(request, user_id, sql.userid_get_friends)
+
+def get_template(request, user_id, sqlfunc):
     if user_id == 'me':
         try: # get user's user_id from session key
             user_id = request.session['user_id']
@@ -81,7 +74,7 @@ def user_friends(request, user_id = 'me'):
     user = sql.userid_get_user(user_id)
     if not user:
         return Response({'error': 'user not found'}, status=status.HTTP_404_NOT_FOUND)
-    friends = sql.userid_get_friends(user_id)
-    return Response({'user': user[0], 'data': friends})    
+    data = sqlfunc(user_id)
+    return Response({'user': user[0], 'data': data})
 
 
