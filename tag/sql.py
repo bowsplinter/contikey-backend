@@ -1,7 +1,7 @@
 from django.db import connection
 from functions import dictfetchall
 
-def get_tag_detail(self):
+def get_tag_list(self):
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT *
