@@ -1,13 +1,9 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from django.db import connection
-from django.views.decorators.csrf import csrf_exempt
 from . import facebook as fb
 from . import sql
 
-@csrf_exempt
 @api_view(['POST'])
 def login(request):
     accessToken = request.POST.get('accessToken', None)
@@ -34,7 +30,6 @@ def login(request):
     request.session['user_id'] = user['user_id'] # store user_id in session data
     return Response({'user': user, 'new_user': newUser})
 
-@csrf_exempt
 @api_view(['POST'])
 def logout(request):
     if request.session.session_key == None:
@@ -43,8 +38,9 @@ def logout(request):
     request.session.flush() # delete session from DB and remove user's session cookie
     return Response({'success': True})
 
-@api_view(['GET'])
-def user_detail(request, user_id = 'me'):
+# GET request functions for user_detail and user edges use this template
+# usage: call with the appropriate sql function
+def get_template(request, user_id, sqlfunc = None):
     if user_id == 'me':
         try: # get user's user_id from session key
             user_id = request.session['user_id']
@@ -54,7 +50,15 @@ def user_detail(request, user_id = 'me'):
     user = sql.userid_get_user(user_id)
     if not user:
         return Response({'error': 'user not found'}, status=status.HTTP_404_NOT_FOUND)
-    return Response({'user': user[0]})
+
+    res = {'user': user[0]}
+    if sqlfunc:
+        res['data'] = sqlfunc(user_id)
+    return Response(res)
+
+@api_view(['GET'])
+def user_detail(request, user_id = 'me'):
+    return get_template(request, user_id)
 
 @api_view(['GET'])
 def user_channels(request, user_id = 'me'):
@@ -67,18 +71,3 @@ def user_friends(request, user_id = 'me'):
 @api_view(['GET'])
 def user_following(request, user_id = 'me'):
     return get_template(request, user_id, sql.userid_get_following)
-
-def get_template(request, user_id, sqlfunc):
-    if user_id == 'me':
-        try: # get user's user_id from session key
-            user_id = request.session['user_id']
-        except:
-            return Response({'error': 'no existing session or session expired'}, status=status.HTTP_400_BAD_REQUEST)
-
-    user = sql.userid_get_user(user_id)
-    if not user:
-        return Response({'error': 'user not found'}, status=status.HTTP_404_NOT_FOUND)
-    data = sqlfunc(user_id)
-    return Response({'user': user[0], 'data': data})
-
-
