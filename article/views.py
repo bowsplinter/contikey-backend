@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 # Create your views here.
 @api_view(['GET','DELETE'])
-def view(request, article_id = 1):
+def view(request, article_id):
 	try:
 		user_id = request.session['user_id']
 	except:
@@ -37,8 +37,8 @@ def new(request):
 	if request.method == 'POST':
 		with connection.cursor() as cursor:
 			try:
-				url = request.POST['url']
-				channel_id = request.POST['channel_id']
+				url = request.POST.get('url')
+				channel_id = request.POST.get('channel_id')
 				caption = request.POST.get('caption', None)
 				preview_image = request.POST.get('preview_image',None)
 				preview_title = request.POST.get('preview_title',None)
@@ -53,51 +53,69 @@ def new(request):
 			# data = _fetchAll(cursor)
 			return Response(data = {}, status = status.HTTP_201_CREATED)
 
-def like(request, article_id = 1):
+@api_view(['POST','DELETE'])
+def like(request, article_id):
+	try:
+		user_id = request.session['user_id']
+	except:
+		return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+
 	if request.method == 'POST':
 		with connection.cursor() as cursor:
-			user_id = request.POST['user_id']
-			article_id = request.POST['article_id']
-			like_status = request.POST['like_status']
+			try:
+				#user_id = request.POST.get('user_id')
+				article_id = request.POST.get('article_id')
+				#If record in table, then it is a like
+				#like_status = request.POST['like_status'] 
+			except:
+				return Response({'error':'missing or invalid POST body'}, status=status.HTTP_400_BAD_REQUEST)
 
-			if like_status != '1' or like_status != 'True':
-				cursor.execute('DELETE FROM user_likes_article WHERE article_id = %s AND user_id = %s', [article_id,user_id])
-			else:
-				like_status = 1
-				cursor.execute('INSERT INTO user_likes_article(article_id,user_id,like_status) VALUES (%s,%s,%s)', [article_id,user_id,like_status])
-			
-			cursor.execute('SELECT * FROM user_likes_article WHERE article_id = %s AND user_id = %s', [article_id,user_id])
-			data = _fetchAll(cursor)
+			cursor.execute('INSERT INTO user_likes_article(article_id,user_id,like_status) VALUES (%s,%s,%s)', [article_id,user_id,like_status])
+			return Response(data = {}, status = status.HTTP_201_CREATED)
 
-			return JsonResponse({'code':'200','article':article_id, 'data':data})
+	elif request.method == 'DELETE':
+		with connection.cursor() as cursor:
+			cursor.execute('DELETE FROM user_likes_article WHERE article_id = %s AND user_id = %s', [article_id,user_id])
+			return Response({}, status=status.HTTP_200_OK)
 
-
+@api_view(['POST'])
 def comment(request):
+	try:
+		user_id = request.session['user_id']
+	except:
+		return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+
 	if request.method == 'POST':
 		with connection.cursor() as cursor:
-			user_id = request.POST.get('user_id')
-			comment_id = request.POST['comment_id']
-			comment_text = request.POST['comment_text']
-			article_id = request.POST['article_id']
+			#user_id = request.POST.get('user_id')
+			comment_id = request.POST.get('comment_id')
+			comment_text = request.POST.get('comment_text')
+			article_id = request.POST.get('article_id')
 
 			cursor.execute('INSERT INTO comment(comment_id,article_id,user_id,comment_text) VALUES (%s,%s,%s,%s)', [comment_id,article_id,user_id,comment_text])
 			
-			cursor.execute('SELECT * FROM comment WHERE comment_id = %s AND article_id = %s AND user_id = %s', [comment_id,article_id,user_id])
-			data = _fetchAll(cursor)
+			# cursor.execute('SELECT * FROM comment WHERE comment_id = %s AND article_id = %s AND user_id = %s', [comment_id,article_id,user_id])
+			# data = _fetchAll(cursor)
+			return Response({}, status=status.HTTP_200_OK)
 
-			return JsonResponse(status=200, data = {'code':'200','article':article_id, 'data':data})
-
+@api_view(['GET'])
 def feed(request):
-	#user_id = request.session['user_id']
-	user_id = 1
+	try:
+		user_id = request.session['user_id']
+	except:
+		return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+
 	page = 1
+
+	#To figure out how to take pages from settings.py
 	items_per_page = 10
 	offset = (page-1) * items_per_page
 	with connection.cursor() as cursor:
-		cursor.execute('SELECT * FROM article WHERE channel_id IN(SELECT channel_id FROM user_follows_channel WHERE user_id = %s) ORDER BY created_at DESC LIMIT offset,items_per_page', [user_id])
+		cursor.execute('SELECT * FROM article WHERE channel_id IN(SELECT channel_id FROM user_follows_channel WHERE user_id = %s) ORDER BY created_at DESC LIMIT %s,%s', [user_id,offset,items_per_page])
 
+		data = _fetchAll(cursor)
 
-	return JsonResponse(status=501, data={'code':'501','error':'not implemented'})
+	return Response({'feed': data},status=status.HTTP_200_OK)
 
 def _fetchAll(cursor):
   columns = [col[0] for col in cursor.description]
