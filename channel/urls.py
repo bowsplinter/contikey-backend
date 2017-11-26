@@ -2,9 +2,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    #GET /channel/<channel_id>/
-    # TODO:
-    # > delete channel
+    #GET/DELETE /channel/<channel_id>/
     url(r'^(?P<channel_id>[0-9]+)/$', views.channel, name='channels'),
     #POST /channel/new/
     url(r'^new/$', views.new, name='new_channel'),
