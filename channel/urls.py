@@ -6,7 +6,7 @@ urlpatterns = [
     url(r'^(?P<channel_id>[0-9]+)/$', views.channel, name='channels'),
     #POST /channel/new/
     url(r'^new/$', views.new, name='new_channel'),
-    #POST /channel/follow/
+    #POST /channel/<channel_id>/follow/
     url(r'^(?P<channel_id>[0-9]+)/follow/$', views.follow, name='follow_channel'),
     #GET channel/explore/
     url(r'^explore/$', views.explore, name='explore')

@@ -77,11 +77,10 @@ def comment(request, article_id):
 
 @api_view(['GET'])
 def feed(request):
-	user_id=1
-	# try:
-	# 	user_id = request.session['user_id']
-	# except:
-	# 	return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+	try:
+		user_id = request.session['user_id']
+	except:
+		return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 
 	page = 1
 
