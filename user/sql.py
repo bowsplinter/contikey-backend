@@ -44,7 +44,10 @@ def insert_user(data):
 
 def insert_user_friends(user_id, friend_fbid_list):
     for friend_fbid in friend_fbid_list:
-        friend_userid = facebookid_get_user(friend_fbid)[0]['user_id']
+        friend_user = facebookid_get_user(friend_fbid)
+        if not friend_user: # for development. this shouldn't be needed in production
+            continue
+        friend_userid = friend_user[0]['user_id']
         with connection.cursor() as cursor:
             cursor.execute("""
                 INSERT INTO user_friends (user_id, friend_id)
