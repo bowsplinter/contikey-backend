@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^comments/', include('comment.urls')),
     url(r'^stats/', include('stats.urls')),
     url(r'^tag/', include('tag.urls', namespace='tag')),
-    url(r'^user/', include('user.urls')),
     url(r'^channel/', include('channel.urls')),
     url(r'^article/', include('article.urls')),
+    url(r'^docs/', include('rest_framework_docs.urls')),
 ]
