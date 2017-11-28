@@ -62,6 +62,8 @@ def user_detail(request, user_id = 'me'):
     if request.method == 'GET':
         return get_template(request, user_id)
     elif request.method == 'DELETE':
+        if user_id != 'me':
+            return Response({'error': 'unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
         try:
             user_id = request.session['user_id']
         except:
