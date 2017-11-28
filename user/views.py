@@ -6,6 +6,11 @@ from . import sql
 
 @api_view(['POST'])
 def login(request):
+    """
+    Log user in with FB access token after FB login is completed
+
+    Fields: *accessToken: string
+    """
     accessToken = request.POST.get('accessToken', None)
     if accessToken == None:
         return Response({'error': 'accessToken required'}, status=status.HTTP_400_BAD_REQUEST)
@@ -33,6 +38,9 @@ def login(request):
 
 @api_view(['POST'])
 def logout(request):
+    """
+    Log user out and clear session
+    """
     if request.session.session_key == None:
         return Response({'error': 'no existing session or session expired'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -59,6 +67,13 @@ def get_template(request, user_id, sqlfunc = None):
 
 @api_view(['GET', 'DELETE'])
 def user_detail(request, user_id = 'me'):
+    """
+    GET:
+    Return user info for user_id (if specified) or the current user (default)
+
+    DELETE:
+    Delete user and clear session. Not authorized if user_id is specified
+    """
     if request.method == 'GET':
         return get_template(request, user_id)
     elif request.method == 'DELETE':
@@ -75,12 +90,21 @@ def user_detail(request, user_id = 'me'):
 
 @api_view(['GET'])
 def user_channels(request, user_id = 'me'):
+    """
+    Return list of channels created by user_id (if specified) or the current user (default)
+    """
     return get_template(request, user_id, sql.userid_get_channels)
 
 @api_view(['GET'])
 def user_friends(request, user_id = 'me'):
+    """
+    Return list of friends of user_id (if specified) or the current user (default)
+    """
     return get_template(request, user_id, sql.userid_get_friends)
 
 @api_view(['GET'])
 def user_following(request, user_id = 'me'):
+    """
+    Return list of channels followed by user_id (if specified) or the current user (default)
+    """
     return get_template(request, user_id, sql.userid_get_following)
