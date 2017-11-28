@@ -3,16 +3,29 @@ from django.db import connection
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from . import sql
 
-# Create your views here.
-@api_view(['GET','DELETE'])
-def channel(request, channel_id):
-	if request.method == 'GET':
+
+class channel_helper(APIView):
+	"""
+		get:
+		Given a channel_id from the url,
+		this returns the Channel info, tags associated with the Channel and the distinct number of follows.
+
+		delete:
+		Given a channel_id from the url,
+		this attempts to get the user_id from the session and delete the channel_id if it belongs to the user
+		
+		post:
+		Given a user_id, title and description,
+		this attempts to create a new channel under the given user
+	"""
+	def get(self,request, channel_id):
 		data, statusr = sql.get_channel(channel_id)
 		return Response({'channel': data},status=statusr)
 
-	elif request.method == 'DELETE':
+	def delete(self,request,channel_id):
 		try:
 			user_id = request.session['user_id']
 		except:
@@ -21,9 +34,7 @@ def channel(request, channel_id):
 		data,statusr = sql.delete_channel(user_id,channel_id)
 		return Response(data, status=statusr)
 
-@api_view(['POST'])
-def new(request):
-	if request.method == 'POST':
+	def post(self,request):
 		try:
 			user_id = request.session['user_id']
 			title = request.POST.get('title')
@@ -35,29 +46,49 @@ def new(request):
 		data, statusr = sql.create_channel(user_id,title,description)
 		return Response(data, statusr)
 
-@api_view(['POST','DELETE'])
-def follow(request, channel_id):
-	try:
-		user_id = request.session['user_id']
-	except:
-		return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 
-	if request.method == 'POST':
+class channel_follower(APIView):
+	"""
+		post:
+		Given a channel_id from the url,
+		this attempts to get the user_id from the session and add the user to follow the given channel
+
+		delete:
+		Given a channel_id from the url,
+		this attempts to get the user_id from the session and remove the user from following the given channel
+	"""
+	def post(self,request,channel_id):
+		try:
+			user_id = request.session['user_id']
+		except:
+			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 		data, statusr = sql.get_follow(user_id,channel_id)
 		return Response(data, statusr)
-	elif request.method == 'DELETE':
+
+	def delete(self,request,channel_id):
+		try:
+			user_id = request.session['user_id']
+		except:
+			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 		data, statusr = sql.delete_follow(user_id,channel_id)
 		return Response(data, statusr)
 
-@api_view(['GET'])
-def explore(request):
-	try:
-		user_id = request.session['user_id']
-	except:
-		return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 
-	if request.method == 'GET':
+class channel_explorer(APIView):
+	"""
+		get:
+		This gets the user_id from the session,
+		and pulls out relevant channels based on the users tag selection that he has NOT followed
+
+		#TODO: Follow proper pagination from REST framework
+	"""
+	def get(self, request):
+		try:
+			user_id = request.session['user_id']
+		except:
+			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+
 		limit = 10;
 		data = sql.get_user_explore(user_id,limit)
 
-	return Response({'channels': data},status=status.HTTP_200_OK)
+		return Response({'channels': data},status=status.HTTP_200_OK)
