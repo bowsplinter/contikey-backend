@@ -19,8 +19,7 @@ class Migration(migrations.Migration):
             INSERT INTO notification (type, article_id, user_id, is_read, type_user_id)
             VALUES ('comment', NEW.article_id, (
                  SELECT user_id from channel WHERE channel_id IN (
--                    SELECT channel_id FROM article WHERE article_id = NEW.article_id)))
-+                    SELECT channel_id FROM article WHERE article_id = NEW.article_id)), false, NEW.user_id)
+                     SELECT channel_id FROM article WHERE article_id = NEW.article_id)), false, NEW.user_id);
         """,
         "DROP TRIGGER comment_notification"
       )
