@@ -1,7 +1,7 @@
 from django.db import connection
 from functions import dictfetchall
 
-def get_tag_list(self):
+def get_tag_list():
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT *
@@ -10,7 +10,7 @@ def get_tag_list(self):
         data = dictfetchall(cursor)
     return {"data": data}
 
-def add_tag(self, data):
+def add_tag(data):
     label = data['label']
     image = data['image']
 
@@ -21,7 +21,7 @@ def add_tag(self, data):
             """, [label, image])
     return 0
 
-def delete_tag(self, id):
+def delete_tag(id):
     with connection.cursor() as cursor:
         cursor.execute("""
             DELETE FROM tag
