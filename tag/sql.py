@@ -11,14 +11,15 @@ def get_tag_list():
     return {"data": data}
 
 def add_tag(data):
+    tag_id = data['tag_id']
     label = data['label']
     image = data['image']
 
     with connection.cursor() as cursor:
         cursor.execute("""
-            INSERT INTO tag (label, image)
-            VALUES (%s, %s)
-            """, [label, image])
+            INSERT INTO tag (tag_id, label, image)
+            VALUES (%s, %s, %s)
+            """, [tag_id, label, image])
     return 0
 
 def delete_tag(id):
@@ -27,4 +28,11 @@ def delete_tag(id):
             DELETE FROM tag
             WHERE tag_id = %s
         """, [id])
+    return 0
+
+def delete_all_tags():
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            DELETE FROM tag
+        """)
     return 0
