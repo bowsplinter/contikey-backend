@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from . import sql
 
 
+#Should there be a lighter version of get?
 class channel_helper(APIView):
 	"""
 		get:
@@ -39,13 +40,17 @@ class channel_helper(APIView):
 			user_id = request.session['user_id']
 			title = request.POST.get('title')
 			description = request.POST.get('description')
+			tags = request.POST.get('tags').split(',')
 		except KeyError as e:
 			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 		except Exception as e:
 			return Response({'error':'missing or invalid POST body'}, status=status.HTTP_400_BAD_REQUEST)		
-		data, statusr = sql.create_channel(user_id,title,description)
-		return Response(data, statusr)
+		
+		data, statusr = sql.create_channel(user_id,title,description,tags)
+		#To autofollow own channel
+		data, statusr = sql.new_follow(user_id,data)
 
+		return Response(data, statusr)
 
 class channel_follower(APIView):
 	"""
@@ -62,7 +67,7 @@ class channel_follower(APIView):
 			user_id = request.session['user_id']
 		except:
 			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
-		data, statusr = sql.get_follow(user_id,channel_id)
+		data, statusr = sql.new_follow(user_id,channel_id)
 		return Response(data, statusr)
 
 	def delete(self,request,channel_id):
@@ -83,12 +88,13 @@ class channel_explorer(APIView):
 		#TODO: Follow proper pagination from REST framework
 	"""
 	def get(self, request):
+		limit = 10;
+
 		try:
 			user_id = request.session['user_id']
+			data = sql.get_user_explore(user_id,limit)
+			return Response({'channels': data},status=status.HTTP_200_OK)
 		except:
-			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+			data = sql.get_nologin_explore(limit)
+			return Response({'channels': data},status=status.HTTP_200_OK)
 
-		limit = 10;
-		data = sql.get_user_explore(user_id,limit)
-
-		return Response({'channels': data},status=status.HTTP_200_OK)

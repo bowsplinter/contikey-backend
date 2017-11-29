@@ -111,16 +111,17 @@ class article_feeder(APIView):
 		#TODO: Follow proper pagination from REST framework
 	"""
 	def get(self, request):
-		try:
-			user_id = request.session['user_id']
-		except:
-			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
-
 		page = 1
 
 		#To figure out how to take pages from settings.py
 		items_per_page = 10
 		offset = (page-1) * items_per_page
 
-		data = sql.get_user_feed(user_id, offset, items_per_page)
-		return Response({'feed': data},status=status.HTTP_200_OK)
+		try:
+			user_id = request.session['user_id']
+			data = sql.get_user_feed(user_id, offset, items_per_page)
+			return Response({'feed': data},status=status.HTTP_200_OK)
+		except:
+			data = sql.get_nologin_feed(offset,items_per_page)
+			return Response({'feed': data},status=status.HTTP_200_OK)
+

@@ -4,7 +4,9 @@ from rest_framework import status
 
 def get_user_explore(user_id,limit):
 	with connection.cursor() as cursor:
-		cursor.execute('SELECT channel_id FROM channel_tags WHERE tag_id=(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND NOT EXISTS (SELECT channel_id from user_follows_channel WHERE user_id = %s) ORDER BY rand() LIMIT %s', [user_id, user_id, limit])
+		cursor.execute('SELECT DISTINCT ct.channel_id FROM channel_tags ct LEFT JOIN user_follows_channel f ON ct.channel_id = f.channel_id WHERE ct.tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND f.user_id != %s ORDER BY rand() LIMIT = %s', [user_id, user_id, limit])
+
+		#cursor.execute('SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND NOT EXISTS (SELECT channel_id from user_follows_channel WHERE user_id = %s) ORDER BY rand() LIMIT %s', [user_id, user_id, limit])
 		return dictfetchall(cursor)
 
 	#User's followed tags
@@ -14,7 +16,12 @@ def get_user_explore(user_id,limit):
 	#Needs a faster command
 	#SELECT channel_id FROM channel_tags WHERE tag_id=(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND NOT EXISTS (SELECT channel_id from user_follows_channel WHERE user_id = %s) ORDER BY rand() LIMIT 5
 
-def get_follow(user_id,channel_id):
+def get_nologin_explore(limit):
+	with connection.cursor() as cursor:
+		cursor.execute('SELECT channel_id FROM channel ORDER BY rand() LIMIT %s', [limit])
+		return dictfetchall(cursor)
+
+def new_follow(user_id,channel_id):
 	try:
 		with connection.cursor() as cursor:
 			cursor.execute('INSERT INTO user_follows_channel (user_id, channel_id) VALUES (%s,%s)', [user_id,channel_id])
@@ -49,13 +56,25 @@ def get_channel(channel_id):
 			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 		return {'channel':data}, status.HTTP_200_OK	
 
-def create_channel(user_id,title,description):
+#Returns the last inserted channel_id (which should be the created one, since last_insert_id goes by connection), for auto-following of created channel
+def create_channel(user_id,title,description,tags):
 	try:
 		with connection.cursor() as cursor:
 			cursor.execute('INSERT INTO channel (user_id,title,description) VALUES (%s,%s,%s)', [user_id,title,description])
+			#print("channel insert success")
+			cursor.execute('SELECT last_insert_id()')
+			last_insert = str(dictfetchall(cursor)[0]['last_insert_id()'])
+			#print('last insert obtained: '+last_insert)
+			#Expect tags as list of tag_ids
+			tags_insert_str = 'INSERT INTO channel_tags(channel_id, tag_id) VALUES '
+			for tag in tags:
+				tags_insert_str += '('+last_insert+','+tag+'),'
+			#print(tags_insert_str[:-1])
+			cursor.execute(tags_insert_str[:-1])
+			#print('channel_tags insert success')
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return {}, status.HTTP_201_CREATED
+	return last_insert, status.HTTP_201_CREATED
 
 def delete_channel(user_id,channel_id):
 	try:
