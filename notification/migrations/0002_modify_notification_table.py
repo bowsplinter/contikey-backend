@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             DROP COLUMN text,
             DROP COLUMN url,
             ADD COLUMN type VARCHAR(20),
-            ADD COLUMN is_read BOOLEAN,
+            ADD COLUMN is_read BOOLEAN DEFAULT false,
             ADD COLUMN article_id INT
         ;""",
         """
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
         """,
         """
             ALTER TABLE notification
-            DROP CONSTRAINT articleFK
+            DROP FOREIGN KEY articleFK;
         """
         )
     ]
