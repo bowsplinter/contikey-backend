@@ -1,0 +1,16 @@
+[
+  {
+    "fields": {
+      "tag_id": 1,
+      "label": "label1",
+      "image": "image1"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 2,
+      "label": "label2",
+      "image": "image2"
+    }
+  }
+]
