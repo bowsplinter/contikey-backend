@@ -3,27 +3,27 @@ from django.db import connection
 from rest_framework import status
 
 
-def get_user_feed(user_id, offset, items_per_page):
+def get_user_feed(user_id):
 	with connection.cursor() as cursor:
-		cursor.execute('SELECT * FROM article WHERE channel_id IN(SELECT channel_id FROM user_follows_channel WHERE user_id = %s) ORDER BY created_at DESC LIMIT %s,%s', [user_id,offset,items_per_page])
+		cursor.execute('SELECT * FROM article WHERE channel_id IN(SELECT channel_id FROM user_follows_channel WHERE user_id = %s) ORDER BY created_at DESC', [user_id])
 		return dictfetchall(cursor)
 
-def get_nologin_feed(offset,items_per_page):
+def get_nologin_feed():
 	with connection.cursor() as cursor:
-		cursor.execute('SELECT * FROM article ORDER BY created_at DESC LIMIT %s,%s', [offset,items_per_page])
+		cursor.execute('SELECT * FROM article ORDER BY created_at DESC')
 		return dictfetchall(cursor)	
 
 def get_article(article_id, user_id = None):
 	with connection.cursor() as cursor:
 		try:
-				#Get article information
-				cursor.execute("SELECT * FROM article WHERE article_id = %s", [article_id])
-				data = dictfetchall(cursor)[0]
+			#Get article information
+			cursor.execute("SELECT * FROM article WHERE article_id = %s", [article_id])
+			data = dictfetchall(cursor)[0]
 
-				#Get comments on article
-				cursor.execute("SELECT * FROM comment WHERE article_id = %s", [article_id])
-				
-				data['comments'] = dictfetchall(cursor)
+			#Get comments on article
+			cursor.execute("SELECT * FROM comment WHERE article_id = %s", [article_id])
+			
+			data['comments'] = dictfetchall(cursor)
 		except Exception as e:
 			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 		

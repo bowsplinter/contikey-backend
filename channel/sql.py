@@ -4,7 +4,7 @@ from rest_framework import status
 
 def get_user_explore(user_id,limit):
 	with connection.cursor() as cursor:
-		cursor.execute('SELECT DISTINCT ct.channel_id FROM channel_tags ct LEFT JOIN user_follows_channel f ON ct.channel_id = f.channel_id WHERE ct.tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND f.user_id != %s ORDER BY rand() LIMIT = %s', [user_id, user_id, limit])
+		cursor.execute('SELECT DISTINCT ct.* FROM channel_tags ct LEFT JOIN user_follows_channel f ON ct.channel_id = f.channel_id WHERE ct.tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND f.user_id != %s ORDER BY rand() LIMIT = %s', [user_id, user_id, limit])
 
 		#cursor.execute('SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND NOT EXISTS (SELECT channel_id from user_follows_channel WHERE user_id = %s) ORDER BY rand() LIMIT %s', [user_id, user_id, limit])
 		return dictfetchall(cursor)
@@ -16,9 +16,9 @@ def get_user_explore(user_id,limit):
 	#Needs a faster command
 	#SELECT channel_id FROM channel_tags WHERE tag_id=(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND NOT EXISTS (SELECT channel_id from user_follows_channel WHERE user_id = %s) ORDER BY rand() LIMIT 5
 
-def get_nologin_explore(limit):
+def get_nologin_explore():
 	with connection.cursor() as cursor:
-		cursor.execute('SELECT channel_id FROM channel ORDER BY rand() LIMIT %s', [limit])
+		cursor.execute('SELECT * FROM channel ORDER BY rand()')
 		return dictfetchall(cursor)
 
 def new_follow(user_id,channel_id):
@@ -55,6 +55,16 @@ def get_channel(channel_id):
 		except Exception as e:
 			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 		return {'channel':data}, status.HTTP_200_OK	
+
+#To move to article.sql?
+def get_channel_articles(channel_id):
+	with connection.cursor() as cursor:
+		try:
+			cursor.execute("SELECT * FROM article WHERE channel_id = %s", [channel_id])
+			data = dictfetchall(cursor)
+		except Exception as e:
+			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
+		return {'articles':data}, status.HTTP_200_OK				
 
 #Returns the last inserted channel_id (which should be the created one, since last_insert_id goes by connection), for auto-following of created channel
 def create_channel(user_id,title,description,tags):

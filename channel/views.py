@@ -1,10 +1,12 @@
 from django.http import JsonResponse
 from django.db import connection
-from rest_framework import status
+from django.core.paginator import Paginator
+from rest_framework import status,serializers, pagination
 from rest_framework.parsers import JSONParser,MultiPartParser
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.utils.urls import replace_query_param
 from . import sql
 
 #Should there be a lighter version of get?
@@ -53,6 +55,17 @@ class channel_helper(APIView):
 
 		return Response(data, statusr)
 
+#Best name
+class channel_articler(APIView):
+	"""
+		get:
+		Given a channel_id from the url,
+		this attempts to get the articles associated with the channel and return them
+	"""
+	def get(self,request,channel_id):
+		data, statusr = sql.get_channel_articles(channel_id)
+		return Response(data,status=statusr)
+
 class channel_follower(APIView):
 	"""
 		post:
@@ -93,9 +106,41 @@ class channel_explorer(APIView):
 
 		try:
 			user_id = request.session['user_id']
-			data = sql.get_user_explore(user_id,limit)
+			queryset = sql.get_user_explore(user_id,limit)
+			serializer = channel_explorer_serializer(queryset, many=True)
 			return Response({'channels': data},status=status.HTTP_200_OK)
 		except:
-			data = sql.get_nologin_explore(limit)
-			return Response({'channels': data},status=status.HTTP_200_OK)
+			queryset = sql.get_nologin_explore()
+			paginator = channel_paginator()
+			result_page = paginator.paginate_queryset(queryset,request)
+			serializer = explore_serializer(result_page, many=True)
+			return Response(serializer.data,status=status.HTTP_200_OK)
 
+class channel_paginator(pagination.PageNumberPagination):
+	def get_paginated_response(self, data):
+		return Response({'count': self.page.paginator.count,'next':self.get_next_link(),'previous':self.get_previous_link(),'data':data})
+	def get_next_link(self):
+		if not self.page.has_next():
+			return None
+		page_number = self.page.next_page_number()
+		return replace_query_param('', self.page_query_param, page_number)
+
+	def get_previous_link(self):
+		if not self.page.has_previous():
+			return None
+		page_number = self.page.previous_page_number()
+		return replace_query_param('', self.page_query_param, page_number)
+
+class explore_serializer(serializers.Serializer):
+	channel_id = serializers.IntegerField()
+	user_id = serializers.IntegerField()
+	#These two should switch to 128 and 512 to be more efficient, Padded anyway.
+	title = serializers.CharField(max_length=100)
+	description = serializers.CharField(max_length=500)
+
+class explore_data():
+	def __init__(self,channel_id,user_id,title,description):
+		self.channel_id = channel_id
+		self.user_id = user_id
+		self.title = title
+		self.description = description

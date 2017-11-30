@@ -1,13 +1,14 @@
 from django.http import JsonResponse
 from django.db import connection
-from rest_framework import status
+from django.core.paginator import Paginator
+from rest_framework import status, serializers, pagination
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser,MultiPartParser
+from rest_framework.utils.urls import replace_query_param
 from . import sql
 import metascrapy
-import json
 
 
 class article_helper(APIView):
@@ -41,13 +42,6 @@ class article_helper(APIView):
 	def post(self, request):
 		with connection.cursor() as cursor:
 			try:
-			# 	json_body = json.loads(request.body)
-			# 	url = json_body.get('url')
-			# 	channel_id = json_body.get('channel_id')
-			# 	caption = json_body.get('caption', None)
-			# 	shared_from_article_id = json_body.get('shared_from_article_id',None)
-
-			# except json.decoder.JSONDecodeError:
 				url = request.data.get('url')
 				channel_id = request.data.get('channel_id')
 				caption = request.data.get('caption', None)
@@ -114,21 +108,59 @@ class article_feeder(APIView):
 	"""		
 		get:
 		This attempts to get the user_id from the session and get the most recent articles from user_id's followed channels.
-
-		#TODO: Follow proper pagination from REST framework
+		If the user is not logged in this returns a "most recent" feed from all possible channels.
 	"""
 	def get(self, request):
-		page = 1
-
-		#To figure out how to take pages from settings.py
-		items_per_page = 10
-		offset = (page-1) * items_per_page
-
 		try:
 			user_id = request.session['user_id']
-			data = sql.get_user_feed(user_id, offset, items_per_page)
-			return Response({'feed': data},status=status.HTTP_200_OK)
+			data = sql.get_user_feed(user_id)
+			paginator = article_paginator()
+			result_page = paginator.paginate_queryset(queryset, request)
+			serializer = article_serializer(result_page, many=True)
+			return Response(serializer.data,status=status.HTTP_200_OK)
 		except:
-			data = sql.get_nologin_feed(offset,items_per_page)
-			return Response({'feed': data},status=status.HTTP_200_OK)
+			queryset = sql.get_nologin_feed()
+			paginator = article_paginator()
+			result_page = paginator.paginate_queryset(queryset, request)
+			serializer = article_serializer(result_page, many=True)
+			return Response(serializer.data,status=status.HTTP_200_OK)
 
+class article_paginator(pagination.PageNumberPagination):
+	def get_paginated_response(self, data):
+		return Response({'count': self.page.paginator.count,'next':self.get_next_link(),'previous':self.get_previous_link(),'data':data})
+	
+	def get_next_link(self):
+		if not self.page.has_next():
+			return None
+		page_number = self.page.next_page_number()
+		return replace_query_param('', self.page_query_param, page_number)
+
+	def get_previous_link(self):
+		if not self.page.has_previous():
+			return None
+		page_number = self.page.previous_page_number()
+		return replace_query_param('', self.page_query_param, page_number)
+
+class article_serializer(serializers.Serializer):
+	article_id = serializers.IntegerField()
+	#These few should switch to 128 and 512 to be more efficient, Padded anyway.
+	url = serializers.CharField(max_length=500)
+	caption = serializers.CharField(max_length=500)
+	preview_image = serializers.CharField(max_length=500)
+	preview_title = serializers.CharField(max_length=100)
+	preview_text = serializers.CharField(max_length=500)
+	channel_id = serializers.IntegerField()
+	shared_from_article_id = serializers.IntegerField()
+	created_at = serializers.DateTimeField()
+
+class article_data():
+	def __init__(self,article_id,url,caption,preview_image,preview_title,preview_text,channel_id,shared_from_article_id,created_at):
+		self.article_id = article_id
+		self.url = url
+		self.caption = caption
+		self.preview_image = preview_image
+		self.preview_title = preview_title
+		self.preview_text = preview_text
+		self.channel_id = channel_id
+		self.shared_from_article_id = shared_from_article_id
+		self.created_at = created_at
