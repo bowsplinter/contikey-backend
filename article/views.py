@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from . import sql
 import metascrapy
+import json
 
 
 class article_helper(APIView):
@@ -38,22 +39,26 @@ class article_helper(APIView):
 	def post(self, request):
 		with connection.cursor() as cursor:
 			try:
-				url = request.POST.get('url')
-				if "http://" not in url:
-					url = "http://" + url
+				json_body = json.loads(request.body)
+				url = json_body.get('url')
+				channel_id = json_body.get('channel_id')
+				caption = json_body.get('caption', None)
+				shared_from_article_id = json_body.get('shared_from_article_id',None)
 
+			except json.decoder.JSONDecodeError:
+				url = request.POST.get('url')
 				channel_id = request.POST.get('channel_id')
 				caption = request.POST.get('caption', None)
-
-				scraper = metascrapy.Metadata()
-				scraper.scrape(url)
-
-				preview_image = scraper.image #request.POST.get('preview_image',None)
-				preview_title = scraper.title #request.POST.get('preview_title',None)
-				preview_text = scraper.description #request.POST.get('preview_text',None)
 				shared_from_article_id = request.POST.get('shared_from_article_id',None)
-			except:
+			except Exception:
 				return Response({'error':'missing or invalid POST body'}, status=status.HTTP_400_BAD_REQUEST)
+			if "http://" not in url:
+				url = "http://" + url
+			scraper = metascrapy.Metadata()
+			scraper.scrape(url)
+			preview_image = scraper.image #request.POST.get('preview_image',None)
+			preview_title = scraper.title #request.POST.get('preview_title',None)
+			preview_text = scraper.description #request.POST.get('preview_text',None)
 
 			data, statusr = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,shared_from_article_id) 
 			return Response(data, statusr)

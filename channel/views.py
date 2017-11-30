@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from . import sql
+import json
 
 
 #Should there be a lighter version of get?
@@ -38,6 +39,12 @@ class channel_helper(APIView):
 	def post(self,request):
 		try:
 			user_id = request.session['user_id']
+			json_body = json.loads(request.body)
+			title = json_body.get('title')
+			description = json_body.get('description')
+			tags = json_body.get('tags').split(',')
+
+		except json.decoder.JSONDecodeError:
 			title = request.POST.get('title')
 			description = request.POST.get('description')
 			tags = request.POST.get('tags').split(',')
