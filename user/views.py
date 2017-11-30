@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+import json
 from . import facebook as fb
 from . import sql
 
@@ -11,7 +12,11 @@ def login(request):
 
     Fields: *accessToken: string
     """
-    accessToken = request.POST.get('accessToken', None)
+    try:
+        received_json = json.loads(request.body)
+        accessToken = received_json.get('accessToken')
+    except:
+        accessToken = request.POST.get('accessToken')
     if accessToken == None:
         return Response({'error': 'accessToken required'}, status=status.HTTP_400_BAD_REQUEST)
 
