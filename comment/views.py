@@ -34,11 +34,12 @@ from functions import dictfetchall
 #     `   else:
 #             return Response(result, status=status.HTTP_401_UNAUTHORIZED)
 
-"""
-* Delete the user's own comment in an article
-"""
+
 @api_view(['DELETE'])
 def delete_comment(request, comment_id):
+    """
+    Delete the user's own comment in an article
+    """
     user_id = request.session['user_id']
     if user_id:
         with connection.cursor() as cursor:
