@@ -4,12 +4,14 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.parsers import JSONParser,MultiPartParser
 from . import sql
 import metascrapy
 import json
 
 
 class article_helper(APIView):
+	parser_classes = (JSONParser,MultiPartParser)
 	"""
 		get:
 		Given an article_id from the url,
@@ -39,17 +41,17 @@ class article_helper(APIView):
 	def post(self, request):
 		with connection.cursor() as cursor:
 			try:
-				json_body = json.loads(request.body)
-				url = json_body.get('url')
-				channel_id = json_body.get('channel_id')
-				caption = json_body.get('caption', None)
-				shared_from_article_id = json_body.get('shared_from_article_id',None)
+			# 	json_body = json.loads(request.body)
+			# 	url = json_body.get('url')
+			# 	channel_id = json_body.get('channel_id')
+			# 	caption = json_body.get('caption', None)
+			# 	shared_from_article_id = json_body.get('shared_from_article_id',None)
 
-			except json.decoder.JSONDecodeError:
-				url = request.POST.get('url')
-				channel_id = request.POST.get('channel_id')
-				caption = request.POST.get('caption', None)
-				shared_from_article_id = request.POST.get('shared_from_article_id',None)
+			# except json.decoder.JSONDecodeError:
+				url = request.data.get('url')
+				channel_id = request.data.get('channel_id')
+				caption = request.data.get('caption', None)
+				shared_from_article_id = request.data.get('shared_from_article_id',None)
 			except Exception:
 				return Response({'error':'missing or invalid POST body'}, status=status.HTTP_400_BAD_REQUEST)
 			if "http://" not in url:
