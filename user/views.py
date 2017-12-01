@@ -101,6 +101,13 @@ def user_channels(request, user_id = 'me'):
     return get_template(request, user_id, sql.userid_get_channels)
 
 @api_view(['GET'])
+def user_articles(request, user_id = 'me'):
+    """
+    Return list of articles posted in channels by user_id (if specified) or the current user (default)
+    """
+    return get_template(request, user_id, sql.userid_get_articles)
+
+@api_view(['GET'])
 def user_friends(request, user_id = 'me'):
     """
     Return list of friends of user_id (if specified) or the current user (default)

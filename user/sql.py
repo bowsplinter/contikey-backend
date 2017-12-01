@@ -11,6 +11,15 @@ def userid_get_channels(user_id):
         cursor.execute("SELECT * FROM channel WHERE user_id = %s", [user_id])
         return dictfetchall(cursor)
 
+def userid_get_articles(user_id):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT * FROM article WHERE channel_id IN (
+                SELECT channel_id FROM channel WHERE user_id = %s
+            )""",
+            [user_id])
+        return dictfetchall(cursor)
+
 def facebookid_get_user(facebook_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM user WHERE facebook_id = %s", [facebook_id])
