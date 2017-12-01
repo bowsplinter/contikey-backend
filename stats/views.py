@@ -14,17 +14,19 @@ def get_user_stats(request, user_id):
     - gets followed channels of user
     """
     user = get_user(user_id)
-
-    result = {
-    'user': user,
-    'data': {
-        'articles': get_user_articles(user_id),
-        'channels': get_user_channels(user_id),
-        'friends': get_user_friends(user_id),
-        'followed': get_user_followed_channels(user_id)
+    if user:
+        result = {
+        'user': user,
+        'data': {
+            'articles': get_user_articles(user_id),
+            'channels': get_user_channels(user_id),
+            'friends': get_user_friends(user_id),
+            'followed': get_user_followed_channels(user_id)
+            }
         }
-    }
-    return Response(result ,status=status.HTTP_200_OK)
+        return Response(result ,status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'user not found'}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def get_article_stats(request, article_id):
@@ -78,9 +80,11 @@ def get_history(request):
     user_id = request.session['user_id']
     user = get_user(user_id)
     history = get_history(user_id)
-
-    result = {
-        'user': user,
-        'history': history
-    }
-    return Response(result ,status=status.HTTP_200_OK)
+    if user_id:
+        result = {
+            'user': user,
+            'history': history
+        }
+        return Response(result ,status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
