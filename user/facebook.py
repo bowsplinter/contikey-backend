@@ -18,7 +18,7 @@ def inspectUserToken(userToken):
 
 def getUserInfo(userToken):
   token = {'access_token': userToken}
-  res = requests.get(endpoint+'me?fields=name,email,picture', params=token)
+  res = requests.get(endpoint+'me?fields=name,email,picture.type(large)', params=token)
   data = res.json()
   name = data.get('name')
   email = data.get('email')
