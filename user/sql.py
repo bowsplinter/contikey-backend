@@ -36,7 +36,7 @@ def userid_get_friends(user_id):
             [user_id, user_id])
         return dictfetchall(cursor)
 
-def userid_get_following(user_id):
+def userid_get_following(user_id): 
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM user_follows_channel WHERE user_id = %s", [user_id])
         return dictfetchall(cursor)
@@ -68,3 +68,11 @@ def delete_user(user_id):
     with connection.cursor() as cursor:
         d = cursor.execute("DELETE FROM user WHERE user_id = %s", [user_id])
         return d
+
+def user_follow_tag(user_id, tag_id):
+    with connection.cursor() as cursor:
+	cursor.execute("""
+	    INSERT INTO user_follows_tag (user_id, tag_id)
+	    VALUES (%s, %s)
+	""",[user_id, tag_id])
+    return True
