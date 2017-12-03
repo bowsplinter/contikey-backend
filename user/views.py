@@ -136,9 +136,13 @@ def follow_tag(request, user_id = 'me'):
     user = sql.userid_get_user(user_id)
     if not user:
         return Response({'error': 'user not found'}, status=status.HTTP_404_NOT_FOUND)
+    print(request.session)
     try:
-	tag_id = request.session['tag_id']
+        tag_id = request.POST['tag_id']
     except:
-	return Response({'error': 'no tag_id specified'}, status=status.HTTP_400_BAD_REQUEST)
-    success = user_follow_tag(user_id_, tag_id)
+        return Response({'error': 'no tag_id specified'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        success = sql.user_follow_tag(user_id, tag_id)
+    except:
+        success = False;
     return Response({'success': bool(success)})
