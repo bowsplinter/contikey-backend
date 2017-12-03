@@ -25,7 +25,7 @@ def get_article(article_id, user_id = None):
 			data['user'] = dictfetchall(cursor)[0]
 
 			#Get comments (and the user who posted them) on article
-			cursor.execute("SELECT * FROM comment JOIN user USING(user_id) WHERE article_id = %s", [article_id])
+			cursor.execute("SELECT * FROM user JOIN comment USING(user_id) WHERE article_id = %s", [article_id])
 			data['comments'] = dictfetchall(cursor)
 
 			#Get number likes on article

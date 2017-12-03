@@ -99,7 +99,7 @@ class article_commenter(APIView):
 			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 
 		with connection.cursor() as cursor:
-			comment_text = request.POST.get('comment_text')
+			comment_text = request.data.get('comment_text')
 			data, status = sql.create_comment(article_id,user_id,comment_text)
 
 			return Response(data, status)
