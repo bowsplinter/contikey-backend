@@ -32,11 +32,11 @@ def userid_get_friends(user_id):
                 SELECT friend_id FROM user_friends WHERE user_id = %s
                 UNION
                 SELECT user_id FROM user_friends WHERE friend_id = %s
-            )""", 
+            )""",
             [user_id, user_id])
         return dictfetchall(cursor)
 
-def userid_get_following(user_id): 
+def userid_get_following(user_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM user_follows_channel WHERE user_id = %s", [user_id])
         return dictfetchall(cursor)
@@ -44,7 +44,7 @@ def userid_get_following(user_id):
 def insert_user(data):
     with connection.cursor() as cursor:
         cursor.execute("""
-            INSERT INTO user (facebook_id, name, email, photo) 
+            INSERT INTO user (facebook_id, name, email, photo)
             VALUES (%s, %s, %s, %s)""",
             [data.get('facebook_id'), data.get('name'), data.get('email'), data.get('photo')])
         cursor.execute("SELECT LAST_INSERT_ID()")
@@ -71,8 +71,8 @@ def delete_user(user_id):
 
 def user_follow_tag(user_id, tag_id):
     with connection.cursor() as cursor:
-	cursor.execute("""
-	    INSERT INTO user_follows_tag (user_id, tag_id)
-	    VALUES (%s, %s)
-	""",[user_id, tag_id])
+        cursor.execute("""
+            INSERT INTO user_follows_tag (user_id, tag_id)
+            VALUES (%s, %s)
+        """,[user_id, tag_id])
     return True
