@@ -27,7 +27,7 @@ def get_channels_by_title(title):
         channels = dictfetchall(cursor)
         for channel in channels:
             channel_id = channel['channel_id']
-            channel['articles'] = get_channel_articles(channel_id)
+            channel['articles'] = get_channel_articles(channel_id)[0].get('articles')
     return channels
 
 def get_articles_by_title(title):
@@ -42,5 +42,5 @@ def get_articles_by_title(title):
         articles = dictfetchall(cursor)
         for article in articles:
             channel_id = article['channel_id']
-            article['channel'] = get_channel(channel_id)
+            article['channel'] = get_channel(channel_id)[0].get('channel')
     return articles
