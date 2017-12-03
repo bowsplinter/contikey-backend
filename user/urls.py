@@ -33,6 +33,12 @@ urlpatterns = [
   # GET /user/2/following/
   url(r'^(?P<user_id>[0-9]+)/following/$', views.user_following, name='user_following'),
 
+  # POST /user/follow_tag/
+  url(r'^follow_tag/$', views.follow_tag, name='user_follow_tag'),
+
+  # POST /user/2/follow_tag/
+  url(r'^(?P<user_id>[0-9]+)/follow_tag/$', views.follow_tag, name='user_follow_tag'),
+
   # TODO:
   # POST /user/update - to update bio
 ]
