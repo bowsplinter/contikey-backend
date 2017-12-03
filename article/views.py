@@ -16,7 +16,12 @@ class article_helper(APIView):
 	"""
 		get:
 		Given an article_id from the url,
-		this returns the Article info, comments on an article and inserts a new record into the views table(including null).
+		this returns the Article info, 
+		comments on an article and, 
+		likes on an article, 
+		if the current user liked the article, 
+		the user and channel this article belongs to,
+		and inserts a new record into the views table(including null).
 
 		delete:
 		Given an article_id from the url,
@@ -31,8 +36,15 @@ class article_helper(APIView):
 			user_id = request.session['user_id']
 		except:
 			user_id = None
-			
-		data,status = sql.get_article(article_id, user_id)
+
+		#[0]'s to ignore status response from sql commands
+		data,status = sql.get_article(article_id)
+		data['comments'] = sql.get_article_comments(article_id)[0]
+		data['likes'] = sql.get_article_likes(article_id)[0]
+		data['user_channel'] = sql.get_article_poster_channel(article_id)[0]
+		if user_id != None:
+			data['liked'] = sql.get_article_liked(user_id)[0]
+		sql.get_article_new_view(article_id,user_id)
 		return Response(data,status)
 
 	def delete(self, request, article_id):
@@ -101,7 +113,6 @@ class article_commenter(APIView):
 		with connection.cursor() as cursor:
 			comment_text = request.data.get('comment_text')
 			data, status = sql.create_comment(article_id,user_id,comment_text)
-
 			return Response(data, status)
 
 class article_feeder(APIView):
@@ -113,7 +124,7 @@ class article_feeder(APIView):
 	def get(self, request):
 		try:
 			user_id = request.session['user_id']
-			data = sql.get_user_feed(user_id)
+			queryset = sql.get_user_feed(user_id)
 			paginator = article_paginator()
 			result_page = paginator.paginate_queryset(queryset, request)
 			serializer = article_serializer(result_page, many=True)
@@ -123,7 +134,7 @@ class article_feeder(APIView):
 			paginator = article_paginator()
 			result_page = paginator.paginate_queryset(queryset, request)
 			serializer = article_serializer(result_page, many=True)
-			return Response({ 'feed': serializer.data },status=status.HTTP_200_OK)
+			return Response({'feed': serializer.data },status=status.HTTP_200_OK)
 
 class article_paginator(pagination.PageNumberPagination):
 	def get_paginated_response(self, data):
@@ -152,9 +163,10 @@ class article_serializer(serializers.Serializer):
 	channel_id = serializers.IntegerField()
 	shared_from_article_id = serializers.IntegerField()
 	created_at = serializers.DateTimeField()
+	user_info = serializers.DictField()
 
 class article_data():
-	def __init__(self,article_id,url,caption,preview_image,preview_title,preview_text,channel_id,shared_from_article_id,created_at):
+	def __init__(self,article_id,url,caption,preview_image,preview_title,preview_text,channel_id,shared_from_article_id,created_at,user_info):
 		self.article_id = article_id
 		self.url = url
 		self.caption = caption
@@ -164,3 +176,4 @@ class article_data():
 		self.channel_id = channel_id
 		self.shared_from_article_id = shared_from_article_id
 		self.created_at = created_at
+		self.user_info = user_info
