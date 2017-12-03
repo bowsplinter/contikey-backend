@@ -31,7 +31,7 @@ class article_helper(APIView):
 			user_id = request.session['user_id']
 		except:
 			user_id = None
-
+			
 		data,status = sql.get_article(article_id, user_id)
 		return Response(data,status)
 

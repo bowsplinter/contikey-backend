@@ -2,9 +2,9 @@ from functions import dictfetchall
 from django.db import connection
 from rest_framework import status
 
-def get_user_explore(user_id,limit):
+def get_user_explore(user_id):
 	with connection.cursor() as cursor:
-		cursor.execute('SELECT DISTINCT ct.* FROM channel_tags ct LEFT JOIN user_follows_channel f ON ct.channel_id = f.channel_id WHERE ct.tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND f.user_id != %s ORDER BY rand() LIMIT = %s', [user_id, user_id, limit])
+		cursor.execute('SELECT DISTINCT ct.* FROM channel_tags ct LEFT JOIN user_follows_channel f ON ct.channel_id = f.channel_id WHERE ct.tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND f.user_id != %s ORDER BY rand()', [user_id, user_id])
 
 		#cursor.execute('SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND NOT EXISTS (SELECT channel_id from user_follows_channel WHERE user_id = %s) ORDER BY rand() LIMIT %s', [user_id, user_id, limit])
 		return dictfetchall(cursor)

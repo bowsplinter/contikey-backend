@@ -102,12 +102,13 @@ class channel_explorer(APIView):
 		#TODO: Follow proper pagination from REST framework
 	"""
 	def get(self, request):
-		limit = 10;
-
 		try:
 			user_id = request.session['user_id']
-			queryset = sql.get_user_explore(user_id,limit)
+			print(user_id)
+			queryset = sql.get_user_explore(user_id)
+			print('a')
 			serializer = channel_explorer_serializer(queryset, many=True)
+			print('b')
 			return Response({'channels': data},status=status.HTTP_200_OK)
 		except:
 			queryset = sql.get_nologin_explore()
