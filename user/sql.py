@@ -68,3 +68,11 @@ def delete_user(user_id):
     with connection.cursor() as cursor:
         d = cursor.execute("DELETE FROM user WHERE user_id = %s", [user_id])
         return d
+
+def user_follow_tag(user_id, tag_id):
+    with connection.cursor() as cursor:
+	cursor.execute("""
+	    INSERT INTO user_follows_tag (user_id, tag_id)
+	    VALUES (%s, %s)
+	""",[user_id, tag_id])
+    return True
