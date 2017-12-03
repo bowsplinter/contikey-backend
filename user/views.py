@@ -37,6 +37,7 @@ def login(request):
         if u.get('friends'):
             sql.insert_user_friends(user_id, [friend['id'] for friend in u['friends']])
     user = sql.userid_get_user(user_id)[0]
+    user['channels'] = sql.userid_get_channels(user_id)
 
     request.session['user_id'] = user['user_id'] # store user_id in session data
     return Response({'user': user, 'new_user': newUser})
