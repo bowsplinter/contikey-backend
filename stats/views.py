@@ -104,7 +104,12 @@ def get_history(request):
                     }
                     if name == 'comment':
                         data[name]['created_at'] = entry['created_at']
+                    elif name == 'channel':
+                        data[name]['user'] = user
+                    elif name == 'followed_channel':
+                        data[name]['user'] = get_user(data[name]['user_id'])
                     history.append(data)
+
         result = {
             'history': history,
             'user': user,
