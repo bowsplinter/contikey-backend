@@ -37,30 +37,40 @@ class article_helper(APIView):
 		except:
 			user_id = None
 
-		#[0]'s to ignore status response from sql commands
-		data,status = sql.get_article(article_id)
-		data['comments'] = sql.get_article_comments(article_id)[0]
-		data['likes'] = sql.get_article_likes(article_id)[0]
-		data['user'] = sql.get_article_poster(article_id)[0]
-		data['channel'] = sql.get_article_channel(article_id)[0]
-		if user_id != None:
-			data['liked'] = sql.get_user_liked_article(user_id, article_id)[0]
-		sql.create_view(article_id,user_id)
-		return Response(data,status)
+		try:
+			with connection.cursor() as cursor:
+				data = sql.get_article(article_id, cursor)
+				data['comments'] = sql.get_article_comments(article_id)
+				data['likes'] = sql.get_article_likes(article_id)
+				data['user'] = sql.get_article_poster(article_id)
+				data['channel'] = sql.get_article_channel(article_id)
+				if user_id != None:
+					data['liked'] = sql.get_user_liked_article(user_id, article_id)
+				sql.create_view(article_id,user_id)
+
+		except IndexError:
+			return Response({'error':'article not found'}, status=status.HTTP_404_NOT_FOUND)
+		except Exception as e:
+			return Response({'errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		return Response(data, status=status.HTTP_200_OK)
 
 	def delete(self, request, article_id):
-		data, status = sql.delete_article(article_id)
-		return Response(data, status)
+		try:
+			data = sql.delete_article(article_id)
+		except Exception as e:
+			return Response({'errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		return Response(data, status=status.HTTP_200_OK)
 
 	def post(self, request):
-		with connection.cursor() as cursor:
-			try:
-				url = request.data.get('url')
-				channel_id = request.data.get('channel_id')
-				caption = request.data.get('caption', None)
-				shared_from_article_id = request.data.get('shared_from_article_id',None)
-			except Exception:
-				return Response({'error':'missing or invalid POST body'}, status=status.HTTP_400_BAD_REQUEST)
+		try:
+			url = request.data.get('url')
+			channel_id = request.data.get('channel_id')
+			caption = request.data.get('caption', None)
+			num_words = request.data.get('num_words', None)
+			shared_from_article_id = request.data.get('shared_from_article_id',None)
+		except Exception:
+			return Response({'error':'missing or invalid POST body'}, status=status.HTTP_400_BAD_REQUEST)
+		try:
 			if "http://" not in url:
 				url = "http://" + url
 			scraper = metascrapy.Metadata()
@@ -69,8 +79,10 @@ class article_helper(APIView):
 			preview_title = scraper.title #request.POST.get('preview_title',None)
 			preview_text = scraper.description #request.POST.get('preview_text',None)
 
-			data, statusr = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,shared_from_article_id) 
-			return Response(data, statusr)
+			data = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id) 
+		except Exception as e:
+			return Response({'errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		return Response(data, status=status.HTTP_201_CREATED)
 
 class article_liker(APIView):
 	"""
@@ -87,17 +99,22 @@ class article_liker(APIView):
 			user_id = request.session['user_id']
 		except:
 			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
-		data, statusr = sql.create_like(article_id,user_id)
-		return Response(data, statusr)
+		try:
+			data = sql.create_like(article_id,user_id)
+		except Exception as e:
+			return Response({'errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		return Response(data, status=status.HTTP_201_CREATED)
 
 	def delete(self, request, article_id):
 		try:
 			user_id = request.session['user_id']
 		except:
 			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
-
-		data, statusr = sql.delete_like(article_id,user_id)
-		return Response(data, statusr)
+		try:
+			data, statusr = sql.delete_like(article_id,user_id)
+		except Exception as e:
+			return Response({'errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		return Response(data, status=status.HTTP_200_OK)
 
 class article_commenter(APIView):
 	"""
@@ -111,10 +128,12 @@ class article_commenter(APIView):
 		except:
 			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 
-		with connection.cursor() as cursor:
+		try:
 			comment_text = request.data.get('comment_text')
-			data, status = sql.create_comment(article_id,user_id,comment_text)
-			return Response(data, status)
+			data = sql.create_comment(article_id,user_id,comment_text)
+		except Exception as e:
+			return Response({'errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		return Response(data, status=status.HTTP_201_CREATED)
 
 class article_explorer(APIView):
 	"""
@@ -122,8 +141,8 @@ class article_explorer(APIView):
 		Returns the top 10 most liked articles in the last month
 	"""
 	def get(self, request):
-		data, status = sql.get_top_monthly_articles()
-		return Response({'data': data}, status)
+		data = sql.get_top_monthly_articles()
+		return Response({'data'}:data, status=status.HTTP_200_OK)
 		
 class article_feeder(APIView):
 	"""

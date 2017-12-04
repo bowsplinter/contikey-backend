@@ -83,6 +83,7 @@ def get_channel_follower_count(channel_id):
 			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 		return data, status.HTTP_200_OK		
 
+#Gets * from article for a given channel
 def get_channel_articles(channel_id):
 	with connection.cursor() as cursor:
 		try:
@@ -92,6 +93,7 @@ def get_channel_articles(channel_id):
 			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 		return data, status.HTTP_200_OK				
 
+#Inserts into DB given user follows given channel
 def new_follow(user_id,channel_id):
 	try:
 		with connection.cursor() as cursor:
@@ -100,6 +102,7 @@ def new_follow(user_id,channel_id):
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 	return {}, status.HTTP_201_CREATED
 
+#Removes from DB given user follows given channel
 def delete_follow(user_id,channel_id):
 	try:
 		with connection.cursor() as cursor:
