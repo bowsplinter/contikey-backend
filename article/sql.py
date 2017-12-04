@@ -1,6 +1,7 @@
 from functions import dictfetchall, listfetchall
 from django.db import connection
 from rest_framework import status
+import functionssql as fs
 
 def get_user_feed(user_id):
 	with connection.cursor() as cursor:
@@ -30,7 +31,7 @@ def get_article(article_id):
 		return {'error':'article not found'}, HTTP_404_NOT_FOUND
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return {'article':data}, status.HTTP_200_OK
+	return data, status.HTTP_200_OK
 
 #Get article information for a list or tuple of articles
 def get_articles(article_ids):
@@ -40,7 +41,7 @@ def get_articles(article_ids):
 			data = dictfetchall(cursor)
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return {'articles':data}, status.HTTP_200_OK
+	return data, status.HTTP_200_OK
 
 def get_top_monthly_articles():
 	try:
@@ -48,6 +49,8 @@ def get_top_monthly_articles():
 			cursor.execute("SELECT article_id FROM user_likes_article WHERE TIMESTAMPDIFF(DAY, created_at, NOW()) < 31 GROUP BY article_id ORDER BY count(*) DESC LIMIT 10")
 			article_ids = listfetchall(cursor)
 			data = get_articles(article_ids)[0]
+			data = fs.articlelist_get_channel(data)
+			data = fs.articlelist_get_user(data)
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 	return data, status.HTTP_200_OK

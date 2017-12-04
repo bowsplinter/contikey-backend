@@ -123,7 +123,7 @@ class article_explorer(APIView):
 	"""
 	def get(self, request):
 		data, status = sql.get_top_monthly_articles()
-		return Response(data, status)
+		return Response({'data': data}, status)
 		
 class article_feeder(APIView):
 	"""
