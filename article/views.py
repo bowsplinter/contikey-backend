@@ -141,7 +141,7 @@ class article_feeder(APIView):
 		paginator = article_paginator()
 		result_page = paginator.paginate_queryset(queryset, request)
 		serializer = article_serializer(result_page, many=True)
-		return Response(serializer.data,status=status.HTTP_200_OK)
+		return Response({'feed':serializer.data},status=status.HTTP_200_OK)
 
 class article_paginator(pagination.PageNumberPagination):
 	def get_paginated_response(self, data):
