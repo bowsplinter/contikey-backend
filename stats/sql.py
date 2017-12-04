@@ -21,7 +21,7 @@ def get_user_articles(user_id):
                 (SELECT channel_id
                 FROM channel
                 WHERE user_id= %s);
-        """, user_id)
+        """, [user_id])
         result = dictfetchall(cursor)
     return result
 
@@ -31,7 +31,7 @@ def get_user_channels(user_id):
             SELECT *
             FROM channel
             WHERE user_id = %s;
-        """, user_id)
+        """, [user_id])
         result = dictfetchall(cursor)
     return result
 
@@ -41,7 +41,7 @@ def get_user_friends(user_id):
             SELECT *
             FROM user_friends
             WHERE user_id = %s;
-        """, user_id)
+        """, [user_id])
         result = dictfetchall(cursor)
     return result
 
@@ -51,7 +51,7 @@ def get_user_followed_channels(user_id):
             SELECT *
             FROM user_follows_channel
             WHERE user_id = %s;
-        """, user_id)
+        """, [user_id])
         result = dictfetchall(cursor)
     return result
 
@@ -63,7 +63,7 @@ def get_article(article_id):
             SELECT *
             FROM article
             WHERE article_id = %s;
-        """, article_id)
+        """, [article_id])
         result = dictfetchall(cursor)
     return result
 
@@ -73,7 +73,7 @@ def no_of_likes(article_id):
             SELECT count(*)
             FROM user_likes_article
             WHERE article_id = %s;
-        """, article_id)
+        """, [article_id])
         result = cursor.fetchone()
     return result[0]
 
@@ -83,7 +83,7 @@ def get_article_comments(article_id):
             SELECT *
             FROM comment
             WHERE article_id = %s;
-        """, article_id)
+        """, [article_id])
         result = dictfetchall(cursor)
     return result
 
@@ -93,7 +93,7 @@ def no_of_views(article_id):
             SELECT count(*)
             FROM view
             WHERE article_id = %s;
-        """, article_id)
+        """, [article_id])
         result = cursor.fetchone()
     return result[0]
 
@@ -105,7 +105,7 @@ def get_channel(channel_id):
             SELECT *
             FROM channel
             WHERE channel_id = %s;
-        """, channel_id)
+        """, [channel_id])
         result = dictfetchall(cursor)
     return result
 
@@ -115,7 +115,7 @@ def get_channel_articles(channel_id):
             SELECT *
             FROM  article
             WHERE channel_id = %s;
-        """, channel_id)
+        """, [channel_id])
         result = dictfetchall(cursor)
     return result
 
@@ -125,7 +125,7 @@ def get_channel_followers(channel_id):
             SELECT *
             FROM user_follows_channel
             WHERE channel_id = %s;
-        """, channel_id)
+        """, [channel_id])
         result = dictfetchall(cursor)
     return result
 
@@ -133,8 +133,8 @@ def get_channel_followers(channel_id):
 
 def get_user_history(user_id):
     with connection.cursor() as cursor:
+        cursor.execute("SET @user_id = %s;", [user_id])
         cursor.execute("""
-            SET @user_id = %s;
             SELECT * FROM (
                 SELECT channel_id, NULL as article_id, NULL as comment_id,
                     NULL as friend_id, NULL as followed_channel_id,
@@ -168,8 +168,5 @@ def get_user_history(user_id):
                     FROM user_likes_article WHERE user_id = @user_id
                 ) T1
             ORDER BY created_at;
-            """, [user_id])
-        if cursor.fetchall():
-            return dictfetchall(cursor)
-        else:
-            return {'error': 'history is empty'}
+            """)
+        return dictfetchall(cursor)
