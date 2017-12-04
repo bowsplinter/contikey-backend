@@ -28,7 +28,7 @@ def login(request):
     selectUser = sql.facebookid_get_user(facebook_id)
     if selectUser:
         newUser = False
-        user_id = selectUser[0]['user_id']
+        user_id = selectUser['user_id']
     else:
         newUser = True
         u = fb.getUserInfo(accessToken)
@@ -36,7 +36,7 @@ def login(request):
         user_id = sql.insert_user(u)
         if u.get('friends'):
             sql.insert_user_friends(user_id, [friend['id'] for friend in u['friends']])
-    user = sql.userid_get_user(user_id)[0]
+    user = sql.userid_get_user(user_id)
     user['channels'] = sql.userid_get_channels(user_id)
 
     request.session['user_id'] = user['user_id'] # store user_id in session data
@@ -66,7 +66,7 @@ def get_template(request, user_id, sqlfunc = None):
     if not user:
         return Response({'error': 'user not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    res = {'user': user[0]}
+    res = {'user': user}
     if sqlfunc:
         res['data'] = sqlfunc(user_id)
     return Response(res)

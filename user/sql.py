@@ -1,10 +1,10 @@
 from django.db import connection
-from functions import dictfetchall
+from functions import dictfetchall, dictfetchone
 
 def userid_get_user(user_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM user WHERE user_id = %s", [user_id])
-        return dictfetchall(cursor)
+        return dictfetchone(cursor)
 
 def userid_get_channels(user_id):
     with connection.cursor() as cursor:
@@ -25,7 +25,7 @@ def userid_get_articles(user_id):
 def facebookid_get_user(facebook_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM user WHERE facebook_id = %s", [facebook_id])
-        return dictfetchall(cursor)
+        return dictfetchone(cursor)
 
 def userid_get_friends(user_id):
     with connection.cursor() as cursor:
@@ -63,7 +63,7 @@ def insert_user_friends(user_id, friend_fbid_list):
         friend_user = facebookid_get_user(friend_fbid)
         if not friend_user: # for development. this shouldn't be needed in production
             continue
-        friend_userid = friend_user[0]['user_id']
+        friend_userid = friend_user['user_id']
         with connection.cursor() as cursor:
             cursor.execute("""
                 INSERT INTO user_friends (user_id, friend_id)
@@ -99,10 +99,10 @@ def channellist_get_articles(channelList):
 def articlelist_get_channel(articleList):
     with connection.cursor() as cursor:
         for article in articleList:
-            cursor.execute("SELECT * FROM channel WHERE channel_id = %s",
-                [article['channel_id']])
-            article['channel'] = dictfetchall(cursor)[0]
+            if not article['channel_id']:
+                article['channel'] = None
+            else:
+                cursor.execute("SELECT * FROM channel WHERE channel_id = %s",
+                    [article['channel_id']])
+                article['channel'] = dictfetchone(cursor)
     return articleList
-
-
-

@@ -11,11 +11,12 @@ def get_users_by_username(username):
         SELECT * FROM user WHERE name LIKE %s; """
         , [username])
         users = dictfetchall(cursor)
-        for user in users:
-            user_id = user['user_id']
-            user['channels'] = userid_get_channels(user_id)
-            user['articles'] = userid_get_articles(user_id)
-            user['friends'] = userid_get_friends(user_id)
+        # additional user info not needed atm
+        # for user in users:
+        #     user_id = user['user_id']
+        #     user['channels'] = userid_get_channels(user_id)
+        #     user['articles'] = userid_get_articles(user_id)
+        #     user['friends'] = userid_get_friends(user_id)
     return users
 
 def get_channels_by_title(title):
@@ -27,7 +28,7 @@ def get_channels_by_title(title):
         channels = dictfetchall(cursor)
         for channel in channels:
             channel_id = channel['channel_id']
-            channel['articles'] = get_channel_articles(channel_id)[0].get('articles')
+            channel['articles'] = get_channel_articles(channel_id)[0]
     return channels
 
 def get_articles_by_title(title):
@@ -42,5 +43,5 @@ def get_articles_by_title(title):
         articles = dictfetchall(cursor)
         for article in articles:
             channel_id = article['channel_id']
-            article['channel'] = get_channel(channel_id)[0].get('channel')
+            article['channel'] = get_channel(channel_id)[0]
     return articles
