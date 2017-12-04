@@ -2,15 +2,50 @@
   {
     "fields": {
       "tag_id": 1,
-      "label": "label1",
-      "image": "image1"
+      "label": "news",
+      "image": "image"
     }
   },
   {
     "fields": {
       "tag_id": 2,
-      "label": "label2",
-      "image": "image2"
+      "label": "sports",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 3,
+      "label": "buisness",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 4,
+      "label": "sports",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 5,
+      "label": "money",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 6,
+      "label": "technology",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 7,
+      "label": "opinion",
+      "image": "image"
     }
   }
 ]
