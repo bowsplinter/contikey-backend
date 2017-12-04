@@ -5,10 +5,9 @@ def get_article_from_comment(comment_id):
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT *
-            FROM article
-            WHERE article_id in
-                (SELECT article_id
-                FROM comment
-                WHERE comment_id= %s);
+            FROM comment
+            NATURAL LEFT JOIN article
+            WHERE comment.comment_id = %s
         """, [comment_id])
         return dictfetchall(cursor)
+    

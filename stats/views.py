@@ -102,12 +102,12 @@ def get_history(request):
                     data = {
                         name: sql_function(entry[entity_id])[0]
                     }
-                    if name == 'comment':
+                    if name == 'comment' or name == 'liked_article':
                         data[name]['created_at'] = entry['created_at']
                     elif name == 'channel':
                         data[name]['user'] = user
                     elif name == 'followed_channel':
-                        data[name]['user'] = get_user(data[name]['user_id'])
+                        data[name]['user'] = get_user(data[name]['user_id'])[0]
                     history.append(data)
 
         result = {
