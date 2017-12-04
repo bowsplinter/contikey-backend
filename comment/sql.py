@@ -6,8 +6,10 @@ def get_article_from_comment(comment_id):
         cursor.execute("""
             SELECT *
             FROM comment
-            NATURAL LEFT JOIN article
+            JOIN article
+            ON article.article_id = comment.article_id
             WHERE comment.comment_id = %s
         """, [comment_id])
         return dictfetchall(cursor)
-    
+
+ 
