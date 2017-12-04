@@ -1,4 +1,4 @@
-from functions import dictfetchall
+from functions import dictfetchall, listfetchall
 from django.db import connection
 from rest_framework import status
 
@@ -30,6 +30,16 @@ def get_article(article_id):
     except Exception as e:
         return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
     return {'article':data}, status.HTTP_200_OK
+
+#Get article information for a list or tuple of articles
+def get_articles(article_ids):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM article WHERE article_id IN %s", [tuple(article_ids)])
+            data = dictfetchall(cursor)
+    except Exception as e:
+        return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
+    return {'articles':data}, status.HTTP_200_OK
 
 #Get article's poster and channel information
 def get_article_poster_channel(article_id):
@@ -143,3 +153,18 @@ def get_comment(comment_id):
         return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
     return data, status.HTTP_200_OK
 
+def get_top_monthly_articles():
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT article_id FROM user_likes_article
+                WHERE TIMESTAMPDIFF(DAY, created_at, NOW()) < 31
+                GROUP BY article_id
+                ORDER BY count(*) DESC
+                LIMIT 10;
+            """)
+            article_ids = listfetchall(cursor)
+            data = get_articles(article_ids)[0]
+    except Exception as e:
+        return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
+    return data, status.HTTP_200_OK

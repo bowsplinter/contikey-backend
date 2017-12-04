@@ -12,5 +12,7 @@ urlpatterns = [
     # POST /article/comment
     url(r'^(?P<article_id>[0-9]+)/comment/$', views.article_commenter.as_view(), name='comment_article'),
     # GET /article/feed
-    url(r'^feed/$', views.article_feeder.as_view(), name='feed')
+    url(r'^feed/$', views.article_feeder.as_view(), name='feed'),
+    # GET /article/explore
+    url(r'^explore/$', views.article_explorer.as_view(), name='explore'),
 ]

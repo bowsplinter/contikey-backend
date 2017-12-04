@@ -116,6 +116,15 @@ class article_commenter(APIView):
             data, status = sql.create_comment(article_id,user_id,comment_text)
             return Response(data, status)
 
+class article_explorer(APIView):
+	"""
+		get:
+		Returns the top 10 most liked articles in the last month
+	"""
+	def get(self, request):
+		data, status = sql.get_top_monthly_articles()
+		return Response(data, status)
+		
 class article_feeder(APIView):
     """
         get:
