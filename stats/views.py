@@ -102,6 +102,8 @@ def get_history(request):
                     data = {
                         name: sql_function(entry[entity_id])[0]
                     }
+                    if name == 'comment':
+                        data[name]['created_at'] = entry['created_at']
                     history.append(data)
         result = {
             'history': history,
