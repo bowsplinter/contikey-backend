@@ -7,8 +7,8 @@ def get_user_feed(user_id):
 		cursor.execute('SELECT * FROM article WHERE channel_id IN(SELECT channel_id FROM user_follows_channel WHERE user_id = %s) ORDER BY created_at DESC', [user_id])
 		data = dictfetchall(cursor)
 		for article in data:
-			print(article['article_id'])
-			article['user_info'] = get_article_poster_channel(article['article_id'])[0]
+			article['user'] = get_article_poster(article['article_id'])[0]
+			article['channel'] = get_article_channel(article['channel_id'])[0]
 		return data
 
 def get_nologin_feed():
@@ -66,8 +66,10 @@ def get_article_poster(article_id):
 def get_article_channel(article_id):
 	try:
 		with connection.cursor() as cursor:
+			print("article_id: "+str(article_id))
 			cursor.execute("SELECT channel.* FROM channel JOIN article USING(channel_id) WHERE article_id = %s", [article_id])
 			data = dictfetchall(cursor)[0]
+			print(data)
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 	return data, status.HTTP_200_OK	
