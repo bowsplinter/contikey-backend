@@ -35,3 +35,12 @@ def delete_notification(id):
             WHERE notification_id = %s
         """, [id])
     return 0
+
+def set_notification_read(notification_id, is_read):
+    with connection.cursor() as cursor:
+        result = cursor.execute("""
+            UPDATE notification
+            SET is_read = %s
+            WHERE notification_id = %s
+        """, [is_read, notification_id])
+        return result
