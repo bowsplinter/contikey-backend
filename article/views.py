@@ -142,7 +142,7 @@ class article_explorer(APIView):
 	"""
 	def get(self, request):
 		data = sql.get_top_monthly_articles()
-		return Response({'data'}:data, status=status.HTTP_200_OK)
+		return Response({'data':data}, status=status.HTTP_200_OK)
 		
 class article_feeder(APIView):
 	"""
