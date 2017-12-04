@@ -46,7 +46,9 @@ def userid_get_following(user_id):
             )""",
             [user_id])
         channels = dictfetchall(cursor)
-    return channellist_get_articles(channels)
+        channels = channellist_get_articles(channels)
+        channels = channellist_get_user(channels)
+    return channels
 
 def insert_user(data):
     with connection.cursor() as cursor:
@@ -94,6 +96,17 @@ def channellist_get_articles(channelList):
                 """,
                 [channel['channel_id']])
             channel['articles'] = dictfetchall(cursor)
+    return channelList
+
+def channellist_get_user(channelList):
+    with connection.cursor() as cursor:
+        for channel in channelList:
+            cursor.execute("""
+                SELECT * FROM user WHERE user_id = %s
+                LIMIT 4
+                """,
+                [channel['user_id']])
+            channel['user'] = dictfetchone(cursor)
     return channelList
 
 def articlelist_get_channel(articleList):
