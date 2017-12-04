@@ -5,3 +5,7 @@ def dictfetchall(cursor):
         dict(zip(columns, row))
         for row in cursor.fetchall()
     ]
+
+def listfetchall(cursor):
+    "Return list of the first entry in each row from a cursor (eg. for getting list of ids)"
+    return [row[0] for row in cursor.fetchall()]
