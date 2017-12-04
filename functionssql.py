@@ -39,10 +39,10 @@ def articlelist_get_user(articleList):
     # use this with the result of articlelist_get_channel
     with connection.cursor() as cursor:
         for article in articleList:
-            if not article['channel']['channel_id']:
+            if not article['channel'] or not article['channel']['user_id']:
                 article['user'] = None
             else:
                 cursor.execute("SELECT * FROM user WHERE user_id = %s",
-                    [article['channel_id']])
+                    [article['channel']['user_id']])
                 article['user'] = dictfetchone(cursor)
     return articleList
