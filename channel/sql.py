@@ -1,35 +1,42 @@
-from functions import dictfetchall
+from functions import dictfetchall,listfetchall
 from django.db import connection
 from rest_framework import status
 
 def get_user_recommend(user_id):
 	with connection.cursor() as cursor:
-		#check distinct channel_id
-		cursor.execute("SELECT DISTINCT channel.*, tag.* FROM channel_tags ct LEFT JOIN user_follows_channel f ON ct.channel_id = f.channel_id JOIN tag USING(tag_id) JOIN channel ON ct.channel_id = channel.channel_id WHERE ct.tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND f.user_id != %s ORDER BY rand()", [user_id, user_id])
-		data = dictfetchall(cursor)
-		for channel in data:
-			channel['user'] = get_channel_user(channel['channel_id'])[0]
-			channel['subscribers'] = get_channel_follower_count(channel['channel_id'])[0]
-		print(data)
-		return data
+		#User's not-followed channels
+		cursor.execute("SELECT channel_id FROM channel c LEFT JOIN user_follows_channel ufc USING(channel_id) WHERE ufc.user_id != %s OR ufc.user_id IS NULL", [user_id])	
+		nonFollows = listfetchall(cursor)
+		#print(nonFollows)
 
-		#cursor.execute('SELECT DISTINCT ct.* FROM channel_tags ct LEFT JOIN user_follows_channel f ON ct.channel_id = f.channel_id WHERE ct.tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND f.user_id != %s ORDER BY rand()', [user_id, user_id])
+		#User's like-tagged channels
+		cursor.execute("SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s)", [user_id])
+		followTags = listfetchall(cursor)	
+		#print(followTags)
 
-	#User's followed tags
-	#SELECT tag_id FROM user_follows_tag WHERE user_id = %s
-	#SELECT channel_id FROM channel_tags ORDER BY rand() LIMIT 5
+		#Get their intersect
+		data = list(set(nonFollows).intersection(followTags))
 
-	#Needs a faster command
-	#SELECT channel_id FROM channel_tags WHERE tag_id=(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND NOT EXISTS (SELECT channel_id from user_follows_channel WHERE user_id = %s) ORDER BY rand() LIMIT 5
+		resList = []
+		for i in data:
+			cursor.execute("SELECT * FROM channel WHERE channel_id = %s", [i])
+			data2 = dictfetchall(cursor)[0]
+			cursor.execute("SELECT * FROM tag WHERE tag_id IN(SELECT tag_id FROM channel_tags WHERE channel_id = %s)", [i])
+			data2['tags'] = dictfetchall(cursor)
+			data2['user'] = get_channel_user(i)[0]
+			data2['subscribers'] = get_channel_follower_count(i)[0]
+			resList.append(data2)
+		return resList
 
 def get_nologin_recommend():
 	with connection.cursor() as cursor:
 		cursor.execute('SELECT * FROM channel ORDER BY rand()')
 		data = dictfetchall(cursor)
 		for channel in data:
+			cursor.execute("SELECT * FROM tag WHERE tag_id IN(SELECT tag_id FROM channel_tags WHERE channel_id = %s)", [channel['channel_id']])
+			channel['tags'] = dictfetchall(cursor)
 			channel['user'] = get_channel_user(channel['channel_id'])[0]
 			channel['subscribers'] = get_channel_follower_count(channel['channel_id'])[0]
-		print(data)
 		return data
 
 #Gets the information in channel table on given channel_id
@@ -106,16 +113,16 @@ def create_channel(user_id,title,description,tags):
 	try:
 		with connection.cursor() as cursor:
 			cursor.execute('INSERT INTO channel (user_id,title,description) VALUES (%s,%s,%s)', [user_id,title,description])
-			#print("channel insert success")
+			
 			cursor.execute('SELECT last_insert_id()')
 			last_insert = str(dictfetchall(cursor)[0]['last_insert_id()'])
+
 			#Expect tags as list of tag_ids
 			tags_insert_str = 'INSERT INTO channel_tags(channel_id, tag_id) VALUES '
 			for tag in tags:
 				tags_insert_str += '('+last_insert+','+tag+'),'
-			#print(tags_insert_str[:-1])
 			cursor.execute(tags_insert_str[:-1])
-			#print('channel_tags insert success')
+			
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 	return last_insert, status.HTTP_201_CREATED

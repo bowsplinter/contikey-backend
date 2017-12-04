@@ -135,12 +135,14 @@ class recommend_serializer(serializers.Serializer):
 	description = serializers.CharField(max_length=500)
 	subscribers = serializers.IntegerField()
 	user = serializers.DictField()
+	tags = serializers.ListField()
 
 class recommend_data():
-	def __init__(self,channel_id,user_id,title,description,subscribers,user):
+	def __init__(self,channel_id,user_id,title,description,subscribers,user,tags):
 		self.channel_id = channel_id
 		self.user_id = user_id
 		self.title = title
 		self.description = description
 		self.subscribers = subscribers
 		self.user = user
+		self.tags = tags
