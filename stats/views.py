@@ -4,7 +4,18 @@ from rest_framework import status
 from django.db import connection
 from functions import dictfetchall
 from .sql import *
-from user.sql import userid_get_user;
+from comment.sql import get_article_from_comment
+
+entity_ids = ['channel_id', 'article_id', 'comment_id', 'friend_id',
+    'followed_channel_id', 'liked_article_id']
+functionList =  {
+    'channel': get_channel,
+    'article': get_article,
+    'comment': get_article_from_comment,
+    'friend': get_user,
+    'followed_channel': get_channel,
+    'liked_article': get_article
+}
 
 @api_view(['GET'])
 def get_user_stats(request, user_id):
@@ -78,14 +89,23 @@ def get_history(request):
         - followed a channel
         - liked an article
     """
+    history = []
     user_id = request.session['user_id']
     if user_id:
-        user = get_user(user_id)
-        history = get_user_history(user_id)
+        user = get_user(user_id)[0]
+        history_table = get_history_table(user_id)
+        for entry in history_table:
+            for entity_id in entity_ids:
+                if entry[entity_id]:
+                    name = entity_id.replace('_id', '')
+                    sql_function = functionList[name]
+                    data = {
+                        name: sql_function(entry[entity_id])[0]
+                    }
+                    history.append(data)
         result = {
             'history': history,
             'user': user,
-
         }
         return Response(result, status=status.HTTP_200_OK)
     else:

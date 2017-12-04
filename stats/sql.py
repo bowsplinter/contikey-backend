@@ -131,7 +131,7 @@ def get_channel_followers(channel_id):
 
 #  get user history
 
-def get_user_history(user_id):
+def get_history_table(user_id):
     with connection.cursor() as cursor:
         cursor.execute("SET @user_id = %s;", [user_id])
         cursor.execute("""
@@ -141,13 +141,13 @@ def get_user_history(user_id):
                     NULL as liked_article_id, created_at
                     FROM channel WHERE user_id = @user_id
                 UNION ALL
-                SELECT channel_id, article_id, NULL as comment_id,
+                SELECT NULL as channel_id, article_id, NULL as comment_id,
                     NULL as friend_id, NULL as followed_channel_id,
                     NULL as liked_article_id, created_at
                     FROM article WHERE channel_id in
                         (SELECT channel_id from channel where user_id = @user_id)
                 UNION ALL
-                SELECT NULL as channel_id, article_id, comment_id,
+                SELECT NULL as channel_id, NULL as article_id, comment_id,
                     NULL as friend_id, NULL as followed_channel_id,
                     NULL as liked_article_id, created_at
                     FROM comment WHERE user_id = @user_id
