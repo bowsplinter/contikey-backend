@@ -8,7 +8,7 @@ def get_user(user_id):
             SELECT *
             FROM user
             WHERE user_id = %s;
-        """, user_id)
+        """, [user_id])
         result = dictfetchall(cursor)
     return result
 
@@ -129,9 +129,9 @@ def get_channel_followers(channel_id):
         result = dictfetchall(cursor)
     return result
 
-# get user history
+#  get user history
 
-def get_history(user_id):
+def get_user_history(user_id):
     with connection.cursor() as cursor:
         cursor.execute("""
             SET @user_id = %s;
@@ -147,7 +147,7 @@ def get_history(user_id):
                     FROM article WHERE channel_id in
                         (SELECT channel_id from channel where user_id = @user_id)
                 UNION ALL
-                SELECT NULL as channel_id, NULL as article_id, comment_id,
+                SELECT NULL as channel_id, article_id, comment_id,
                     NULL as friend_id, NULL as followed_channel_id,
                     NULL as liked_article_id, created_at
                     FROM comment WHERE user_id = @user_id
@@ -163,11 +163,13 @@ def get_history(user_id):
                     FROM user_follows_channel WHERE user_id = @user_id
                 UNION ALL
                 SELECT NULL as channel_id, NULL as article_id, NULL as comment_id,
-                NULL as friend_id, NULL as followed_channel_id,
-                article_id as liked_article_id, created_at
+                    NULL as friend_id, NULL as followed_channel_id,
+                    article_id as liked_article_id, created_at
                     FROM user_likes_article WHERE user_id = @user_id
                 ) T1
             ORDER BY created_at;
-        """, user_id)
-        result = dictfetchall(cursor)
-    return result
+            """, [user_id])
+        if cursor.fetchall():
+            return dictfetchall(cursor)
+        else:
+            return {'error': 'history is empty'}

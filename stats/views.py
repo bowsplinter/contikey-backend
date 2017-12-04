@@ -4,6 +4,7 @@ from rest_framework import status
 from django.db import connection
 from functions import dictfetchall
 from .sql import *
+from user.sql import userid_get_user;
 
 @api_view(['GET'])
 def get_user_stats(request, user_id):
@@ -78,13 +79,14 @@ def get_history(request):
         - liked an article
     """
     user_id = request.session['user_id']
-    user = get_user(user_id)
-    history = get_history(user_id)
     if user_id:
+        user = get_user(user_id)
+        history = get_user_history(user_id)
         result = {
+            'history': history,
             'user': user,
-            'history': history
+
         }
-        return Response(result ,status=status.HTTP_200_OK)
+        return Response(result, status=status.HTTP_200_OK)
     else:
         return Response({'error': 'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
