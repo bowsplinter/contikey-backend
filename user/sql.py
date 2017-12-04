@@ -1,5 +1,6 @@
 from django.db import connection
 from functions import dictfetchall, dictfetchone
+import functionssql as fs
 
 def userid_get_user(user_id):
     with connection.cursor() as cursor:
@@ -10,7 +11,7 @@ def userid_get_channels(user_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM channel WHERE user_id = %s", [user_id])
         channellist = dictfetchall(cursor)
-    return channellist_get_articles(channellist)
+    return fs.channellist_get_articles(channellist)
 
 def userid_get_articles(user_id):
     with connection.cursor() as cursor:
@@ -20,7 +21,7 @@ def userid_get_articles(user_id):
             )""",
             [user_id])
         articles = dictfetchall(cursor)
-    return articlelist_get_channel(articles)
+    return fs.articlelist_get_channel(articles)
 
 def facebookid_get_user(facebook_id):
     with connection.cursor() as cursor:
@@ -46,8 +47,8 @@ def userid_get_following(user_id):
             )""",
             [user_id])
         channels = dictfetchall(cursor)
-        channels = channellist_get_articles(channels)
-        channels = channellist_get_user(channels)
+        channels = fs.channellist_get_articles(channels)
+        channels = fs.channellist_get_user(channels)
     return channels
 
 def insert_user(data):
@@ -86,36 +87,3 @@ def user_follow_tag(user_id, tag_id):
         """,[user_id, tag_id])
     return True
 
-# helper functions (not directly used in view)
-def channellist_get_articles(channelList):
-    with connection.cursor() as cursor:
-        for channel in channelList:
-            cursor.execute("""
-                SELECT * FROM article WHERE channel_id = %s
-                LIMIT 4
-                """,
-                [channel['channel_id']])
-            channel['articles'] = dictfetchall(cursor)
-    return channelList
-
-def channellist_get_user(channelList):
-    with connection.cursor() as cursor:
-        for channel in channelList:
-            cursor.execute("""
-                SELECT * FROM user WHERE user_id = %s
-                LIMIT 4
-                """,
-                [channel['user_id']])
-            channel['user'] = dictfetchone(cursor)
-    return channelList
-
-def articlelist_get_channel(articleList):
-    with connection.cursor() as cursor:
-        for article in articleList:
-            if not article['channel_id']:
-                article['channel'] = None
-            else:
-                cursor.execute("SELECT * FROM channel WHERE channel_id = %s",
-                    [article['channel_id']])
-                article['channel'] = dictfetchone(cursor)
-    return articleList
