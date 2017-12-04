@@ -16,17 +16,17 @@ class article_helper(APIView):
 	"""
 		get:
 		Given an article_id from the url,
-		this returns the Article info, 
-		comments on an article and, 
-		likes on an article, 
-		if the current user liked the article, 
+		this returns the Article info,
+		comments on an article and,
+		likes on an article,
+		if the current user liked the article,
 		the user and channel this article belongs to,
 		and inserts a new record into the views table(including null).
 
 		delete:
 		Given an article_id from the url,
 		this attempts to delete the article_id.
-		
+
 		post:
 		This attempts to get further information on the url using metascrapy,
 		then create a new channel with said information and POST body under the given user
@@ -67,12 +67,13 @@ class article_helper(APIView):
 			preview_image = scraper.image #request.POST.get('preview_image',None)
 			preview_title = scraper.title #request.POST.get('preview_title',None)
 			preview_text = scraper.description #request.POST.get('preview_text',None)
+            num_words = scraper.num_words
 
-			data, statusr = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,shared_from_article_id) 
+			data, statusr = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,shared_from_article_id)
 			return Response(data, statusr)
 
 class article_liker(APIView):
-	"""		
+	"""
 		post:
 		Given an article_id from the url,
 		this attempts to get the user_id from the session and add a user-likes-article record.
@@ -99,7 +100,7 @@ class article_liker(APIView):
 		return Response(data, statusr)
 
 class article_commenter(APIView):
-	"""		
+	"""
 		post:
 		Given an article_id from the url,
 		this attempts to get the user_id from the session and comment to the article_id.
@@ -116,7 +117,7 @@ class article_commenter(APIView):
 			return Response(data, status)
 
 class article_feeder(APIView):
-	"""		
+	"""
 		get:
 		This attempts to get the user_id from the session and get the most recent articles from user_id's followed channels.
 		If the user is not logged in this returns a "most recent" feed from all possible channels.
@@ -139,7 +140,7 @@ class article_feeder(APIView):
 class article_paginator(pagination.PageNumberPagination):
 	def get_paginated_response(self, data):
 		return Response({'count': self.page.paginator.count,'next':self.get_next_link(),'previous':self.get_previous_link(),'data':data})
-	
+
 	def get_next_link(self):
 		if not self.page.has_next():
 			return None

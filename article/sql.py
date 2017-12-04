@@ -19,17 +19,17 @@ def get_nologin_feed():
 			article['user_info'] = get_article_poster_channel(article['article_id'])[0]
 		return data
 
-#Get article information 
+#Get article information
 def get_article(article_id):
 	try:
 		with connection.cursor() as cursor:
 			cursor.execute("SELECT * FROM article WHERE article_id = %s", [article_id])
-			data = dictfetchall(cursor)[0]	
+			data = dictfetchall(cursor)[0]
 	except IndexError:
 		return {'error':'article not found'}, HTTP_404_NOT_FOUND
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return {'article':data}, status.HTTP_200_OK		
+	return {'article':data}, status.HTTP_200_OK
 
 #Get article's poster and channel information
 def get_article_poster_channel(article_id):
@@ -39,7 +39,7 @@ def get_article_poster_channel(article_id):
 			data = dictfetchall(cursor)[0]
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return data, status.HTTP_200_OK	
+	return data, status.HTTP_200_OK
 
 #Get comments (and the user who posted them) on article
 def get_article_comments(article_id):
@@ -71,7 +71,7 @@ def get_article_likes(article_id):
 			data = dictfetchall(cursor)[0]['likes']
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return data, status.HTTP_200_OK	
+	return data, status.HTTP_200_OK
 
 #Update views on article
 def get_article_new_view(article_id,user_id = None):
@@ -80,12 +80,12 @@ def get_article_new_view(article_id,user_id = None):
 			cursor.execute("INSERT INTO view(user_id,article_id) VALUES (%s, %s)", [user_id, article_id])
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return {}, status.HTTP_200_OK		
+	return {}, status.HTTP_200_OK
 
-def create_article(channel_id,url,caption = None,preview_image = None,preview_title = None,preview_text = None,shared_from_article_id = None):
+def create_article(channel_id,url,caption = None,preview_image = None,preview_title = None,preview_text = None, num_words=None, shared_from_article_id = None):
 	try:
 		with connection.cursor() as cursor:
-			cursor.execute('INSERT INTO article(channel_id,url,caption,preview_image,preview_title,preview_text,shared_from_article_id) VALUES (%s,%s,%s,%s,%s,%s,%s)', [channel_id,url,caption,preview_image,preview_title,preview_text,shared_from_article_id])
+			cursor.execute('INSERT INTO article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words, shared_from_article_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)', [channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id])
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 	return {}, status.HTTP_201_CREATED
@@ -96,7 +96,7 @@ def delete_article(article_id):
 			cursor.execute('DELETE FROM article WHERE article_id = %s' , [article_id])
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return {}, status.HTTP_200_OK	
+	return {}, status.HTTP_200_OK
 
 def create_like(article_id,user_id):
 	try:
@@ -104,7 +104,7 @@ def create_like(article_id,user_id):
 			cursor.execute('INSERT INTO user_likes_article(article_id,user_id) VALUES (%s,%s)', [article_id,user_id])
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return {}, status.HTTP_201_CREATED	
+	return {}, status.HTTP_201_CREATED
 
 def delete_like(article_id,user_id):
 	try:
@@ -112,7 +112,7 @@ def delete_like(article_id,user_id):
 			cursor.execute('DELETE FROM user_likes_article WHERE article_id = %s AND user_id = %s', [article_id,user_id])
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return {}, status.HTTP_200_OK	
+	return {}, status.HTTP_200_OK
 
 def create_comment(article_id,user_id,comment_text):
 	try:
@@ -121,7 +121,7 @@ def create_comment(article_id,user_id,comment_text):
 			data, get_status = created_get_comment(article_id,user_id)
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return data, status.HTTP_201_CREATED		
+	return data, status.HTTP_201_CREATED
 
 #This to be used by create comment to immediately get created comment
 #Look into last_inserted_id() why it doesnt work?
