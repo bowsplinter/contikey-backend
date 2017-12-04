@@ -43,7 +43,7 @@ class article_helper(APIView):
 		data['likes'] = sql.get_article_likes(article_id)[0]
 		data['user_channel'] = sql.get_article_poster_channel(article_id)[0]
 		if user_id != None:
-			data['liked'] = sql.get_article_liked(user_id)[0]
+			data['liked'] = sql.get_user_liked_article(user_id, article_id)[0]
 		sql.get_article_new_view(article_id,user_id)
 		return Response(data,status)
 

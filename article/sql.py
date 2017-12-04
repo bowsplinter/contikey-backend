@@ -2,7 +2,6 @@ from functions import dictfetchall
 from django.db import connection
 from rest_framework import status
 
-
 def get_user_feed(user_id):
 	with connection.cursor() as cursor:
 		cursor.execute('SELECT * FROM article WHERE channel_id IN(SELECT channel_id FROM user_follows_channel WHERE user_id = %s) ORDER BY created_at DESC', [user_id])
@@ -53,15 +52,16 @@ def get_article_comments(article_id):
 	return data, status.HTTP_200_OK
 
 #Get if current user liked article
-def get_article_liked(user_id):
+def get_user_liked_article(user_id, article_id):
 	try:
 		with connection.cursor() as cursor:
-			cursor.execute("SELECT exists(SELECT 1 FROM user_likes_article WHERE user_id = %s) liked", [user_id])
-			data = dictfetchall(cursor)[0]	
-			data['liked']=True if data['liked'] is 1 else False;
+			cursor.execute("SELECT exists(SELECT 1 FROM user_likes_article WHERE user_id = %s AND article_id = %s) liked",
+				[user_id, article_id])
+			data = dictfetchall(cursor)[0]
+			res = True if data['liked'] is 1 else False;
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-	return data, status.HTTP_200_OK		
+	return res, status.HTTP_200_OK
 
 #Get number of likes on article
 def get_article_likes(article_id):
