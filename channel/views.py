@@ -9,7 +9,6 @@ from rest_framework.views import APIView
 from rest_framework.utils.urls import replace_query_param
 from . import sql
 
-#Should there be a lighter version of get?
 class channel_helper(APIView):
 	parser_classes = (JSONParser,MultiPartParser)
 	"""
@@ -27,7 +26,11 @@ class channel_helper(APIView):
 	"""
 	def get(self,request, channel_id):
 		data, statusr = sql.get_channel(channel_id)
-		return Response({'channel': data},status=statusr)
+		data['tags'] = sql.get_channel_tags(channel_id)[0]
+		data['subscribers'] = sql.get_channel_follower_count(channel_id)[0]
+		data['user'] = sql.get_channel_user(channel_id)[0]
+		data['articles'] = sql.get_channel_articles(channel_id)[0]
+		return Response(data,status=statusr)
 
 	def delete(self,request,channel_id):
 		try:
@@ -92,41 +95,22 @@ class channel_follower(APIView):
 		data, statusr = sql.delete_follow(user_id,channel_id)
 		return Response(data, statusr)
 
-class channel_explorer(APIView):
-	"""
-		get:
-		This gets the user_id from the session,
-		and pulls out relevant channels based on the users tag selection that he has NOT followed
-
-		#TODO: Follow proper pagination from REST framework
-	"""
-	def get(self,request):
-		data = sql.get_explore()
-		return Response(data, status.HTTP_200_OK)
-
 class channel_recommender(APIView):
 	"""
 		get:
 		This gets the user_id from the session,
 		and pulls out relevant channels based on the users tag selection that he has NOT followed
-
-		#TODO: Follow proper pagination from REST framework
 	"""
 	def get(self, request):
 		try:
 			user_id = request.session['user_id']
-			print(user_id)
 			queryset = sql.get_user_recommend(user_id)
-			print('a')
-			serializer = channel_recommender_serializer(queryset, many=True)
-			print('b')
-			return Response({'channels': data},status=status.HTTP_200_OK)
 		except:
 			queryset = sql.get_nologin_recommend()
-			paginator = channel_paginator()
-			result_page = paginator.paginate_queryset(queryset,request)
-			serializer = recommend_serializer(result_page, many=True)
-			return Response(serializer.data,status=status.HTTP_200_OK)
+		paginator = channel_paginator()
+		result_page = paginator.paginate_queryset(queryset,request)
+		serializer = recommend_serializer(result_page, many=True)
+		return Response(serializer.data,status=status.HTTP_200_OK)
 
 class channel_paginator(pagination.PageNumberPagination):
 	def get_paginated_response(self, data):
@@ -149,10 +133,14 @@ class recommend_serializer(serializers.Serializer):
 	#These two should switch to 128 and 512 to be more efficient, Padded anyway.
 	title = serializers.CharField(max_length=100)
 	description = serializers.CharField(max_length=500)
+	subscribers = serializers.IntegerField()
+	user = serializers.DictField()
 
 class recommend_data():
-	def __init__(self,channel_id,user_id,title,description):
+	def __init__(self,channel_id,user_id,title,description,subscribers,user):
 		self.channel_id = channel_id
 		self.user_id = user_id
 		self.title = title
 		self.description = description
+		self.subscribers = subscribers
+		self.user = user

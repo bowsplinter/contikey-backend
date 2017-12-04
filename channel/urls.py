@@ -10,8 +10,6 @@ urlpatterns = [
 	url(r'^(?P<channel_id>[0-9]+)/articles/$', views.channel_articler.as_view()),
 	#POST /channel/new/
 	url(r'^new/$', views.channel_helper.as_view(), name='new_channel'),
-	#GET /channel/explore/
-	url(r'^explore/$', views.channel_explorer.as_view(), name='explore'),
 	#GET /channel/recommended/
 	url(r'^recommended/$', views.channel_recommender.as_view(), name='recommended'),	
 ]	

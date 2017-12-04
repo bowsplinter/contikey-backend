@@ -2,18 +2,18 @@ from functions import dictfetchall
 from django.db import connection
 from rest_framework import status
 
-def get_explore():
-	with connection.cursor() as cursor:
-		cursor.execute("SELECT article_id FROM user_likes_article ORDER BY count(distinct user_id)")
-		return dictfetchall(cursor)
-
 def get_user_recommend(user_id):
 	with connection.cursor() as cursor:
-		cursor.execute("SELECT DISTINCT channel.*, tag.* FROM channel_tags ct LEFT JOIN user_follows_channel f ON ct.channel_id = f.channel_id JOIN tag USING(tag_id) JOIN channel ON ct.channel_id = channel.channel_id WHERE ct.tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = 2) AND f.user_id != 2 ORDER BY rand()", [user_id, user_id])
-
+		#check distinct channel_id
+		cursor.execute("SELECT DISTINCT channel.*, tag.* FROM channel_tags ct LEFT JOIN user_follows_channel f ON ct.channel_id = f.channel_id JOIN tag USING(tag_id) JOIN channel ON ct.channel_id = channel.channel_id WHERE ct.tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND f.user_id != %s ORDER BY rand()", [user_id, user_id])
+		data = dictfetchall(cursor)
+		for channel in data:
+			channel['user'] = get_channel_user(channel['channel_id'])[0]
+			channel['subscribers'] = get_channel_follower_count(channel['channel_id'])[0]
+		print(data)
+		return data
 
 		#cursor.execute('SELECT DISTINCT ct.* FROM channel_tags ct LEFT JOIN user_follows_channel f ON ct.channel_id = f.channel_id WHERE ct.tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND f.user_id != %s ORDER BY rand()', [user_id, user_id])
-		return dictfetchall(cursor)
 
 	#User's followed tags
 	#SELECT tag_id FROM user_follows_tag WHERE user_id = %s
@@ -25,7 +25,65 @@ def get_user_recommend(user_id):
 def get_nologin_recommend():
 	with connection.cursor() as cursor:
 		cursor.execute('SELECT * FROM channel ORDER BY rand()')
-		return dictfetchall(cursor)
+		data = dictfetchall(cursor)
+		for channel in data:
+			channel['user'] = get_channel_user(channel['channel_id'])[0]
+			channel['subscribers'] = get_channel_follower_count(channel['channel_id'])[0]
+		print(data)
+		return data
+
+#Gets the information in channel table on given channel_id
+def get_channel(channel_id):
+	with connection.cursor() as cursor:
+		try:
+			#Channel table info
+			cursor.execute("SELECT * FROM channel WHERE channel_id = %s", [channel_id])
+			data = dictfetchall(cursor)[0]
+		except Exception as e:
+			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
+		return data, status.HTTP_200_OK	
+
+#Gets the user who created the given channel
+def get_channel_user(channel_id):
+	with connection.cursor() as cursor:
+		try:
+			#Channel_tags table (retrive tags associated with channel)
+			cursor.execute("SELECT * FROM user WHERE user_id=(SELECT user_id FROM channel WHERE channel_id = %s)", [channel_id])
+			data = dictfetchall(cursor)[0]
+		except Exception as e:
+			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
+		return data, status.HTTP_200_OK		
+
+#Gets the tags associated with the given channel
+def get_channel_tags(channel_id):
+	with connection.cursor() as cursor:
+		try:
+			#Channel_tags table (retrive tags associated with channel)
+			cursor.execute("SELECT * FROM tag WHERE tag_id IN(SELECT tag_id FROM channel_tags WHERE channel_id = %s)", [channel_id])
+			data = _combineTags(dictfetchall(cursor))
+		except Exception as e:
+			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
+		return data, status.HTTP_200_OK		
+
+#Gets the number of followers for a given channel
+def get_channel_follower_count(channel_id):
+	with connection.cursor() as cursor:
+		try:
+			#user_follows_channel table (retrieve COUNT(user) following channel) 
+			cursor.execute("SELECT COUNT(DISTINCT user_id) FROM user_follows_channel WHERE channel_id= %s" , [channel_id])
+			data = cursor.fetchone()[0]
+		except Exception as e:
+			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
+		return data, status.HTTP_200_OK		
+
+def get_channel_articles(channel_id):
+	with connection.cursor() as cursor:
+		try:
+			cursor.execute("SELECT * FROM article WHERE channel_id = %s", [channel_id])
+			data = dictfetchall(cursor)
+		except Exception as e:
+			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
+		return data, status.HTTP_200_OK				
 
 def new_follow(user_id,channel_id):
 	try:
@@ -43,35 +101,6 @@ def delete_follow(user_id,channel_id):
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 	return {}, status.HTTP_200_OK
 
-def get_channel(channel_id):
-	with connection.cursor() as cursor:
-		try:
-			#Channel table info
-			cursor.execute("SELECT * FROM channel WHERE channel_id = %s", [channel_id])
-			data = dictfetchall(cursor)[0]
-
-			#Channel_tags table (retrive tags associated with channel)
-			cursor.execute("SELECT * FROM channel_tags WHERE channel_id = %s", [channel_id])
-			data['tags'] = _combineTags(dictfetchall(cursor))
-
-			#user_follows_channel table (retrieve COUNT(user) following channel) 
-			cursor.execute("SELECT COUNT(DISTINCT user_id) FROM user_follows_channel WHERE channel_id= %s" , [channel_id])
-			data['number_of_follows'] = cursor.fetchone()[0]
-
-		except Exception as e:
-			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-		return {'channel':data}, status.HTTP_200_OK	
-
-#To move to article.sql?
-def get_channel_articles(channel_id):
-	with connection.cursor() as cursor:
-		try:
-			cursor.execute("SELECT * FROM article WHERE channel_id = %s", [channel_id])
-			data = dictfetchall(cursor)
-		except Exception as e:
-			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
-		return {'articles':data}, status.HTTP_200_OK				
-
 #Returns the last inserted channel_id (which should be the created one, since last_insert_id goes by connection), for auto-following of created channel
 def create_channel(user_id,title,description,tags):
 	try:
@@ -80,7 +109,6 @@ def create_channel(user_id,title,description,tags):
 			#print("channel insert success")
 			cursor.execute('SELECT last_insert_id()')
 			last_insert = str(dictfetchall(cursor)[0]['last_insert_id()'])
-			#print('last insert obtained: '+last_insert)
 			#Expect tags as list of tag_ids
 			tags_insert_str = 'INSERT INTO channel_tags(channel_id, tag_id) VALUES '
 			for tag in tags:
@@ -103,5 +131,5 @@ def delete_channel(user_id,channel_id):
 def _combineTags(data):
 	tags = []
 	for key in data:
-		tags.append(key['tag_id'])
+		tags.append(key)
 	return tags
