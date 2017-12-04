@@ -9,7 +9,8 @@ def userid_get_user(user_id):
 def userid_get_channels(user_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM channel WHERE user_id = %s", [user_id])
-        return dictfetchall(cursor)
+        channellist = dictfetchall(cursor)
+    return channellist_get_articles(channellist)
 
 def userid_get_articles(user_id):
     with connection.cursor() as cursor:
@@ -18,7 +19,8 @@ def userid_get_articles(user_id):
                 SELECT channel_id FROM channel WHERE user_id = %s
             )""",
             [user_id])
-        return dictfetchall(cursor)
+        articles = dictfetchall(cursor)
+    return articlelist_get_channel(articles)
 
 def facebookid_get_user(facebook_id):
     with connection.cursor() as cursor:
@@ -38,8 +40,13 @@ def userid_get_friends(user_id):
 
 def userid_get_following(user_id):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM user_follows_channel WHERE user_id = %s", [user_id])
-        return dictfetchall(cursor)
+        cursor.execute("""
+            SELECT * FROM channel WHERE channel_id IN (
+            SELECT channel_id FROM user_follows_channel WHERE user_id = %s
+            )""",
+            [user_id])
+        channels = dictfetchall(cursor)
+    return channellist_get_articles(channels)
 
 def insert_user(data):
     with connection.cursor() as cursor:
@@ -76,3 +83,26 @@ def user_follow_tag(user_id, tag_id):
             VALUES (%s, %s)
         """,[user_id, tag_id])
     return True
+
+# helper functions (not directly used in view)
+def channellist_get_articles(channelList):
+    with connection.cursor() as cursor:
+        for channel in channelList:
+            cursor.execute("""
+                SELECT * FROM article WHERE channel_id = %s
+                LIMIT 4
+                """,
+                [channel['channel_id']])
+            channel['articles'] = dictfetchall(cursor)
+    return channelList
+
+def articlelist_get_channel(articleList):
+    with connection.cursor() as cursor:
+        for article in articleList:
+            cursor.execute("SELECT * FROM channel WHERE channel_id = %s",
+                [article['channel_id']])
+            article['channel'] = dictfetchall(cursor)[0]
+    return articleList
+
+
+
