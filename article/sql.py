@@ -112,18 +112,18 @@ def delete_like(article_id,user_id):
 		cursor.execute('DELETE FROM user_likes_article WHERE article_id = %s AND user_id = %s', [article_id,user_id])
 	return {}
 
-def create_comment(article_id,user_id,comment_text):
-	with connection.cursor() as cursor:
-		cursor.execute('INSERT INTO comment(article_id,user_id,comment_text) VALUES (%s,%s,%s)', [article_id,user_id,comment_text])
-		data = created_get_comment(article_id,user_id)
-	return data
-
 #This to be used by create comment to immediately get created comment
 #Look into last_inserted_id() why it doesnt work?
 def create_get_comment(article_id, user_id):
 	with connection.cursor() as cursor:
-		cursor.execute('SELECT * FROM comment WHERE article_id = %s AND user_id = %s HAVING max(created_at)', [article_id,user_id])
+		cursor.execute('SELECT * FROM comment WHERE article_id = %s AND user_id = %s AND created_at=(SELECT max(created_at) FROM comment)', [article_id,user_id])
 		data = dictfetchall(cursor)
+	return data
+
+def create_comment(article_id,user_id,comment_text):
+	with connection.cursor() as cursor:
+		cursor.execute('INSERT INTO comment(article_id,user_id,comment_text) VALUES (%s,%s,%s)', [article_id,user_id,comment_text])
+		data = create_get_comment(article_id,user_id)
 	return data
 
 def get_comment(comment_id):
