@@ -49,6 +49,7 @@ def userid_get_following(user_id):
         channels = dictfetchall(cursor)
         channels = fs.channellist_get_articles(channels)
         channels = fs.channellist_get_user(channels)
+        channels = fs.channel_get_subscribed(channels,user_id)
     return channels
 
 def insert_user(data):

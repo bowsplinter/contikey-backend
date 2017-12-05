@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
+import functionssql as fs
 from . import facebook as fb
 from . import sql
 
@@ -99,7 +100,17 @@ def user_channels(request, user_id = 'me'):
     """
     Return list of channels created by user_id (if specified) or the current user (default)
     """
-    return get_template(request, user_id, sql.userid_get_channels)
+    res = get_template(request, user_id, sql.userid_get_channels)
+    #Success, now to get if user is subbed
+    if res.status_code == 200:
+        if user_id == 'me':
+            try: # get user's user_id from session key
+                user_id = request.session['user_id']
+            except:
+                return Response({'error': 'no existing session or session expired'}, status=status.HTTP_400_BAD_REQUEST)
+        for channel in res.data['data']:
+            fs.channel_get_subscribed(res.data['data'], user_id)
+    return res
 
 @api_view(['GET'])
 def user_articles(request, user_id = 'me'):

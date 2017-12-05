@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.utils.urls import replace_query_param
 from . import sql
+import functionssql as fs
 
 class channel_helper(APIView):
 	parser_classes = (JSONParser,MultiPartParser)
@@ -32,11 +33,11 @@ class channel_helper(APIView):
 
 		data, statusr = sql.get_channel(channel_id)
 		data['tags'] = sql.get_channel_tags(channel_id)[0]
-		data['subscribers'] = sql.get_channel_follower_count(channel_id)[0]
+		data['num_subscribers'] = sql.get_channel_follower_count(channel_id)[0]
 		data['user'] = sql.get_channel_user(channel_id)[0]
 		data['articles'] = sql.get_channel_articles(channel_id)[0]
 		#if user_id != None:
-		data['subscribed'] = sql.get_channel_subscribed(user_id, channel_id)
+		fs.channel_get_subscribed([data],user_id)
 		return Response(data,status=statusr)
 
 	def delete(self,request,channel_id):
@@ -140,18 +141,18 @@ class recommend_serializer(serializers.Serializer):
 	#These two should switch to 128 and 512 to be more efficient, Padded anyway.
 	title = serializers.CharField(max_length=100)
 	description = serializers.CharField(max_length=500)
-	subscribers = serializers.IntegerField()
+	num_subscribers = serializers.IntegerField()
 	user = serializers.DictField()
 	tags = serializers.ListField()
-	subscribed = serializers.CharField(max_length = 5)
+	subscribed = serializers.BooleanField()
 
 class recommend_data():
-	def __init__(self,channel_id,user_id,title,description,subscribers,user,tags,subscribed):
+	def __init__(self,channel_id,user_id,title,description,num_subscribers,user,tags,subscribed):
 		self.channel_id = channel_id
 		self.user_id = user_id
 		self.title = title
 		self.description = description
-		self.subscribers = subscribers
+		self.num_subscribers = num_subscribers
 		self.user = user
 		self.tags = tags
 		self.subscribed = subscribed

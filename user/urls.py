@@ -18,7 +18,7 @@ urlpatterns = [
   # GET /user/2/channels/
   url(r'^(?P<user_id>[0-9]+)/channels/$', views.user_channels, name='user_channels'),
 
- # GET /user/articles/
+  # GET /user/articles/
   url(r'^articles/$', views.user_articles, name='user_articles'),
   # GET /user/2/articles/
   url(r'^(?P<user_id>[0-9]+)/articles/$', views.user_articles, name='user_articles'),

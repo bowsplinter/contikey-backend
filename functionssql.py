@@ -46,3 +46,12 @@ def articlelist_get_user(articleList):
                     [article['channel']['user_id']])
                 article['user'] = dictfetchone(cursor)
     return articleList
+
+#Gets if current user is subscribed to given list of channels 
+def channel_get_subscribed(channelList, user_id):
+    with connection.cursor() as cursor:
+        for channel in channelList:
+            cursor.execute("SELECT exists(SELECT 1 FROM user_follows_channel WHERE user_id = %s AND channel_id = %s) subscribed", [user_id, channel['channel_id']])
+            data = dictfetchone(cursor)
+            channel['subscribed'] = True if data['subscribed'] is 1 else False;
+    return channelList  
