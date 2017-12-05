@@ -8,8 +8,8 @@ def get_user_feed(user_id):
 		cursor.execute('SELECT * FROM article WHERE channel_id IN(SELECT channel_id FROM user_follows_channel WHERE user_id = %s) ORDER BY created_at DESC', [user_id])
 		data = dictfetchall(cursor)
 		for article in data:
-			article['user'] = get_article_poster(article['article_id'])[0]
-			article['channel'] = get_article_channel(article['channel_id'])[0]
+			article['user'] = get_article_poster(article['article_id'])
+			article['channel'] = get_article_channel(article['article_id'])
 		return data
 
 def get_nologin_feed():
@@ -17,8 +17,8 @@ def get_nologin_feed():
 		cursor.execute('SELECT * FROM article ORDER BY created_at DESC')
 		data = dictfetchall(cursor)
 		for article in data:
-			article['user'] = get_article_poster(article['article_id'])[0]
-			article['channel'] = get_article_channel(article['channel_id'])[0]
+			article['user'] = get_article_poster(article['article_id'])
+			article['channel'] = get_article_channel(article['article_id'])
 		return data	
 
 #Get article information
@@ -43,16 +43,24 @@ def get_top_monthly_articles():
 
 #Get article's poster information
 def get_article_poster(article_id):
-	with connection.cursor() as cursor:
-		cursor.execute("SELECT user.* FROM user JOIN channel USING(user_id) JOIN article USING(channel_id) WHERE article_id = %s", [article_id])
-		data = dictfetchall(cursor)[0]
+	try:
+		with connection.cursor() as cursor:
+			cursor.execute("SELECT user.* FROM user JOIN channel USING(user_id) JOIN article USING(channel_id) WHERE article_id = %s", [article_id])
+			data = dictfetchall(cursor)[0]
+	except Exception:
+		print('sql.get_article_poster - cant find article\'s user')
+		data = None
 	return data
 
 #Get article's poster and channel information
 def get_article_channel(article_id):
-	with connection.cursor() as cursor:
-		cursor.execute("SELECT channel.* FROM channel JOIN article USING(channel_id) WHERE article_id = %s", [article_id])
-		data = dictfetchall(cursor)[0]
+	try:
+		with connection.cursor() as cursor:
+			cursor.execute("SELECT channel.* FROM channel JOIN article USING(channel_id) WHERE article_id = %s", [article_id])
+			data = dictfetchall(cursor)[0]
+	except Exception:
+		print('sql.get_article_channel - cant find article\'s channel')
+		data = None
 	return data
 
 #Get comments (and the user who posted them) on article
