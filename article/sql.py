@@ -38,7 +38,7 @@ def get_top_monthly_articles():
 	with connection.cursor() as cursor:
 		cursor.execute("SELECT article_id FROM user_likes_article WHERE TIMESTAMPDIFF(DAY, created_at, NOW()) < 31 GROUP BY article_id ORDER BY count(*) DESC LIMIT 10")
 		article_ids = listfetchall(cursor)
-		data = get_articles(article_ids)[0]
+		data = get_articles(article_ids)
 	return data
 
 #Get article's poster information
