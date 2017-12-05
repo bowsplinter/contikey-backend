@@ -111,7 +111,7 @@ class article_liker(APIView):
 		except:
 			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 		try:
-			data, statusr = sql.delete_like(article_id,user_id)
+			data = sql.delete_like(article_id,user_id)
 		except Exception as e:
 			return Response({'errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 		return Response(data, status=status.HTTP_200_OK)

@@ -24,6 +24,6 @@ class notification_detail(APIView):
     is_read: 1 for True, 0 for false
     """
     def post(self, request, notification_id, format=None):
-        is_read = request.POST['is_read']
+        is_read = request.POST.get('is_read') or 1
         success = set_notification_read(notification_id, is_read)
         return Response({'success': bool(success)}, status=status.HTTP_200_OK)
