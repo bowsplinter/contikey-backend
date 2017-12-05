@@ -13,7 +13,7 @@ class notification_list(APIView):
             user_id = request.session['user_id']
         except:
             return Response({'error': 'no existing session or session expired'}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(get_notification_list(0), status=status.HTTP_200_OK)
+        return Response(get_notification_list(user_id), status=status.HTTP_200_OK)
 
 class notification_detail(APIView):
     """
