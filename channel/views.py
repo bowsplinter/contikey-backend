@@ -25,11 +25,18 @@ class channel_helper(APIView):
 		this attempts to create a new channel under the given user
 	"""
 	def get(self,request, channel_id):
+		try:
+			user_id = request.session['user_id']
+		except:
+			user_id = None
+
 		data, statusr = sql.get_channel(channel_id)
 		data['tags'] = sql.get_channel_tags(channel_id)[0]
 		data['subscribers'] = sql.get_channel_follower_count(channel_id)[0]
 		data['user'] = sql.get_channel_user(channel_id)[0]
 		data['articles'] = sql.get_channel_articles(channel_id)[0]
+		#if user_id != None:
+		data['subscribed'] = sql.get_channel_subscribed(user_id, channel_id)
 		return Response(data,status=statusr)
 
 	def delete(self,request,channel_id):
@@ -136,9 +143,10 @@ class recommend_serializer(serializers.Serializer):
 	subscribers = serializers.IntegerField()
 	user = serializers.DictField()
 	tags = serializers.ListField()
+	subscribed = serializers.CharField(max_length = 5)
 
 class recommend_data():
-	def __init__(self,channel_id,user_id,title,description,subscribers,user,tags):
+	def __init__(self,channel_id,user_id,title,description,subscribers,user,tags,subscribed):
 		self.channel_id = channel_id
 		self.user_id = user_id
 		self.title = title
@@ -146,3 +154,4 @@ class recommend_data():
 		self.subscribers = subscribers
 		self.user = user
 		self.tags = tags
+		self.subscribed = subscribed

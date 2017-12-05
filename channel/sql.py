@@ -25,6 +25,7 @@ def get_user_recommend(user_id):
 			data2['tags'] = dictfetchall(cursor)
 			data2['user'] = get_channel_user(i)[0]
 			data2['subscribers'] = get_channel_follower_count(i)[0]
+			data2['subscribed'] = get_channel_subscribed(user_id,i)
 			resList.append(data2)
 		return resList
 
@@ -37,6 +38,7 @@ def get_nologin_recommend():
 			channel['tags'] = dictfetchall(cursor)
 			channel['user'] = get_channel_user(channel['channel_id'])[0]
 			channel['subscribers'] = get_channel_follower_count(channel['channel_id'])[0]
+			channel['subscribed'] = 'False'
 		return data
 
 #Gets the information in channel table on given channel_id
@@ -92,6 +94,15 @@ def get_channel_articles(channel_id):
 		except Exception as e:
 			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 		return data, status.HTTP_200_OK				
+
+#Gets if current user subscribed to given channel 
+def get_channel_subscribed(user_id, channel_id):
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT exists(SELECT 1 FROM user_follows_channel WHERE user_id = %s AND channel_id = %s) subscribed",
+			[user_id, channel_id])
+		data = dictfetchall(cursor)[0]
+		res = True if data['subscribed'] is 1 else False;
+	return res	
 
 #Inserts into DB given user follows given channel
 def new_follow(user_id,channel_id):
