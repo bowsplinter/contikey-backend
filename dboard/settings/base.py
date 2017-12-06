@@ -64,6 +64,10 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'dboard.urls'
 CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
+    'http://contikey.com',
+    'https://contikey.com',
+    'http://www.contikey.com',
+    'https://www.contikey.com',
 )
 CORS_ALLOW_CREDENTIALS = True
 
