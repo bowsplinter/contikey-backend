@@ -27,20 +27,20 @@ def get_article(article_id, cursor = connection.cursor()):
 	data = dictfetchall(cursor)[0]
 	return data
 
-#Get article information for a list or tuple of articles
-def get_articles(article_ids):
-	with connection.cursor() as cursor:
-		cursor.execute("SELECT * FROM article WHERE article_id IN %s", [tuple(article_ids)])
-		data = dictfetchall(cursor)
-	return data
-
 #Gets the top 10 liked articles in the month
 def get_top_monthly_articles():
 	with connection.cursor() as cursor:
-		cursor.execute("SELECT article_id FROM user_likes_article WHERE TIMESTAMPDIFF(DAY, created_at, NOW()) < 31 GROUP BY article_id ORDER BY count(*) DESC LIMIT 10")
-		article_ids = listfetchall(cursor)
-		data = get_articles(article_ids)
-	return data
+		cursor.execute("""
+			SELECT * FROM article WHERE article_id IN (
+				SELECT article_id FROM user_likes_article
+				WHERE TIMESTAMPDIFF(DAY, created_at, NOW()) < 31
+				GROUP BY article_id
+				ORDER BY count(*) DESC);
+		""")
+		articles = dictfetchall(cursor)
+		articles = fs.articlelist_get_channel(articles)
+		articles = fs.articlelist_get_user(articles)
+		return articles
 
 #Get article's poster information
 def get_article_poster(article_id):
