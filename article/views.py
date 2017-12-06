@@ -68,19 +68,21 @@ class article_helper(APIView):
 			num_words = request.data.get('num_words', None)
 			shared_from_article_id = request.data.get('shared_from_article_id',None)
 		except Exception:
-			return Response({'error':'missing or invalid POST body'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'message':'missing or invalid POST body'}, status=status.HTTP_400_BAD_REQUEST)
 		try:
 			if "http://" not in url:
 				url = "http://" + url
 			scraper = metascrapy.Metadata()
 			scraper.scrape(url)
 			preview_image = scraper.image #request.POST.get('preview_image',None)
-			preview_title = scraper.title #request.POST.get('preview_title',None)
-			preview_text = scraper.description #request.POST.get('preview_text',None)
-
+			preview_title = scraper.title.encode('ascii') #request.POST.get('preview_title',None)
+			preview_text = scraper.description.encode('ascii') #request.POST.get('preview_text',None)
+		except Exception as e:
+			return Response({'message':'failed to scrape'}, status=status.HTTP_400_BAD_REQUEST)
+		try:
 			data = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id) 
 		except Exception as e:
-			return Response({'errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+			return Response({'message':'failed to create record'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 		return Response(data, status=status.HTTP_201_CREATED)
 
 class article_liker(APIView):
