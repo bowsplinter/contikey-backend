@@ -45,7 +45,7 @@ class channel_helper(APIView):
 		try:
 			user_id = request.session['user_id']
 		except:
-			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'message':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 
 		data,statusr = sql.delete_channel(user_id,channel_id)
 		return Response(data, status=statusr)
@@ -57,9 +57,9 @@ class channel_helper(APIView):
 			description = request.data.get('description')
 			tags = request.data.get('tags').split(',')
 		except KeyError as e:
-			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'message':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 		except Exception as e:
-			return Response({'error':'missing or invalid POST body','errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_400_BAD_REQUEST)		
+			return Response({'message':'missing or invalid POST body','errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_400_BAD_REQUEST)		
 		
 		data, statusr = sql.create_channel(user_id,title,description,tags)
 		#To autofollow own channel
@@ -92,7 +92,7 @@ class channel_follower(APIView):
 		try:
 			user_id = request.session['user_id']
 		except:
-			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'message':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 		data, statusr = sql.new_follow(user_id,channel_id)
 		return Response(data, statusr)
 
@@ -100,7 +100,7 @@ class channel_follower(APIView):
 		try:
 			user_id = request.session['user_id']
 		except:
-			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'message':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 		data, statusr = sql.delete_follow(user_id,channel_id)
 		return Response(data, statusr)
 

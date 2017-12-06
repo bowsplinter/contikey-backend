@@ -48,7 +48,6 @@ def delete_comment(request, comment_id):
                 WHERE user_id = %s
                 AND comment_id = %s
             """, [user_id, comment_id])
-            result = dictfetchall(cursor)
-        return Response(result ,status=status.HTTP_200_OK)
+        return Response({} ,status=status.HTTP_200_OK)
     else:
-        return Response(result, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({}, status=status.HTTP_401_UNAUTHORIZED)

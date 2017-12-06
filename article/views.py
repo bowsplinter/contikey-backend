@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.db import connection
 from django.core.paginator import Paginator
+from django.db.utils import IntegrityError
 from rest_framework import status, serializers, pagination
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -48,7 +49,7 @@ class article_helper(APIView):
 				sql.create_view(article_id,user_id)
 
 		except IndexError:
-			return Response({'error':'article not found'}, status=status.HTTP_404_NOT_FOUND)
+			return Response({'message':'article not found'}, status=status.HTTP_404_NOT_FOUND)
 		except Exception as e:
 			return Response({'errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 		return Response(data, status=status.HTTP_200_OK)
@@ -78,7 +79,7 @@ class article_helper(APIView):
 			preview_title = scraper.title.encode('ascii') #request.POST.get('preview_title',None)
 			preview_text = scraper.description.encode('ascii') #request.POST.get('preview_text',None)
 		except Exception as e:
-			return Response({'message':'failed to scrape'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'message':'invalid url'}, status=status.HTTP_400_BAD_REQUEST)
 		try:
 			data = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id) 
 		except Exception as e:
@@ -99,9 +100,11 @@ class article_liker(APIView):
 		try:
 			user_id = request.session['user_id']
 		except:
-			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'message':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 		try:
 			data = sql.create_like(article_id,user_id)
+		except IntegrityError as ie:
+			return Response({'message':'Cannot Like a Liked article'}, status=status.HTTP_400_BAD_REQUEST)
 		except Exception as e:
 			return Response({'errorType':str(type(e)), 'errorArgs':e.args}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 		return Response(data, status=status.HTTP_201_CREATED)
@@ -110,7 +113,7 @@ class article_liker(APIView):
 		try:
 			user_id = request.session['user_id']
 		except:
-			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'message':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 		try:
 			data = sql.delete_like(article_id,user_id)
 		except Exception as e:
@@ -127,7 +130,7 @@ class article_commenter(APIView):
 		try:
 			user_id = request.session['user_id']
 		except:
-			return Response({'error':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'message':'unable to get user_id'}, status=status.HTTP_400_BAD_REQUEST)
 
 		try:
 			comment_text = request.data.get('comment_text')
