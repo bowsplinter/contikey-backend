@@ -12,7 +12,7 @@ def get_users_by_username(username):
         users = dictfetchall(cursor)
     return users
 
-def get_channels_by_title(title):
+def get_channels_by_title(title, user_id):
     title = "%" + title + "%"
     with connection.cursor() as cursor:
         cursor.execute(
@@ -21,6 +21,7 @@ def get_channels_by_title(title):
         channels = dictfetchall(cursor)
         channels = fs.channellist_get_articles(channels)
         channels = fs.channellist_get_user(channels)
+        channels = fs.channel_get_subscribed(channels, user_id)
     return channels
 
 def get_articles_by_title(title):

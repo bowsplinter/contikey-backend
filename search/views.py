@@ -15,10 +15,15 @@ def search_by_user(request):
 @api_view(['GET'])
 def search_by_channel(request):
     """
-    search by channel title: gets channel + channel's articles
+    search by channel title: gets channel + channel's articles + user & if subscribed to channel
     """
+    try:
+        user_id = request.session['user_id']
+    except:
+        user_id = None
+
     title = request.GET.get('search_term', '')
-    channels = sql.get_channels_by_title(title)
+    channels = sql.get_channels_by_title(title,user_id)
     return Response({'data': channels}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
