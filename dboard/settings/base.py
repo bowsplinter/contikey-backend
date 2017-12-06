@@ -26,7 +26,7 @@ SECRET_KEY = 'x7s!wa+(19g91=$9ds_f4bd086v=5l%kzgpa+t(vvwu-o4yomp'
 DEBUG = True
 
 ALLOWED_HOSTS = ['dboard-env.esirkfakz3.ap-southeast-1.elasticbeanstalk.com',
-                '127.0.0.1']
+                '127.0.0.1', 'api.contikey.com', '52.76.154.0']
 
 
 # Application definition
@@ -96,33 +96,6 @@ REST_FRAMEWORK = {
 }
 
 WSGI_APPLICATION = 'dboard.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-if 'RDS_DB_NAME' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
-    }
-
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'dboard',
-            'USER': 'dboard',
-            'PASSWORD': 'db1234567',
-            'HOST': 'mydboard.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com',
-            'PORT': '3306',
-        }
-    }
 
 
 # Password validation
