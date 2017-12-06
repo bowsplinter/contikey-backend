@@ -121,10 +121,10 @@ def create_channel(user_id,title,description,tags):
 			last_insert = str(dictfetchall(cursor)[0]['last_insert_id()'])
 
 			#Expect tags as list of tag_ids
-			tags_insert_str = 'INSERT INTO channel_tags(channel_id, tag_id) VALUES '
+			tags_insert_str = ''
 			for tag in tags:
 				tags_insert_str += '('+last_insert+','+tag+'),'
-			cursor.execute(tags_insert_str[:-1])
+			cursor.execute('INSERT INTO channel_tags(channel_id, tag_id) VALUES ' + tags_insert_str[:-1])
 			
 	except Exception as e:
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
