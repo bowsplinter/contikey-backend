@@ -11,7 +11,6 @@ from . import sql
 import functionssql as fs
 
 class channel_helper(APIView):
-	parser_classes = (JSONParser,MultiPartParser)
 	"""
 		get:
 		Given a channel_id from the url,
@@ -25,6 +24,8 @@ class channel_helper(APIView):
 		Given a user_id, title and description,
 		this attempts to create a new channel under the given user (user autofollows his own channels)
 	"""
+	parser_classes = (JSONParser,MultiPartParser)
+	
 	def get(self,request, channel_id):
 		try:
 			user_id = request.session['user_id']

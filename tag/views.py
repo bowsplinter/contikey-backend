@@ -14,10 +14,11 @@ class tag_list(APIView):
         return Response(get_tag_list(), status=status.HTTP_200_OK)
 
 class user_tags(APIView):
-    parser_classes = (JSONParser,MultiPartParser)
     """
     post: Follow tag by tag_ids (list) for the current user
     """
+    parser_classes = (JSONParser,MultiPartParser)
+
     def post(self, request):
         try: # get user's user_id from session key
             user_id = request.session['user_id']
