@@ -1,0 +1,468 @@
+Retrieving logs...
+============= i-04d581c345fd5fbde ==============
+-------------------------------------
+/var/log/httpd/error_log
+-------------------------------------
+[Wed Dec 06 10:49:46.733795 2017] [so:warn] [pid 30748] AH01574: module wsgi_module is already loaded, skipping
+[Wed Dec 06 10:49:46.736182 2017] [lbmethod_heartbeat:notice] [pid 30748] AH02282: No slotmem from mod_heartmonitor
+[Wed Dec 06 10:49:46.738169 2017] [mpm_prefork:notice] [pid 30748] AH00163: Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 configured -- resuming normal operations
+[Wed Dec 06 10:49:46.738191 2017] [core:notice] [pid 30748] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Wed Dec 06 10:49:49.570200 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] mod_wsgi (pid=30753): Target WSGI script '/opt/python/current/app/dboard/wsgi.py' cannot be loaded as Python module.
+[Wed Dec 06 10:49:49.570251 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] mod_wsgi (pid=30753): Exception occurred processing WSGI script '/opt/python/current/app/dboard/wsgi.py'.
+[Wed Dec 06 10:49:49.570285 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] Traceback (most recent call last):
+[Wed Dec 06 10:49:49.570434 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/current/app/dboard/wsgi.py", line 16, in <module>
+[Wed Dec 06 10:49:49.570442 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     application = get_wsgi_application()
+[Wed Dec 06 10:49:49.570532 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/core/wsgi.py", line 13, in get_wsgi_application
+[Wed Dec 06 10:49:49.570539 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     django.setup(set_prefix=False)
+[Wed Dec 06 10:49:49.570626 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/__init__.py", line 22, in setup
+[Wed Dec 06 10:49:49.570633 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+[Wed Dec 06 10:49:49.570756 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 56, in __getattr__
+[Wed Dec 06 10:49:49.570763 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     self._setup(name)
+[Wed Dec 06 10:49:49.570787 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 41, in _setup
+[Wed Dec 06 10:49:49.570791 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     self._wrapped = Settings(settings_module)
+[Wed Dec 06 10:49:49.570809 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 129, in __init__
+[Wed Dec 06 10:49:49.570813 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
+[Wed Dec 06 10:49:49.570835 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty.
+[Wed Dec 06 10:49:50.573812 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] mod_wsgi (pid=30753): Target WSGI script '/opt/python/current/app/dboard/wsgi.py' cannot be loaded as Python module.
+[Wed Dec 06 10:49:50.573865 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] mod_wsgi (pid=30753): Exception occurred processing WSGI script '/opt/python/current/app/dboard/wsgi.py'.
+[Wed Dec 06 10:49:50.573899 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] Traceback (most recent call last):
+[Wed Dec 06 10:49:50.573958 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/current/app/dboard/wsgi.py", line 16, in <module>
+[Wed Dec 06 10:49:50.573964 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     application = get_wsgi_application()
+[Wed Dec 06 10:49:50.573990 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/core/wsgi.py", line 13, in get_wsgi_application
+[Wed Dec 06 10:49:50.573994 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     django.setup(set_prefix=False)
+[Wed Dec 06 10:49:50.574014 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/__init__.py", line 22, in setup
+[Wed Dec 06 10:49:50.574018 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+[Wed Dec 06 10:49:50.574036 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 56, in __getattr__
+[Wed Dec 06 10:49:50.574040 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     self._setup(name)
+[Wed Dec 06 10:49:50.574056 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 41, in _setup
+[Wed Dec 06 10:49:50.574060 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     self._wrapped = Settings(settings_module)
+[Wed Dec 06 10:49:50.574076 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 129, in __init__
+[Wed Dec 06 10:49:50.574079 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
+[Wed Dec 06 10:49:50.574100 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty.
+[Wed Dec 06 10:49:51.576967 2017] [:error] [pid 30753] [remote 127.0.0.1:60118] mod_wsgi (pid=30753): Target WSGI script '/opt/python/current/app/dboard/wsgi.py' cannot be loaded as Python module.
+[Wed Dec 06 10:49:51.577018 2017] [:error] [pid 30753] [remote 127.0.0.1:60118] mod_wsgi (pid=30753): Exception occurred processing WSGI script '/opt/python/current/app/dboard/wsgi.py'.
+[Wed Dec 06 10:49:51.577053 2017] [:error] [pid 30753] [remote 127.0.0.1:60118] Traceback (most recent call last):
+[Wed Dec 06 10:49:51.577134 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]   File "/opt/python/current/app/dboard/wsgi.py", line 16, in <module>
+[Wed Dec 06 10:49:51.577142 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]     application = get_wsgi_application()
+[Wed Dec 06 10:49:51.577170 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/core/wsgi.py", line 13, in get_wsgi_application
+[Wed Dec 06 10:49:51.577175 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]     django.setup(set_prefix=False)
+[Wed Dec 06 10:49:51.577195 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/__init__.py", line 22, in setup
+[Wed Dec 06 10:49:51.577199 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]     configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+[Wed Dec 06 10:49:51.577218 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 56, in __getattr__
+[Wed Dec 06 10:49:51.577231 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]     self._setup(name)
+[Wed Dec 06 10:49:51.577251 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 41, in _setup
+[Wed Dec 06 10:49:51.577254 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]     self._wrapped = Settings(settings_module)
+[Wed Dec 06 10:49:51.577272 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 129, in __init__
+[Wed Dec 06 10:49:51.577275 2017] [:error] [pid 30753] [remote 127.0.0.1:60118]     raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
+[Wed Dec 06 10:49:51.577297 2017] [:error] [pid 30753] [remote 127.0.0.1:60118] django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty.
+[Wed Dec 06 10:49:52.580172 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] mod_wsgi (pid=30753): Target WSGI script '/opt/python/current/app/dboard/wsgi.py' cannot be loaded as Python module.
+[Wed Dec 06 10:49:52.580322 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] mod_wsgi (pid=30753): Exception occurred processing WSGI script '/opt/python/current/app/dboard/wsgi.py'.
+[Wed Dec 06 10:49:52.581596 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] Traceback (most recent call last):
+[Wed Dec 06 10:49:52.581658 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/current/app/dboard/wsgi.py", line 16, in <module>
+[Wed Dec 06 10:49:52.581663 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     application = get_wsgi_application()
+[Wed Dec 06 10:49:52.581690 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/core/wsgi.py", line 13, in get_wsgi_application
+[Wed Dec 06 10:49:52.581694 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     django.setup(set_prefix=False)
+[Wed Dec 06 10:49:52.581714 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/__init__.py", line 22, in setup
+[Wed Dec 06 10:49:52.581719 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+[Wed Dec 06 10:49:52.581737 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 56, in __getattr__
+[Wed Dec 06 10:49:52.581740 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     self._setup(name)
+[Wed Dec 06 10:49:52.581757 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 41, in _setup
+[Wed Dec 06 10:49:52.581761 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     self._wrapped = Settings(settings_module)
+[Wed Dec 06 10:49:52.581778 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 129, in __init__
+[Wed Dec 06 10:49:52.581781 2017] [:error] [pid 30753] [remote 127.0.0.1:64214]     raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
+[Wed Dec 06 10:49:52.581803 2017] [:error] [pid 30753] [remote 127.0.0.1:64214] django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty.
+[Wed Dec 06 10:50:24.042858 2017] [:error] [pid 30753] [remote 172.31.25.40:64214] mod_wsgi (pid=30753): Target WSGI script '/opt/python/current/app/dboard/wsgi.py' cannot be loaded as Python module.
+[Wed Dec 06 10:50:24.042921 2017] [:error] [pid 30753] [remote 172.31.25.40:64214] mod_wsgi (pid=30753): Exception occurred processing WSGI script '/opt/python/current/app/dboard/wsgi.py'.
+[Wed Dec 06 10:50:24.042954 2017] [:error] [pid 30753] [remote 172.31.25.40:64214] Traceback (most recent call last):
+[Wed Dec 06 10:50:24.043010 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]   File "/opt/python/current/app/dboard/wsgi.py", line 16, in <module>
+[Wed Dec 06 10:50:24.043023 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]     application = get_wsgi_application()
+[Wed Dec 06 10:50:24.043050 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/core/wsgi.py", line 13, in get_wsgi_application
+[Wed Dec 06 10:50:24.043054 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]     django.setup(set_prefix=False)
+[Wed Dec 06 10:50:24.043085 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/__init__.py", line 22, in setup
+[Wed Dec 06 10:50:24.043089 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]     configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+[Wed Dec 06 10:50:24.043107 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 56, in __getattr__
+[Wed Dec 06 10:50:24.043111 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]     self._setup(name)
+[Wed Dec 06 10:50:24.043127 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 41, in _setup
+[Wed Dec 06 10:50:24.043130 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]     self._wrapped = Settings(settings_module)
+[Wed Dec 06 10:50:24.043147 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 129, in __init__
+[Wed Dec 06 10:50:24.043151 2017] [:error] [pid 30753] [remote 172.31.25.40:64214]     raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
+[Wed Dec 06 10:50:24.043171 2017] [:error] [pid 30753] [remote 172.31.25.40:64214] django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty.
+[Wed Dec 06 10:50:28.278866 2017] [:error] [pid 30753] [remote 172.31.25.40:62422] mod_wsgi (pid=30753): Target WSGI script '/opt/python/current/app/dboard/wsgi.py' cannot be loaded as Python module.
+[Wed Dec 06 10:50:28.278919 2017] [:error] [pid 30753] [remote 172.31.25.40:62422] mod_wsgi (pid=30753): Exception occurred processing WSGI script '/opt/python/current/app/dboard/wsgi.py'.
+[Wed Dec 06 10:50:28.278954 2017] [:error] [pid 30753] [remote 172.31.25.40:62422] Traceback (most recent call last):
+[Wed Dec 06 10:50:28.279015 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]   File "/opt/python/current/app/dboard/wsgi.py", line 16, in <module>
+[Wed Dec 06 10:50:28.279021 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]     application = get_wsgi_application()
+[Wed Dec 06 10:50:28.279047 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/core/wsgi.py", line 13, in get_wsgi_application
+[Wed Dec 06 10:50:28.279051 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]     django.setup(set_prefix=False)
+[Wed Dec 06 10:50:28.279071 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/__init__.py", line 22, in setup
+[Wed Dec 06 10:50:28.279075 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]     configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+[Wed Dec 06 10:50:28.279093 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 56, in __getattr__
+[Wed Dec 06 10:50:28.279097 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]     self._setup(name)
+[Wed Dec 06 10:50:28.279113 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 41, in _setup
+[Wed Dec 06 10:50:28.279116 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]     self._wrapped = Settings(settings_module)
+[Wed Dec 06 10:50:28.279137 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]   File "/opt/python/run/venv/lib/python3.4/site-packages/django/conf/__init__.py", line 129, in __init__
+[Wed Dec 06 10:50:28.279149 2017] [:error] [pid 30753] [remote 172.31.25.40:62422]     raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
+[Wed Dec 06 10:50:28.279171 2017] [:error] [pid 30753] [remote 172.31.25.40:62422] django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty.
+
+
+
+-------------------------------------
+/opt/python/log/supervisord.log
+-------------------------------------
+2017-11-08 16:50:56,462 CRIT Supervisor running as root (no user in config file)
+2017-11-08 16:50:56,472 INFO RPC interface 'supervisor' initialized
+2017-11-08 16:50:56,472 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2017-11-08 16:50:56,472 INFO supervisord started with pid 2960
+2017-11-08 16:50:57,474 INFO spawned: 'httpd' with pid 3043
+2017-11-08 16:50:58,551 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-11-08 16:51:35,985 INFO stopped: httpd (exit status 0)
+2017-11-08 16:51:36,989 INFO spawned: 'httpd' with pid 4088
+2017-11-08 16:51:38,013 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-11-09 02:17:59,612 INFO stopped: httpd (exit status 0)
+2017-11-09 02:18:00,616 INFO spawned: 'httpd' with pid 12615
+2017-11-09 02:18:01,655 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-11-09 02:27:14,403 INFO stopped: httpd (exit status 0)
+2017-11-09 02:27:15,408 INFO spawned: 'httpd' with pid 13190
+2017-11-09 02:27:16,438 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-11-09 08:36:29,045 INFO stopped: httpd (exit status 0)
+2017-11-09 08:36:30,050 INFO spawned: 'httpd' with pid 25650
+2017-11-09 08:36:31,078 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-11-09 17:24:50,060 INFO stopped: httpd (exit status 0)
+2017-11-09 17:24:51,064 INFO spawned: 'httpd' with pid 10577
+2017-11-09 17:24:52,102 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-11-30 04:39:15,876 INFO stopped: httpd (exit status 0)
+2017-11-30 04:39:16,881 INFO spawned: 'httpd' with pid 27283
+2017-11-30 04:39:17,922 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-12-06 09:41:43,702 INFO stopped: httpd (exit status 0)
+2017-12-06 09:41:44,707 INFO spawned: 'httpd' with pid 27693
+2017-12-06 09:41:45,750 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-12-06 10:09:29,525 INFO stopped: httpd (exit status 0)
+2017-12-06 10:09:30,530 INFO spawned: 'httpd' with pid 28877
+2017-12-06 10:09:31,565 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-12-06 10:43:41,010 INFO stopped: httpd (exit status 0)
+2017-12-06 10:43:42,015 INFO spawned: 'httpd' with pid 30259
+2017-12-06 10:43:43,054 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-12-06 10:49:45,674 INFO stopped: httpd (exit status 0)
+2017-12-06 10:49:46,679 INFO spawned: 'httpd' with pid 30748
+2017-12-06 10:49:47,720 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+
+
+
+-------------------------------------
+/var/log/httpd/access_log
+-------------------------------------
+172.31.25.40 (220.136.82.80) - - [06/Dec/2017:07:13:30 +0000] "HEAD /phpmyadmin2012/ HTTP/1.1" 400 - "-" "Mozilla/5.0 Jorgee"
+172.31.25.40 (220.136.82.80) - - [06/Dec/2017:07:13:31 +0000] "HEAD /phpmyadmin2013/ HTTP/1.1" 400 - "-" "Mozilla/5.0 Jorgee"
+172.31.25.40 (220.136.82.80) - - [06/Dec/2017:07:13:31 +0000] "HEAD /phpmyadmin2014/ HTTP/1.1" 400 - "-" "Mozilla/5.0 Jorgee"
+172.31.25.40 (220.136.82.80) - - [06/Dec/2017:07:13:31 +0000] "HEAD /phpmyadmin2015/ HTTP/1.1" 400 - "-" "Mozilla/5.0 Jorgee"
+172.31.25.40 (220.136.82.80) - - [06/Dec/2017:07:13:31 +0000] "HEAD /phpmyadmin2016/ HTTP/1.1" 400 - "-" "Mozilla/5.0 Jorgee"
+172.31.25.40 (220.136.82.80) - - [06/Dec/2017:07:13:31 +0000] "HEAD /phpmyadmin2017/ HTTP/1.1" 400 - "-" "Mozilla/5.0 Jorgee"
+172.31.25.40 (220.136.82.80) - - [06/Dec/2017:07:13:31 +0000] "HEAD /phpmyadmin2018/ HTTP/1.1" 400 - "-" "Mozilla/5.0 Jorgee"
+172.31.25.40 (220.136.82.80) - - [06/Dec/2017:07:13:31 +0000] "HEAD /phpmanager/ HTTP/1.1" 400 - "-" "Mozilla/5.0 Jorgee"
+::1 (-) - - [06/Dec/2017:07:14:17 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:18 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:19 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:20 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:21 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:22 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:23 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:24 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:25 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:26 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:27 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:28 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:29 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:30 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:07:14:31 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+172.31.25.40 (141.212.121.128) - - [06/Dec/2017:08:39:52 +0000] "GET / HTTP/1.1" 400 58820 "-" "Mozilla/5.0 zgrab/0.x"
+172.31.25.40 (103.24.77.51) - - [06/Dec/2017:09:40:50 +0000] "GET / HTTP/1.1" 200 1716 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.1.94 (103.246.38.196) - - [06/Dec/2017:09:40:51 +0000] "GET / HTTP/1.1" 200 1716 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.25.40 (202.94.70.51) - - [06/Dec/2017:09:40:51 +0000] "GET /favicon.ico HTTP/1.1" 404 2005 "http://dboard-env.esirkfakz3.ap-southeast-1.elasticbeanstalk.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+127.0.0.1 (-) - - [06/Dec/2017:09:41:47 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:09:41:48 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:09:41:49 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:09:41:50 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+172.31.25.40 (202.94.70.51) - - [06/Dec/2017:09:50:43 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+172.31.25.40 (202.94.70.51) - - [06/Dec/2017:09:50:43 +0000] "GET /favicon.ico HTTP/1.1" 500 527 "http://dboard-env.esirkfakz3.ap-southeast-1.elasticbeanstalk.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+::1 (-) - - [06/Dec/2017:09:51:44 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:09:51:45 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:09:51:46 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:09:51:47 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+172.31.1.94 (103.24.77.51) - - [06/Dec/2017:10:01:25 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+172.31.1.94 (103.24.77.51) - - [06/Dec/2017:10:01:26 +0000] "GET /favicon.ico HTTP/1.1" 500 527 "http://dboard-env.esirkfakz3.ap-southeast-1.elasticbeanstalk.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+::1 (-) - - [06/Dec/2017:10:02:25 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:02:26 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:02:43 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+127.0.0.1 (-) - - [06/Dec/2017:10:09:33 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:10:09:34 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:10:09:35 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:10:09:36 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+172.31.1.94 (103.24.77.51) - - [06/Dec/2017:10:11:01 +0000] "GET /admin HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.1.94 (103.246.38.196) - - [06/Dec/2017:10:11:02 +0000] "GET /admin HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+::1 (-) - - [06/Dec/2017:10:12:02 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:12:03 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:12:04 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:12:29 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+172.31.25.40 (103.24.77.51) - - [06/Dec/2017:10:21:17 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.25.40 (103.24.77.51) - - [06/Dec/2017:10:22:11 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.25.40 (202.94.70.51) - - [06/Dec/2017:10:24:24 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.1.94 (202.94.70.51) - - [06/Dec/2017:10:27:22 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.1.94 (202.94.70.51) - - [06/Dec/2017:10:29:45 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.25.40 (103.24.77.51) - - [06/Dec/2017:10:31:21 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.25.40 (202.94.70.51) - - [06/Dec/2017:10:34:16 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.25.40 (202.94.70.51) - - [06/Dec/2017:10:34:24 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+::1 (-) - - [06/Dec/2017:10:35:23 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:35:24 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:35:44 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+172.31.25.40 (202.94.70.51) - - [06/Dec/2017:10:39:28 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.1.94 (202.94.70.51) - - [06/Dec/2017:10:40:42 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.1.94 (202.94.70.51) - - [06/Dec/2017:10:41:13 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+172.31.1.94 (202.94.70.51) - - [06/Dec/2017:10:41:13 +0000] "GET /favicon.ico HTTP/1.1" 500 527 "http://dboard-env.esirkfakz3.ap-southeast-1.elasticbeanstalk.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+172.31.25.40 (202.94.70.51) - - [06/Dec/2017:10:42:10 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+::1 (-) - - [06/Dec/2017:10:42:13 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:42:14 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+127.0.0.1 (-) - - [06/Dec/2017:10:43:44 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:10:43:45 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:10:43:46 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:10:43:47 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+172.31.1.94 (202.94.70.51) - - [06/Dec/2017:10:44:19 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.1.94 (202.94.70.51) - - [06/Dec/2017:10:44:20 +0000] "GET /admin HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.1.94 (103.246.38.196) - - [06/Dec/2017:10:44:20 +0000] "GET /admin HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.1.94 (103.24.77.51) - - [06/Dec/2017:10:44:20 +0000] "GET /admin HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.1.94 (103.24.77.51) - - [06/Dec/2017:10:44:30 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+::1 (-) - - [06/Dec/2017:10:45:19 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:45:20 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:45:21 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:45:22 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:45:23 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:45:24 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:45:25 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:45:31 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:45:32 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+172.31.1.94 (202.94.70.51) - - [06/Dec/2017:10:46:56 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+127.0.0.1 (-) - - [06/Dec/2017:10:49:49 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:10:49:50 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:10:49:51 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+127.0.0.1 (-) - - [06/Dec/2017:10:49:52 +0000] "GET / HTTP/1.1" 500 527 "-" "Python-urllib/2.7"
+172.31.25.40 (202.94.70.51) - - [06/Dec/2017:10:50:24 +0000] "GET /admin HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+172.31.25.40 (202.94.70.51) - - [06/Dec/2017:10:50:28 +0000] "GET / HTTP/1.1" 500 527 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12"
+::1 (-) - - [06/Dec/2017:10:51:24 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:51:28 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:51:29 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:51:30 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+::1 (-) - - [06/Dec/2017:10:51:45 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.27 (Amazon) mod_wsgi/3.5 Python/3.4.3 (internal dummy connection)"
+
+
+
+-------------------------------------
+/var/log/eb-activity.log
+-------------------------------------
+    inflating: /opt/python/ondeck/app/user/migrations/0003_modify_user_attributes.py  
+    inflating: /opt/python/ondeck/app/user/migrations/0004_like_notification_trigger.py  
+    inflating: /opt/python/ondeck/app/user/migrations/0005_follow_notification_trigger.py  
+    inflating: /opt/python/ondeck/app/user/migrations/0006_subscribe_channel_trigger.py  
+    inflating: /opt/python/ondeck/app/user/migrations/0007_unsubscribe_channel_trigger.py  
+    inflating: /opt/python/ondeck/app/user/migrations/0008_delete_like_notification_trigger.py  
+   extracting: /opt/python/ondeck/app/user/migrations/__init__.py  
+    inflating: /opt/python/ondeck/app/user/models.py  
+    inflating: /opt/python/ondeck/app/user/sql.py  
+    inflating: /opt/python/ondeck/app/user/tests.py  
+    inflating: /opt/python/ondeck/app/user/urls.py  
+    inflating: /opt/python/ondeck/app/user/views.py  
+[2017-12-06T10:49:42.935Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/AppDeployPreHook/03deploy.py] : Starting activity...
+[2017-12-06T10:49:43.491Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/AppDeployPreHook/03deploy.py] : Completed activity. Result:
+  Requirement already satisfied (use --upgrade to upgrade): awsebcli==3.12.0 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 1))
+  Requirement already satisfied (use --upgrade to upgrade): beautifulsoup4==4.6.0 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 2))
+  Requirement already satisfied (use --upgrade to upgrade): blessed==1.14.2 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 3))
+  Requirement already satisfied (use --upgrade to upgrade): botocore==1.8.4 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 4))
+  Requirement already satisfied (use --upgrade to upgrade): cement==2.8.2 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 5))
+  Requirement already satisfied (use --upgrade to upgrade): colorama==0.3.7 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 6))
+  Requirement already satisfied (use --upgrade to upgrade): Django==1.11.6 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 7))
+  Requirement already satisfied (use --upgrade to upgrade): django-cors-headers==2.1.0 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 8))
+  Requirement already satisfied (use --upgrade to upgrade): djangorestframework==3.7.3 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 9))
+  Requirement already satisfied (use --upgrade to upgrade): docker-py==1.7.2 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 10))
+  Requirement already satisfied (use --upgrade to upgrade): dockerpty==0.4.1 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 11))
+  Requirement already satisfied (use --upgrade to upgrade): docopt==0.6.2 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 12))
+  Requirement already satisfied (use --upgrade to upgrade): docutils==0.14 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 13))
+  Requirement already satisfied (use --upgrade to upgrade): drfdocs==0.0.11 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 14))
+  Requirement already satisfied (use --upgrade to upgrade): jmespath==0.9.3 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 15))
+  Requirement already satisfied (use --upgrade to upgrade): metascrapy==0.2 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 16))
+  Requirement already satisfied (use --upgrade to upgrade): mysqlclient==1.3.12 in /opt/python/run/venv/lib64/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 17))
+  Requirement already satisfied (use --upgrade to upgrade): pathspec==0.5.0 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 18))
+  Requirement already satisfied (use --upgrade to upgrade): python-dateutil==2.6.1 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 19))
+  Requirement already satisfied (use --upgrade to upgrade): pytz==2017.2 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 20))
+  Requirement already satisfied (use --upgrade to upgrade): PyYAML==3.12 in /opt/python/run/venv/lib64/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 21))
+  Requirement already satisfied (use --upgrade to upgrade): requests==2.9.1 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 22))
+  Requirement already satisfied (use --upgrade to upgrade): semantic-version==2.5.0 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 23))
+  Requirement already satisfied (use --upgrade to upgrade): six==1.11.0 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 24))
+  Requirement already satisfied (use --upgrade to upgrade): sqlparse==0.2.4 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 25))
+  Requirement already satisfied (use --upgrade to upgrade): tabulate==0.7.5 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 26))
+  Requirement already satisfied (use --upgrade to upgrade): termcolor==1.1.0 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 27))
+  Requirement already satisfied (use --upgrade to upgrade): wcwidth==0.1.7 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 28))
+  Requirement already satisfied (use --upgrade to upgrade): websocket-client==0.44.0 in /opt/python/run/venv/lib/python3.4/site-packages (from -r /opt/python/ondeck/app/requirements.txt (line 29))
+  Requirement already satisfied (use --upgrade to upgrade): setuptools>=20.0 in /opt/python/run/venv/lib/python3.4/site-packages (from awsebcli==3.12.0->-r /opt/python/ondeck/app/requirements.txt (line 1))
+  You are using pip version 7.1.2, however version 9.0.1 is available.
+  You should consider upgrading via the 'pip install --upgrade pip' command.
+[2017-12-06T10:49:43.492Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/AppDeployPreHook/04configen.py] : Starting activity...
+[2017-12-06T10:49:44.843Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/AppDeployPreHook/04configen.py] : Completed activity.
+[2017-12-06T10:49:44.843Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/AppDeployPreHook] : Completed activity. Result:
+  Successfully execute hooks in directory /opt/elasticbeanstalk/hooks/appdeploy/pre.
+[2017-12-06T10:49:44.843Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/EbExtensionPostBuild] : Starting activity...
+[2017-12-06T10:49:45.099Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/EbExtensionPostBuild/Infra-EmbeddedPostBuild] : Starting activity...
+[2017-12-06T10:49:45.099Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/EbExtensionPostBuild/Infra-EmbeddedPostBuild] : Completed activity.
+[2017-12-06T10:49:45.112Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/EbExtensionPostBuild] : Completed activity.
+[2017-12-06T10:49:45.112Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/InfraCleanEbextension] : Starting activity...
+[2017-12-06T10:49:45.113Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0/InfraCleanEbextension] : Completed activity. Result:
+  Cleaned ebextensions subdirectories from /opt/python/ondeck/app.
+[2017-12-06T10:49:45.113Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage0] : Completed activity. Result:
+  Application update - Command CMD-AppDeploy stage 0 completed
+[2017-12-06T10:49:45.113Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1] : Starting activity...
+[2017-12-06T10:49:45.113Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployEnactHook] : Starting activity...
+[2017-12-06T10:49:45.113Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployEnactHook/01flip.py] : Starting activity...
+[2017-12-06T10:49:53.589Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployEnactHook/01flip.py] : Completed activity. Result:
+  httpd: stopped
+  httpd: started
+  httpd                            RUNNING   pid 30748, uptime 0:00:03
+  2017-12-06 10:49:53,583 INFO     Apache is running, but root page is not responding in 3 seconds.
+[2017-12-06T10:49:53.589Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployEnactHook/01stop_xray.sh] : Starting activity...
+[2017-12-06T10:49:53.701Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployEnactHook/01stop_xray.sh] : Completed activity. Result:
+  Executing: if ( initctl status xray | grep start ); then initctl stop xray; fi
+  
+[2017-12-06T10:49:53.701Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployEnactHook/02create_pids_for_monitoring.sh] : Starting activity...
+[2017-12-06T10:49:53.803Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployEnactHook/02create_pids_for_monitoring.sh] : Completed activity. Result:
+  + chmod 0755 /var/run/httpd
+  + /opt/elasticbeanstalk/bin/healthd-track-pidfile --proxy httpd
+  + /opt/elasticbeanstalk/bin/healthd-track-pidfile --name application --location /opt/python/run/supervisord.pid
+[2017-12-06T10:49:53.803Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployEnactHook/02start_xray.sh] : Starting activity...
+[2017-12-06T10:49:53.908Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployEnactHook/02start_xray.sh] : Completed activity.
+[2017-12-06T10:49:53.908Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployEnactHook] : Completed activity. Result:
+  Successfully execute hooks in directory /opt/elasticbeanstalk/hooks/appdeploy/enact.
+[2017-12-06T10:49:53.908Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployPostHook] : Starting activity...
+[2017-12-06T10:49:53.908Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1/AppDeployPostHook] : Completed activity. Result:
+  Successfully execute hooks in directory /opt/elasticbeanstalk/hooks/appdeploy/post.
+[2017-12-06T10:49:53.909Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AppDeployStage1] : Completed activity. Result:
+  Application version switch - Command CMD-AppDeploy stage 1 completed
+[2017-12-06T10:49:53.909Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AddonsAfter] : Starting activity...
+[2017-12-06T10:49:53.909Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AddonsAfter/ConfigLogRotation] : Starting activity...
+[2017-12-06T10:49:53.909Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AddonsAfter/ConfigLogRotation/10-config.sh] : Starting activity...
+[2017-12-06T10:49:53.986Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AddonsAfter/ConfigLogRotation/10-config.sh] : Completed activity. Result:
+  Disabled forced hourly log rotation.
+[2017-12-06T10:49:53.986Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AddonsAfter/ConfigLogRotation] : Completed activity. Result:
+  Successfully execute hooks in directory /opt/elasticbeanstalk/addons/logpublish/hooks/config.
+[2017-12-06T10:49:53.986Z] INFO  [30577] - [Application update app-b098-171206_184932@10/AddonsAfter] : Completed activity.
+[2017-12-06T10:49:53.986Z] INFO  [30577] - [Application update app-b098-171206_184932@10] : Completed activity. Result:
+  Application update - Command CMD-AppDeploy succeeded
+[2017-12-06T10:53:14.199Z] INFO  [30969] - [CMD-TailLogs] : Starting activity...
+[2017-12-06T10:53:14.199Z] INFO  [30969] - [CMD-TailLogs/AddonsBefore] : Starting activity...
+[2017-12-06T10:53:14.199Z] INFO  [30969] - [CMD-TailLogs/AddonsBefore] : Completed activity.
+[2017-12-06T10:53:14.199Z] INFO  [30969] - [CMD-TailLogs/TailLogs] : Starting activity...
+[2017-12-06T10:53:14.199Z] INFO  [30969] - [CMD-TailLogs/TailLogs/TailLogs] : Starting activity...
+
+
+
+-------------------------------------
+/var/log/eb-commandprocessor.log
+-------------------------------------
+[2017-12-06T10:45:23.005Z] DEBUG [30431] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2017-12-06T10:45:23.006Z] INFO  [30431] : Found enabled addons: ["logstreaming", "logpublish"].
+[2017-12-06T10:45:23.007Z] INFO  [30431] : Updating Command definition of addon logstreaming.
+[2017-12-06T10:45:23.007Z] INFO  [30431] : Updating Command definition of addon logpublish.
+[2017-12-06T10:45:23.007Z] DEBUG [30431] : Loaded definition of Command CMD-TailLogs.
+[2017-12-06T10:45:23.007Z] INFO  [30431] : Executing CMD-TailLogs
+[2017-12-06T10:45:23.007Z] INFO  [30431] : Executing command: CMD-TailLogs...
+[2017-12-06T10:45:23.007Z] INFO  [30431] : Executing command CMD-TailLogs activities...
+[2017-12-06T10:45:23.007Z] DEBUG [30431] : Setting environment variables..
+[2017-12-06T10:45:23.007Z] INFO  [30431] : Running AddonsBefore for command CMD-TailLogs...
+[2017-12-06T10:45:23.007Z] DEBUG [30431] : Running stages of Command CMD-TailLogs from stage 0 to stage 0...
+[2017-12-06T10:45:23.008Z] INFO  [30431] : Running stage 0 of command CMD-TailLogs...
+[2017-12-06T10:45:23.008Z] DEBUG [30431] : Loaded 1 actions for stage 0.
+[2017-12-06T10:45:23.008Z] INFO  [30431] : Running 1 of 1 actions: TailLogs...
+[2017-12-06T10:45:23.258Z] INFO  [30431] : Running AddonsAfter for command CMD-TailLogs...
+[2017-12-06T10:45:23.258Z] INFO  [30431] : Command CMD-TailLogs succeeded!
+[2017-12-06T10:45:23.259Z] INFO  [30431] : Command processor returning results: 
+{"status":"SUCCESS","api_version":"1.0","results":[{"status":"SUCCESS","msg":"","returncode":0,"events":[{"msg":"[Instance: i-04d581c345fd5fbde] Successfully finished tailing 5 log(s)","severity":"INFO","timestamp":1512557123259}]}]}
+[2017-12-06T10:49:40.740Z] DEBUG [30577] : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2017-12-06T10:49:40.740Z] DEBUG [30577] : Checking if the command processor should execute...
+[2017-12-06T10:49:40.742Z] DEBUG [30577] : Checking whether the command is applicable to instance (i-04d581c345fd5fbde)..
+[2017-12-06T10:49:40.743Z] INFO  [30577] : Command is applicable to this instance (i-04d581c345fd5fbde)..
+[2017-12-06T10:49:40.743Z] DEBUG [30577] : Checking if the received command stage is valid..
+[2017-12-06T10:49:40.743Z] INFO  [30577] : No stage_num in command. Valid stage..
+[2017-12-06T10:49:40.743Z] INFO  [30577] : Received command CMD-AppDeploy: {"execution_data":"{\"leader_election\":\"true\"}","instance_ids":["i-04d581c345fd5fbde"],"data":"manifest_1512557377840","command_name":"CMD-AppDeploy","api_version":"1.0","resource_name":"AWSEBAutoScalingGroup","request_id":"250ef1b8-da73-11e7-a8e6-b57e0bddfdf2"}
+[2017-12-06T10:49:40.743Z] INFO  [30577] : Command processor should execute command.
+[2017-12-06T10:49:40.743Z] DEBUG [30577] : Storing current stage..
+[2017-12-06T10:49:40.743Z] DEBUG [30577] : Stage_num does not exist. Not saving null stage. Returning..
+[2017-12-06T10:49:40.743Z] DEBUG [30577] : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2017-12-06T10:49:40.743Z] DEBUG [30577] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent||commands..
+[2017-12-06T10:49:40.743Z] DEBUG [30577] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2017-12-06T10:49:40.744Z] INFO  [30577] : Found enabled addons: ["logstreaming", "logpublish"].
+[2017-12-06T10:49:40.745Z] INFO  [30577] : Updating Command definition of addon logstreaming.
+[2017-12-06T10:49:40.745Z] INFO  [30577] : Updating Command definition of addon logpublish.
+[2017-12-06T10:49:40.745Z] DEBUG [30577] : Refreshing metadata...
+[2017-12-06T10:49:40.995Z] DEBUG [30577] : Refreshed environment metadata.
+[2017-12-06T10:49:40.996Z] INFO  [30577] : Recreated directory /opt/elasticbeanstalk/deploy/configuration/.
+[2017-12-06T10:49:40.996Z] DEBUG [30577] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_AppSourceUrlFileContent||url..
+[2017-12-06T10:49:40.996Z] INFO  [30577] : Created appsource url file at /opt/elasticbeanstalk/deploy/configuration/appsourceurl.
+[2017-12-06T10:49:40.996Z] DEBUG [30577] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent..
+[2017-12-06T10:49:40.997Z] INFO  [30577] : Created container config file at /opt/elasticbeanstalk/deploy/configuration/containerconfiguration.
+[2017-12-06T10:49:40.997Z] DEBUG [30577] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent||commands..
+[2017-12-06T10:49:40.998Z] DEBUG [30577] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2017-12-06T10:49:40.999Z] INFO  [30577] : Found enabled addons: ["logstreaming", "logpublish"].
+[2017-12-06T10:49:41.000Z] INFO  [30577] : Updating Command definition of addon logstreaming.
+[2017-12-06T10:49:41.000Z] INFO  [30577] : Updating Command definition of addon logpublish.
+[2017-12-06T10:49:41.000Z] DEBUG [30577] : Retrieving metadata for key: AWS::CloudFormation::Init||Infra-WriteApplication2||files..
+[2017-12-06T10:49:41.000Z] DEBUG [30577] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||ManifestFileS3Key..
+[2017-12-06T10:49:41.093Z] INFO  [30577] : Loading manifest from bucket 'elasticbeanstalk-ap-southeast-1-271345380910' using computed S3 key 'resources/environments/e-t2pyvxbag6/_runtime/versions/manifest_1512557377840'.
+[2017-12-06T10:49:41.171Z] INFO  [30577] : Updated manifest cache: deployment ID 10 and serial 10.
+[2017-12-06T10:49:41.172Z] DEBUG [30577] : Loaded definition of Command CMD-AppDeploy.
+[2017-12-06T10:49:41.172Z] INFO  [30577] : Executing Application update
+[2017-12-06T10:49:41.172Z] INFO  [30577] : Executing command: CMD-AppDeploy...
+[2017-12-06T10:49:41.172Z] INFO  [30577] : Executing command CMD-AppDeploy activities...
+[2017-12-06T10:49:41.172Z] DEBUG [30577] : Setting environment variables..
+[2017-12-06T10:49:41.172Z] INFO  [30577] : Running AddonsBefore for command CMD-AppDeploy...
+[2017-12-06T10:49:41.286Z] DEBUG [30577] : Running stages of Command CMD-AppDeploy from stage 0 to stage 1...
+[2017-12-06T10:49:41.286Z] INFO  [30577] : Running stage 0 of command CMD-AppDeploy...
+[2017-12-06T10:49:41.286Z] INFO  [30577] : Running leader election...
+[2017-12-06T10:49:41.532Z] INFO  [30577] : Instance is Leader.
+[2017-12-06T10:49:41.532Z] DEBUG [30577] : Loaded 5 actions for stage 0.
+[2017-12-06T10:49:41.532Z] INFO  [30577] : Running 1 of 5 actions: DownloadSourceBundle...
+[2017-12-06T10:49:41.963Z] INFO  [30577] : Running 2 of 5 actions: EbExtensionPreBuild...
+[2017-12-06T10:49:42.230Z] INFO  [30577] : Running 3 of 5 actions: AppDeployPreHook...
+[2017-12-06T10:49:44.843Z] INFO  [30577] : Running 4 of 5 actions: EbExtensionPostBuild...
+[2017-12-06T10:49:45.112Z] INFO  [30577] : Running 5 of 5 actions: InfraCleanEbextension...
+[2017-12-06T10:49:45.113Z] INFO  [30577] : Running stage 1 of command CMD-AppDeploy...
+[2017-12-06T10:49:45.113Z] DEBUG [30577] : Loaded 2 actions for stage 1.
+[2017-12-06T10:49:45.113Z] INFO  [30577] : Running 1 of 2 actions: AppDeployEnactHook...
+[2017-12-06T10:49:53.908Z] INFO  [30577] : Running 2 of 2 actions: AppDeployPostHook...
+[2017-12-06T10:49:53.909Z] INFO  [30577] : Running AddonsAfter for command CMD-AppDeploy...
+[2017-12-06T10:49:53.986Z] INFO  [30577] : Command CMD-AppDeploy succeeded!
+[2017-12-06T10:49:53.987Z] INFO  [30577] : Command processor returning results: 
+{"status":"SUCCESS","api_version":"1.0","results":[{"status":"SUCCESS","msg":"","returncode":0,"events":[]}]}
+[2017-12-06T10:53:14.193Z] DEBUG [30969] : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2017-12-06T10:53:14.193Z] DEBUG [30969] : Checking if the command processor should execute...
+[2017-12-06T10:53:14.196Z] DEBUG [30969] : Checking whether the command is applicable to instance (i-04d581c345fd5fbde)..
+[2017-12-06T10:53:14.196Z] INFO  [30969] : Command is applicable to this instance (i-04d581c345fd5fbde)..
+[2017-12-06T10:53:14.196Z] DEBUG [30969] : Checking if the received command stage is valid..
+[2017-12-06T10:53:14.196Z] INFO  [30969] : No stage_num in command. Valid stage..
+[2017-12-06T10:53:14.196Z] INFO  [30969] : Received command CMD-TailLogs: {"execution_data":"{\"aws_access_key_id\":\"ASIAI5AJHFT2ORGV3JIA\",\"signature\":\"ReuC4OLkQFKrOKPLp4HOtmIwhG8=\",\"security_token\":\"FQoDYXdzEHQaDJHyxwkT+sKkm7xEOSKuA2crOkBmL0736hZ1YkGMvJoLa6TzuZN\\\/HwginHRd98hu95cyMYIBScMCRz3Ulx3daiK6xLpzxd4yUdtNcLo\\\/CZY6G\\\/doOxJw\\\/sIbL8OikHYilPpCFDgeU5S91lFieZ6+t4JJRgPxaBvbP4K0yhHv5rbL1hF61biG8LLkQIEyckiYU9mQS\\\/IKRp7+s7k60L4VkIrtahF\\\/\\\/uE\\\/i6MGiV\\\/ySSndi77hznNHQMHbZucrOkG66rCaDfbgBTzgYkVR30uUn20kXlzFAwXH8mxhCRA81RojaQ98\\\/IT6CrWwqBO0LOQe1T17YMq4LTCiBf8UOD5IwghW4AFhA+q6Q0O3CVG1SMOzdRPIpYp4\\\/EgunvRSK\\\/LkNEUj0kuqy3dxqYX3zqeSjnseelsJ5B9QGe6evaTHtUge1PBAp43ERZBcBhIP+QT0rA2HqI0LCvWDP62yGGKN+jb4Gmr1gaPbqMCwGtCe\\\/Z4u\\\/wZcQinp9oDgynL5asXThtFN68RLfKJwho6IOU\\\/8x8MdpFTOfPTPDEyBpiLJasignWQ05HO+npbu2WbeJANDnzZg2XZ3bQuy9xswuq8omJif0QU=|MTAzLjI0Ljc3LjUx\",\"policy\":\"eyJleHBpcmF0aW9uIjoiMjAxNy0xMi0wNlQxMToyMzoxMi42MThaIiwiY29uZGl0aW9ucyI6W1sic3RhcnRzLXdpdGgiLCIkeC1hbXotbWV0YS10aW1lX3N0YW1wIiwiIl0sWyJzdGFydHMtd2l0aCIsIiR4LWFtei1tZXRhLXB1Ymxpc2hfbWVjaGFuaXNtIiwiIl0sWyJzdGFydHMtd2l0aCIsIiRrZXkiLCJyZXNvdXJjZXNcL2Vudmlyb25tZW50c1wvbG9nc1wvIl0sWyJzdGFydHMtd2l0aCIsIiR4LWFtei1tZXRhLWJhdGNoX2lkIiwiIl0sWyJzdGFydHMtd2l0aCIsIiR4LWFtei1tZXRhLWZpbGVfbmFtZSIsIiJdLFsic3RhcnRzLXdpdGgiLCIkeC1hbXotc2VjdXJpdHktdG9rZW4iLCIiXSxbInN0YXJ0cy13aXRoIiwiJENvbnRlbnQtVHlwZSIsIiJdLFsiZXEiLCIkYnVja2V0IiwiZWxhc3RpY2JlYW5zdGFsay1hcC1zb3V0aGVhc3QtMS0yNzEzNDUzODA5MTAiXSxbImVxIiwiJGFjbCIsInByaXZhdGUiXV19\"}","instance_ids":["i-04d581c345fd5fbde"],"data":"a78d9f0b-da73-11e7-9595-f7a1a4658d14","command_name":"CMD-TailLogs","api_version":"1.0","resource_name":"AWSEBAutoScalingGroup","request_id":"a78d9f0b-da73-11e7-9595-f7a1a4658d14"}
+[2017-12-06T10:53:14.196Z] INFO  [30969] : Command processor should execute command.
+[2017-12-06T10:53:14.196Z] DEBUG [30969] : Storing current stage..
+[2017-12-06T10:53:14.196Z] DEBUG [30969] : Stage_num does not exist. Not saving null stage. Returning..
+[2017-12-06T10:53:14.196Z] DEBUG [30969] : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2017-12-06T10:53:14.196Z] DEBUG [30969] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent||commands..
+[2017-12-06T10:53:14.197Z] DEBUG [30969] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2017-12-06T10:53:14.197Z] INFO  [30969] : Found enabled addons: ["logstreaming", "logpublish"].
+[2017-12-06T10:53:14.199Z] INFO  [30969] : Updating Command definition of addon logstreaming.
+[2017-12-06T10:53:14.199Z] INFO  [30969] : Updating Command definition of addon logpublish.
+[2017-12-06T10:53:14.199Z] DEBUG [30969] : Loaded definition of Command CMD-TailLogs.
+[2017-12-06T10:53:14.199Z] INFO  [30969] : Executing CMD-TailLogs
+[2017-12-06T10:53:14.199Z] INFO  [30969] : Executing command: CMD-TailLogs...
+[2017-12-06T10:53:14.199Z] INFO  [30969] : Executing command CMD-TailLogs activities...
+[2017-12-06T10:53:14.199Z] DEBUG [30969] : Setting environment variables..
+[2017-12-06T10:53:14.199Z] INFO  [30969] : Running AddonsBefore for command CMD-TailLogs...
+[2017-12-06T10:53:14.199Z] DEBUG [30969] : Running stages of Command CMD-TailLogs from stage 0 to stage 0...
+[2017-12-06T10:53:14.199Z] INFO  [30969] : Running stage 0 of command CMD-TailLogs...
+[2017-12-06T10:53:14.199Z] DEBUG [30969] : Loaded 1 actions for stage 0.
+[2017-12-06T10:53:14.199Z] INFO  [30969] : Running 1 of 1 actions: TailLogs...
+
+
+

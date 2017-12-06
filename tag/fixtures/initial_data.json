@@ -2,50 +2,141 @@
   {
     "fields": {
       "tag_id": 1,
-      "label": "news",
+      "label": "Technology",
       "image": "image"
     }
   },
   {
     "fields": {
       "tag_id": 2,
-      "label": "sports",
+      "label": "Sports",
       "image": "image"
     }
   },
   {
     "fields": {
       "tag_id": 3,
-      "label": "buisness",
+      "label": "Science",
       "image": "image"
     }
   },
   {
     "fields": {
       "tag_id": 4,
-      "label": "sports",
+      "label": "Music",
       "image": "image"
     }
   },
   {
     "fields": {
       "tag_id": 5,
-      "label": "money",
+      "label": "Health",
       "image": "image"
     }
   },
   {
     "fields": {
       "tag_id": 6,
-      "label": "technology",
+      "label": "Books",
       "image": "image"
     }
   },
   {
     "fields": {
       "tag_id": 7,
-      "label": "opinion",
+      "label": "Education",
       "image": "image"
     }
-  }
+  },
+  {
+    "fields": {
+      "tag_id": 8,
+      "label": "Philosophy",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 9,
+      "label": "Art",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 10,
+      "label": "Finance",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 11,
+      "label": "Food",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 12,
+      "label": "Fashion",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 13,
+      "label": "History",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 14,
+      "label": "Economics",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 15,
+      "label": "Mathematics",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 16,
+      "label": "Humanities",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 17,
+      "label": "Culture",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 18,
+      "label": "Travel",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 19,
+      "label": "Relationships",
+      "image": "image"
+    }
+  },
+  {
+    "fields": {
+      "tag_id": 20,
+      "label": "Religion",
+      "image": "image"
+    }
+  },
 ]
