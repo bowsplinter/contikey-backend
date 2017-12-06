@@ -36,3 +36,13 @@ def delete_all_tags():
             DELETE FROM tag
         """)
     return 0
+
+def user_follow_tag(user_id, tag_ids): # tag_ids is a list
+    print(user_id, tag_ids)
+    with connection.cursor() as cursor:
+        for tag_id in tag_ids:
+            cursor.execute("""
+                INSERT INTO user_follows_tag (user_id, tag_id)
+                VALUES (%s, %s)
+            """,[user_id, tag_id])
+    return True
