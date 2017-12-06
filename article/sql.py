@@ -66,7 +66,7 @@ def get_article_channel(article_id):
 #Get comments (and the user who posted them) on article
 def get_article_comments(article_id):
 	with connection.cursor() as cursor:
-		cursor.execute("SELECT * FROM comment LEFT JOIN user USING(user_id) WHERE article_id = %s", [article_id])
+		cursor.execute("SELECT * FROM user LEFT JOIN comment USING(user_id) WHERE article_id = %s", [article_id])
 		data = dictfetchall(cursor)
 	return data
 
