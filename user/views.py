@@ -102,13 +102,13 @@ def user_channels(request, user_id = 'me'):
     res = get_template(request, user_id, sql.userid_get_channels)
     #Success, now to get if user is subbed
     if res.status_code == 200:
-        if user_id == 'me':
-            try: # get user's user_id from session key
-                user_id = request.session['user_id']
-            except:
-                return Response({'error': 'no existing session or session expired'}, status=status.HTTP_400_BAD_REQUEST)
-        for channel in res.data['data']:
-            fs.channel_get_subscribed(res.data['data'], user_id)
+        try: # get user's user_id from session key
+            user_id = request.session['user_id']
+            for channel in res.data['data']:
+                fs.channel_get_subscribed(res.data['data'], user_id)
+        except:
+            for channel in res.data['data']:
+                channel['subscribed'] = False
     return res
 
 @api_view(['GET'])
@@ -130,4 +130,14 @@ def user_following(request, user_id = 'me'):
     """
     Return list of channels followed by user_id (if specified) or the current user (default)
     """
-    return get_template(request, user_id, sql.userid_get_following)
+    res = get_template(request, user_id, sql.userid_get_following)
+    #Success, now to get if user is subbed
+    if res.status_code == 200:
+        try: # get user's user_id from session key
+            user_id = request.session['user_id']
+            for channel in res.data['data']:
+                fs.channel_get_subscribed(res.data['data'], user_id)
+        except:
+            for channel in res.data['data']:
+                channel['subscribed'] = False
+    return res
