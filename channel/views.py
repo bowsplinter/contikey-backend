@@ -15,7 +15,7 @@ class channel_helper(APIView):
 	"""
 		get:
 		Given a channel_id from the url,
-		this returns the Channel info, tags associated with the Channel and the distinct number of follows.
+		this returns the Channel info (includes distinct follows, tags, owner, articles).
 
 		delete:
 		Given a channel_id from the url,
@@ -23,7 +23,7 @@ class channel_helper(APIView):
 		
 		post:
 		Given a user_id, title and description,
-		this attempts to create a new channel under the given user
+		this attempts to create a new channel under the given user (user autofollows his own channels)
 	"""
 	def get(self,request, channel_id):
 		try:
@@ -107,7 +107,9 @@ class channel_recommender(APIView):
 	"""
 		get:
 		This gets the user_id from the session,
-		and pulls out relevant channels based on the users tag selection that he has NOT followed
+		and pulls out relevant channels based on the users tag selection and channels that user has NOT followed
+		If user is not logged in/getting user_id fails,
+		this selects a series of random channels 
 	"""
 	def get(self, request):
 		try:

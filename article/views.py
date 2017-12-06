@@ -12,25 +12,24 @@ import metascrapy
 
 
 class article_helper(APIView):
-	parser_classes = (JSONParser,MultiPartParser)
 	"""
-		get:
-		Given an article_id from the url,
-		this returns the Article info, 
-		comments on an article and, 
-		likes on an article, 
-		if the current user liked the article, 
-		the user and channel this article belongs to,
-		and inserts a new record into the views table(including null).
+	get:
+	Given an article_id from the url,
+	this returns the Article info, comments, likes,
+	if the current user liked the article, 
+	the user and channel this article belongs to,
+	and inserts a new record into the views table(including nulluser).
 
-		delete:
-		Given an article_id from the url,
-		this attempts to delete the article_id.
-		
-		post:
-		This attempts to get further information on the url using metascrapy,
-		then create a new channel with said information and POST body under the given user
+	delete:
+	Given an article_id from the url,
+	this attempts to delete the article_id.	
+
+	post:
+	This attempts to get further information on the url using metascrapy,
+	then create a new channel with said information and POST body under the given logged in user
 	"""
+	parser_classes = (JSONParser,MultiPartParser)
+
 	def get(self,request,article_id):
 		try:
 			user_id = request.session['user_id']
@@ -120,7 +119,7 @@ class article_commenter(APIView):
 	"""
 		post:
 		Given an article_id from the url,
-		this attempts to get the user_id from the session and comment to the article_id.
+		this attempts to get the user_id from the session and add a comment to the article_id.
 	"""
 	def post(self, request, article_id):
 		try:
@@ -147,8 +146,8 @@ class article_explorer(APIView):
 class article_feeder(APIView):
 	"""
 		get:
-		This attempts to get the user_id from the session and get the most recent articles from user_id's followed channels.
-		If the user is not logged in this returns a "most recent" feed from all possible channels.
+		Attempts to get the user_id from the session and get the most recent articles from user_id's followed channels.
+		If the user is not/cannot be logged in this returns a "most recent" feed from all possible channels.
 	"""
 	def get(self, request):
 		try:

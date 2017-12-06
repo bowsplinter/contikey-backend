@@ -7,12 +7,10 @@ def get_user_recommend(user_id):
 		#User's not-followed channels
 		cursor.execute("SELECT channel_id FROM channel c LEFT JOIN user_follows_channel ufc USING(channel_id) WHERE ufc.user_id != %s OR ufc.user_id IS NULL", [user_id])	
 		nonFollows = listfetchall(cursor)
-		#print(nonFollows)
 
 		#User's like-tagged channels
 		cursor.execute("SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s)", [user_id])
 		followTags = listfetchall(cursor)	
-		#print(followTags)
 
 		#Get their intersect
 		data = list(set(nonFollows).intersection(followTags))
@@ -95,15 +93,6 @@ def get_channel_articles(channel_id):
 			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 		return data, status.HTTP_200_OK				
 
-# #Gets if current user is subscribed to given channel 
-# def get_channel_subscribed(user_id, channel_id):
-# 	with connection.cursor() as cursor:
-# 		cursor.execute("SELECT exists(SELECT 1 FROM user_follows_channel WHERE user_id = %s AND channel_id = %s) subscribed",
-# 			[user_id, channel_id])
-# 		data = dictfetchall(cursor)[0]
-# 		res = True if data['subscribed'] is 1 else False;
-# 	return res	
-
 #Inserts into DB given user follows given channel
 def new_follow(user_id,channel_id):
 	try:
@@ -141,6 +130,7 @@ def create_channel(user_id,title,description,tags):
 		return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
 	return last_insert, status.HTTP_201_CREATED
 
+#Attempts to delete the channel given channel_id
 def delete_channel(user_id,channel_id):
 	try:
 		with connection.cursor() as cursor:

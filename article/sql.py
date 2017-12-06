@@ -34,6 +34,7 @@ def get_articles(article_ids):
 		data = dictfetchall(cursor)
 	return data
 
+#Gets the top 10 liked articles in the month
 def get_top_monthly_articles():
 	with connection.cursor() as cursor:
 		cursor.execute("SELECT article_id FROM user_likes_article WHERE TIMESTAMPDIFF(DAY, created_at, NOW()) < 31 GROUP BY article_id ORDER BY count(*) DESC LIMIT 10")
@@ -92,11 +93,13 @@ def create_view(article_id,user_id = None):
 		cursor.execute("INSERT INTO view(user_id,article_id) VALUES (%s, %s)", [user_id, article_id])
 	return {}
 
+#Creates an article based on given params (Will default to null to nullable fields)
 def create_article(channel_id,url,caption = None,preview_image = None,preview_title = None,preview_text = None, num_words=None, shared_from_article_id = None):
 	with connection.cursor() as cursor:
 		cursor.execute('INSERT INTO article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words, shared_from_article_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)', [channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id])
 	return {}
 
+#Deletes an article given the article_id
 def delete_article(article_id):
 	with connection.cursor() as cursor:
 		cursor.execute('DELETE FROM article WHERE article_id = %s' , [article_id])
