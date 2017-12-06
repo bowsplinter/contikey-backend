@@ -5,7 +5,7 @@ from rest_framework import status
 def get_user_recommend(user_id):
 	with connection.cursor() as cursor:
 		#User's not-followed channels
-		cursor.execute("SELECT channel_id FROM channel c LEFT JOIN user_follows_channel ufc USING(channel_id) WHERE ufc.user_id != %s OR ufc.user_id IS NULL", [user_id])	
+		cursor.execute("SELECT channel_id FROM channel c LEFT JOIN user_follows_channel ufc USING(channel_id) WHERE ufc.user_id <> %s AND c.user_id <> %s", [user_id, user_id])	
 		nonFollows = listfetchall(cursor)
 
 		#User's like-tagged channels
@@ -36,7 +36,7 @@ def get_nologin_recommend():
 			channel['tags'] = dictfetchall(cursor)
 			channel['user'] = get_channel_user(channel['channel_id'])[0]
 			channel['num_subscribers'] = get_channel_follower_count(channel['channel_id'])[0]
-			channel['subscribed'] = 'False'
+			channel['subscribed'] = False
 		return data
 
 #Gets the information in channel table on given channel_id
@@ -77,7 +77,7 @@ def get_channel_follower_count(channel_id):
 	with connection.cursor() as cursor:
 		try:
 			#user_follows_channel table (retrieve COUNT(user) following channel) 
-			cursor.execute("SELECT COUNT(DISTINCT user_id) FROM user_follows_channel WHERE channel_id= %s" , [channel_id])
+			cursor.execute("SELECT num_subscribers FROM channel WHERE channel_id= %s" , [channel_id])
 			data = cursor.fetchone()[0]
 		except Exception as e:
 			return {'errorType':str(type(e)), 'errorArgs':e.args}, status.HTTP_500_INTERNAL_SERVER_ERROR
