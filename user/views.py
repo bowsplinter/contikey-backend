@@ -12,6 +12,7 @@ def login(request):
     Log user in with FB access token after FB login is completed
 
     Fields: *accessToken: string
+    Returns: user info, user's channels, new_user flag (True if user hasn't followed any tags)
     """
     try:
         received_json = json.loads(request.body)
@@ -39,9 +40,10 @@ def login(request):
             sql.insert_user_friends(user_id, [friend['id'] for friend in u['friends']])
     user = sql.userid_get_user(user_id)
     user['channels'] = sql.userid_get_channels(user_id)
+    followedTags = sql.userid_get_tagids(user_id)
 
     request.session['user_id'] = user['user_id'] # store user_id in session data
-    return Response({'user': user, 'new_user': newUser})
+    return Response({'user': user, 'new_user': not bool(followedTags)})
 
 @api_view(['POST'])
 def logout(request):

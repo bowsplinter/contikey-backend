@@ -7,6 +7,11 @@ def userid_get_user(user_id):
         cursor.execute("SELECT * FROM user WHERE user_id = %s", [user_id])
         return dictfetchone(cursor)
 
+def facebookid_get_user(facebook_id):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM user WHERE facebook_id = %s", [facebook_id])
+        return dictfetchone(cursor)
+
 def userid_get_channels(user_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM channel WHERE user_id = %s", [user_id])
@@ -23,10 +28,10 @@ def userid_get_articles(user_id):
         articles = dictfetchall(cursor)
     return fs.articlelist_get_channel(articles)
 
-def facebookid_get_user(facebook_id):
+def userid_get_tagids(user_id):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM user WHERE facebook_id = %s", [facebook_id])
-        return dictfetchone(cursor)
+        cursor.execute("SELECT tag_id FROM user_follows_tag WHERE user_id = %s", [user_id])
+        return dictfetchall(cursor)
 
 def userid_get_friends(user_id):
     with connection.cursor() as cursor:
