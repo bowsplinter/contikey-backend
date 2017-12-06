@@ -1,12 +1,13 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
-import json
+from rest_framework.parsers import JSONParser,MultiPartParser
 import functionssql as fs
 from . import facebook as fb
 from . import sql
 
 @api_view(['POST'])
+@parser_classes((JSONParser,MultiPartParser))
 def login(request):
     """
     Log user in with FB access token after FB login is completed
@@ -14,11 +15,7 @@ def login(request):
     Fields: *accessToken: string
     Returns: user info, user's channels, new_user flag (True if user hasn't followed any tags)
     """
-    try:
-        received_json = json.loads(request.body)
-        accessToken = received_json.get('accessToken')
-    except:
-        accessToken = request.POST.get('accessToken')
+    accessToken = request.data.get('accessToken')
     if accessToken == None:
         return Response({'error': 'accessToken required'}, status=status.HTTP_400_BAD_REQUEST)
 
