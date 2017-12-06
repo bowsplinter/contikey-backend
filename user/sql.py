@@ -10,7 +10,7 @@ def userid_get_user(user_id):
 def facebookid_get_user(facebook_id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM user WHERE facebook_id = %s", [facebook_id])
-        return dictfetchone(cursor)
+        return dictfetchall(cursor)
 
 def userid_get_channels(user_id):
     with connection.cursor() as cursor:

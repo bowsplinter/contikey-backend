@@ -30,7 +30,7 @@ def login(request):
     selectUser = sql.facebookid_get_user(facebook_id)
     if selectUser:
         newUser = False
-        user_id = selectUser['user_id']
+        user_id = selectUser[0]['user_id']
     else:
         newUser = True
         u = fb.getUserInfo(accessToken)
