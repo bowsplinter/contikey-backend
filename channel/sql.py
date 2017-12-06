@@ -4,16 +4,17 @@ from rest_framework import status
 
 def get_user_recommend(user_id):
 	with connection.cursor() as cursor:
-		#User's not-followed channels
-		cursor.execute("SELECT channel_id FROM channel c LEFT JOIN user_follows_channel ufc USING(channel_id) WHERE ufc.user_id <> %s AND c.user_id <> %s", [user_id, user_id])	
-		nonFollows = listfetchall(cursor)
+		# #User's not-followed channels
+		# cursor.execute("SELECT channel_id FROM channel c LEFT JOIN user_follows_channel ufc USING(channel_id) WHERE ufc.user_id <> %s AND c.user_id <> %s", [user_id, user_id])	
+		# nonFollows = listfetchall(cursor)
 
-		#User's like-tagged channels
-		cursor.execute("SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s)", [user_id])
-		followTags = listfetchall(cursor)	
-
+		# #User's like-tagged channels
+		# cursor.execute("SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s)", [user_id])
+		# followTags = listfetchall(cursor)	
+		cursor.execute("SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FRM user_follows_tag WHERE user_id = 2) AND channel_id NOT IN (SELECT channel_id FROM user_follows_channel WHERE user_id = 2)")
+		data = listfetchall(cursor)
 		#Get their intersect
-		data = list(set(nonFollows).intersection(followTags))
+		# data = list(set(nonFollows).intersection(followTags))
 
 		resList = []
 		for i in data:
