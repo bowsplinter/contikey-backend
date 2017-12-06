@@ -13,12 +13,25 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunSQL(
+            "DROP TRIGGER follow_notification",
+            """
+            CREATE TRIGGER follow_notification AFTER INSERT ON user_follows_channel
+            FOR EACH ROW
+            INSERT INTO notification (type, type_id, channel_id, user_id, is_read, type_user_id)
+            VALUES ('channel', NEW.channel_id, NEW.channel_id, (
+                 SELECT user_id from channel WHERE channel_id = NEW.channel_id), false, NEW.user_id);
+            """
+        ),
     	migrations.RunSQL("""
             CREATE TRIGGER subscribe_channel AFTER INSERT ON user_follows_channel
             FOR EACH ROW
             BEGIN
             Set @subbed_chnn = (SELECT channel_id FROM user_follows_channel WHERE created_at = (SELECT max(created_at) FROM user_follows_channel));
             UPDATE channel SET num_subscribers = num_subscribers + 1 WHERE channel_id = @subbed_chnn;
+            INSERT INTO notification (type, type_id, channel_id, user_id, is_read, type_user_id)
+            VALUES ('channel', NEW.channel_id, NEW.channel_id, (
+                 SELECT user_id from channel WHERE channel_id = NEW.channel_id), false, NEW.user_id);
             END;
         """,
         "DROP TRIGGER subscribe_channel"
