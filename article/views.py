@@ -78,7 +78,7 @@ class article_helper(APIView):
 			preview_image = scraper.image #request.POST.get('preview_image',None)
 			preview_title = scraper.title.encode('utf-8') #request.POST.get('preview_title',None)
 			preview_text = scraper.description.encode('utf-8') #request.POST.get('preview_text',None)
-			preview_x_frame_options = scraper.preview_x_frame_options
+			preview_x_frame_options = scraper.x_frame_options
 		except Exception as e:
 			return Response({'message':'invalid url'}, status=status.HTTP_400_BAD_REQUEST)
 		try:
