@@ -1,4 +1,23 @@
-# dboard-backend
+# Contikey
+
+[Contikey](www.contikey.com) is an article-sharing web service.
+It uses Django on the backend, React on the frontend, and a MariaDB database on AWS's cloud storage.
+
+#### Main features
+Users can:
+- [Login via Facebook](www.contikey.com/login)
+- Create topic-based Channels using Tags
+- Post new Articles to share
+- View Articles posted by friends they follow on Feed
+- Subscribe to Friends' Channels
+- Like and Comment on other Articles
+- Get Notifications when someone likes, comments, or subscribes to their channels or articles
+- [View their own profile](www.contikey.com/profile)
+- [Explore most popular articles shared by their friends](www.contikey.com/explore)
+
+#### Guides to using Django, React+Redux, and AWS
+(access the documentation from the GUIDES folder)
+
 
 ## Developer Installations
 
@@ -75,7 +94,7 @@ Launch the MySQL Workbench application and go to Database > Connect to Database 
 Enter the following details:
 
 ```
-Hostname: mydboard.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com
+Hostname: mycontikey.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com
 Port: 3306
 Username: dboard
 Password: db1234567
@@ -83,7 +102,7 @@ Password: db1234567
 
 Or if mySQL Workbench isn't working, run on terminal:
 
-`mysql -h mydboard.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com -P 3306 -u dboard -p`
+`mysql -h mycontikey.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com -P 3306 -u dboard -p`
 and enter `db1234567` when prompted for the password
 
 ### Usage
@@ -93,8 +112,6 @@ To run projects:
 `python manage.py migrate`
 
 `python manage.py runserver`
-
-`eb open`
 
 To exit the virtual environment:
 `deactivate`
