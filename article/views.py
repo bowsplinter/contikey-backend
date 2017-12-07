@@ -66,7 +66,7 @@ class article_helper(APIView):
 			url = request.data.get('url')
 			channel_id = request.data.get('channel_id')
 			caption = request.data.get('caption', None)
-			num_words = request.data.get('num_words', None)
+			#num_words = request.data.get('num_words', None)
 			shared_from_article_id = request.data.get('shared_from_article_id',None)
 		except Exception:
 			return Response({'message':'missing or invalid POST body'}, status=status.HTTP_400_BAD_REQUEST)
@@ -79,8 +79,9 @@ class article_helper(APIView):
 			preview_title = scraper.title.encode('utf-8') #request.POST.get('preview_title',None)
 			preview_text = scraper.description.encode('utf-8') #request.POST.get('preview_text',None)
 			preview_x_frame_options = scraper.x_frame_options
+			num_words = scraper.num_words
 		except Exception as e:
-			return Response({'message':'invalid url'}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({'message':'invalid url; scraper failed to obtain some info'}, status=status.HTTP_400_BAD_REQUEST)
 		try:
 			data = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id,preview_x_frame_options) 
 		except Exception as e:
