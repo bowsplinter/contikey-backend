@@ -15,9 +15,11 @@ def get_users_by_username(username):
 def get_channels_by_title(title, user_id):
     title = "%" + title + "%"
     with connection.cursor() as cursor:
-        cursor.execute(
-        """SELECT * FROM channel WHERE title LIKE %s; """
-        , [title])
+        cursor.execute("SET @search_term = %s", [title])
+        cursor.execute("""
+        SELECT * FROM channel WHERE title LIKE @search_term
+        OR description LIKE @search_term;
+        """)
         channels = dictfetchall(cursor)
         channels = fs.channellist_get_articles(channels)
         channels = fs.channellist_get_user(channels)
@@ -27,12 +29,15 @@ def get_channels_by_title(title, user_id):
 def get_articles_by_title(title):
     title = "%" + title + "%"
     with connection.cursor() as cursor:
+        cursor.execute("SET @search_term = %s", [title])
         cursor.execute(
         """
         SELECT * FROM article
-        WHERE preview_title LIKE %s;
-        """
-        , [title])
+        WHERE preview_title LIKE @search_term
+        OR url LIKE @search_term
+        OR preview_text LIKE @search_term
+        OR caption like @search_term;
+        """)
         articles = dictfetchall(cursor)
         articles = fs.articlelist_get_channel(articles)
         articles = fs.articlelist_get_user(articles)
