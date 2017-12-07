@@ -94,9 +94,9 @@ def create_view(article_id,user_id = None):
 	return {}
 
 #Creates an article based on given params (Will default to null to nullable fields)
-def create_article(channel_id,url,caption = None,preview_image = None,preview_title = None,preview_text = None, num_words=None, shared_from_article_id = None):
+def create_article(channel_id,url,caption = None,preview_image = None,preview_title = None,preview_text = None, num_words=None, shared_from_article_id = None, preview_x_frame_options = None):
 	with connection.cursor() as cursor:
-		cursor.execute('INSERT INTO article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words, shared_from_article_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)', [channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id])
+		cursor.execute('INSERT INTO article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words, shared_from_article_id, preview_x_frame_options) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)', [channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id,preview_x_frame_options])
 	return {}
 
 #Deletes an article given the article_id

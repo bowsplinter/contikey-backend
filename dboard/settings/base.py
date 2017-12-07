@@ -94,7 +94,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.MultiPartParser',
     ],
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 5
 }
 
 WSGI_APPLICATION = 'dboard.wsgi.application'

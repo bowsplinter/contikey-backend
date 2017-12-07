@@ -78,10 +78,11 @@ class article_helper(APIView):
 			preview_image = scraper.image #request.POST.get('preview_image',None)
 			preview_title = scraper.title.encode('utf-8') #request.POST.get('preview_title',None)
 			preview_text = scraper.description.encode('utf-8') #request.POST.get('preview_text',None)
+			preview_x_frame_options = scraper.preview_x_frame_options
 		except Exception as e:
 			return Response({'message':'invalid url'}, status=status.HTTP_400_BAD_REQUEST)
 		try:
-			data = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id) 
+			data = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id,preview_x_frame_options) 
 		except Exception as e:
 			return Response({'message':'failed to create record'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 		return Response(data, status=status.HTTP_201_CREATED)
