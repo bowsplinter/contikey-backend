@@ -11,7 +11,7 @@ def get_user_recommend(user_id):
 		# #User's like-tagged channels
 		# cursor.execute("SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s)", [user_id])
 		# followTags = listfetchall(cursor)	
-		cursor.execute("SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND channel_id NOT IN (SELECT channel_id FROM user_follows_channel WHERE user_id = %s)", [user_id, user_id])
+		cursor.execute("SELECT DISTINCT channel_id FROM channel_tags WHERE tag_id IN(SELECT tag_id FROM user_follows_tag WHERE user_id = %s) AND channel_id NOT IN (SELECT channel_id FROM user_follows_channel WHERE user_id = %s) LIMIT 5", [user_id, user_id])
 		data = listfetchall(cursor)
 		#Get their intersect
 		# data = list(set(nonFollows).intersection(followTags))
