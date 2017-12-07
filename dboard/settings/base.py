@@ -25,9 +25,10 @@ SECRET_KEY = 'x7s!wa+(19g91=$9ds_f4bd086v=5l%kzgpa+t(vvwu-o4yomp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dboard-env.esirkfakz3.ap-southeast-1.elasticbeanstalk.com',
-                '127.0.0.1', 'api.contikey.com', '52.76.154.0']
-
+ALLOWED_HOSTS = [
+                'api.contikey.com',
+                '52.76.154.0'
+                ]
 
 # Application definition
 
