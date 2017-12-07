@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
                 'api.contikey.com',
-                '52.76.154.0'
+                '52.76.154.0',
+                '127.0.0.1'
                 ]
 
 # Application definition
