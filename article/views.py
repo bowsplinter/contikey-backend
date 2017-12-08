@@ -201,6 +201,7 @@ class article_serializer(serializers.Serializer):
     preview_image = serializers.CharField(max_length=500)
     preview_title = serializers.CharField(max_length=100)
     preview_text = serializers.CharField(max_length=500)
+    num_words = serializers.IntegerField()
     channel_id = serializers.IntegerField()
     shared_from_article_id = serializers.IntegerField()
     created_at = serializers.DateTimeField()
@@ -208,13 +209,14 @@ class article_serializer(serializers.Serializer):
     channel = serializers.DictField()
 
 class article_data():
-    def __init__(self,article_id,url,caption,preview_image,preview_title,preview_text,channel_id,shared_from_article_id,created_at,user,channel):
+    def __init__(self,article_id,url,caption,preview_image,preview_title,preview_text,channel_id,shared_from_article_id,created_at,user,channel, num_words):
         self.article_id = article_id
         self.url = url
         self.caption = caption
         self.preview_image = preview_image
         self.preview_title = preview_title
         self.preview_text = preview_text
+        self.num_words = num_words
         self.channel_id = channel_id
         self.shared_from_article_id = shared_from_article_id
         self.created_at = created_at
