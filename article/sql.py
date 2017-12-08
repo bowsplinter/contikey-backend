@@ -1,4 +1,4 @@
-from functions import dictfetchall, listfetchall
+from functions import dictfetchall, listfetchall, dictfetchone
 from django.db import connection
 from rest_framework import status
 import functionssql as fs
@@ -97,6 +97,18 @@ def create_view(article_id,user_id = None):
 def create_article(channel_id,url,caption = None,preview_image = None,preview_title = None,preview_text = None, num_words=None, shared_from_article_id = None, preview_x_frame_options = None):
     with connection.cursor() as cursor:
         cursor.execute('INSERT INTO article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words, shared_from_article_id, preview_x_frame_options) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)', [channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id,preview_x_frame_options])
+        cursor.execute('SELECT last_insert_id()')
+        article_id = dictfetchone(cursor)['last_insert_id()']
+        cursor.execute('SELECT user_id FROM user_follows_channel WHERE channel_id = %s', channel_id)
+        channel_followers = listfetchall(cursor)
+        cursor.execute('SELECT user_id from channel where channel_id = %s', channel_id)
+        user_id = dictfetchone(cursor)['user_id']
+        for follower in channel_followers:
+            if follower != user_id:
+                cursor.execute("""
+                    INSERT INTO notification (type, channel_id,type_id, type_user_id, is_read, user_id)
+                    VALUES ('article', %s, %s, %s, false, %s)""", [channel_id, channel_id, user_id, follower])
+
     return {}
 
 #Deletes an article given the article_id
