@@ -75,16 +75,25 @@ class article_helper(APIView):
                 url = "http://" + url
             scraper = metascrapy.Metadata()
             scraper.scrape(url)
-            preview_image = scraper.image #request.POST.get('preview_image',None)
-            preview_title = scraper.title.encode('utf-8') #request.POST.get('preview_title',None)
-            preview_text = scraper.description.encode('utf-8') #request.POST.get('preview_text',None)
+            preview_image = scraper.image
+            preview_title = scraper.title
+            preview_text = scraper.description
+            if preview_title:
+                preview_title = preview_title.encode('utf-8')
+                preview_title = preview_title[:100]
+            if preview_text:
+                preview_text = preview_text.encode('utf-8')
+                preview_text = preview_text[:500]
+
             preview_x_frame_options = scraper.x_frame_options
             num_words = scraper.num_words
         except Exception as e:
+            print(e)
             return Response({'message':'invalid url; scraper failed to obtain some info'}, status=status.HTTP_400_BAD_REQUEST)
         try:
             data = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id,preview_x_frame_options)
         except Exception as e:
+            print(e)
             return Response({'message':'failed to create record'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(data, status=status.HTTP_201_CREATED)
 
