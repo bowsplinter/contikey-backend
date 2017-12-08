@@ -71,7 +71,7 @@ class article_helper(APIView):
         except Exception:
             return Response({'message':'missing or invalid POST body'}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            if "http://" not in url:
+            if "http://" not in url and "https://" not in url:
                 url = "http://" + url
             scraper = metascrapy.Metadata()
             scraper.scrape(url)
@@ -81,7 +81,6 @@ class article_helper(APIView):
             preview_x_frame_options = scraper.x_frame_options
             num_words = scraper.num_words
         except Exception as e:
-            print(e)
             return Response({'message':'invalid url; scraper failed to obtain some info'}, status=status.HTTP_400_BAD_REQUEST)
         try:
             data = sql.create_article(channel_id,url,caption,preview_image,preview_title,preview_text,num_words,shared_from_article_id,preview_x_frame_options)
