@@ -8,7 +8,7 @@ def channellist_get_articles(channelList):
         for channel in channelList:
             cursor.execute("""
                 SELECT * FROM article WHERE channel_id = %s
-                ORDER BY created_at DESC LIMIT 4
+                LIMIT 4
                 """,
                 [channel['channel_id']])
             channel['articles'] = dictfetchall(cursor)

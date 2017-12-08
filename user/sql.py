@@ -23,7 +23,7 @@ def userid_get_articles(user_id):
         cursor.execute("""
             SELECT * FROM article WHERE channel_id IN (
                 SELECT channel_id FROM channel WHERE user_id = %s
-            ) ORDER BY created_at DESC""",
+            )""",
             [user_id])
         articles = dictfetchall(cursor)
     return fs.articlelist_get_channel(articles)
