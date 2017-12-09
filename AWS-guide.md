@@ -2,9 +2,87 @@
 
 This is a simple guide to get your Django application hosted on AWS for free. Note: this is not a guide to deploy an application to production, check out [this link](http://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/) for that. Rather, this is to setup a server on AWS quickly and efficiently for prototyping and testing purposes (agile!).
 
+
+This is a list of all the services and packages you will need:
+##### From AWS:
+- **Relational Database Services (RDS)**
+The basic building block of Amazon RDS is the DB instance. A DB instance is an isolated database environment in the cloud.  A DB instance can contain multiple user-created databases, and you can access it by using the same tools that you use with a stand-alone database instance.
+- **Elastic Compute Cloud (EC2)**
+EC2 is an Amazon web service that rents out Virtual Machine space so developers can run their applications on a cloud server.
+
+##### Others:
+- **python-pip (to manage dependencies)**
+PIP is a tool for installing and managing Python packages.
+It comes with a command-line interface, which makes installing Python software packages as easy as issuing one command - 'pip install <package>'
+Pip has a feature to manage full lists of packages and corresponding version numbers through a "requirements" file. This permits the efficient re-creation of an entire group of packages in a
+separate environment (e.g. another computer) or virtual environment.
+This can be achieved with a properly formatted requirements.txt file
+- **virtualenv (to localize python versions)**
+Many developers uses virtualenv (virtual environment) on their computer, which is useful when you want to run several applications on the same computer.
+Virtualenv will manage all dependencies and enables multiple side-by-side installations of Python, one for each project.
+- **mysql (to manage database functions)**
+The most important part of any project!!! Data needs to be stored and accessed properly.
+- **nginx (to handle server loads)**
+Nginx is an efficient web server, or proxy server that handles application protocols (eg HTTP) and distributes the load to different processes. It will handle many requests for images and static resources. Requests that need to be dynamically generated will then be passed on to the application server (Gunicorn in your example). It is also asynchronous, so this way Nginx enhances the virtually shared resources without being dedicated and blocked to one connection.
+- **gunicorn (to deploy to servers)**
+Gunicorn takes in only fowarded dynamic HTTP requests from proxies like Nginx and translates it to a [Webserver Gateway Interface](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface) compatible request and calls the web framework's handler requests. In this way, Gunicorn is light and rapid as it doesn't have to deal with slow clients and
+<https://vxlabs.com/2015/12/08/gunicorn-as-your-django-development-server/>
+- **tmux (to handle parallel and background processes)**
+tmux is a software application that can be used to multiplex several virtual consoles, allowing a user to access multiple separate terminal sessions inside a single terminal window or remote terminal session. These sessions can also be kept running as background sessions in parallel, which is a requirement in many web application deployments.
+
+Here are some helpful references and tutorials
+https://gist.github.com/Atem18/4696071
+https://vxlabs.com/2015/12/08/gunicorn-as-your-django-development-server/
+
+
+###### Creating the database
+
 Create an account with AWS
 
-<DB INSTRUCTIONS>
+We will be using RDS to host our database. Create a MariaDB instance in the RDS console. Choose ap-southeast-1b as the Region.
+
+In the navigation pane, launch a DB Instance and select MariaDB as the engine, with the most supported version (10.0.32).
+
+Check the Publicly Accessible Box, and set Storage Size to 20GB. Choose Yes for Multi-AZ Deployment.
+Enter your DB name, DB instance identifier, master username and password.
+Leave the other settings as default.
+
+Once the database is created, go to RDS Console > Parameter Groups > Create Parameter Group. Select MariaDB 10.0 as the parameter group family and give it a name and description. Select Create.
+
+In Parameter Groups, select your newly created group and filter for the parameter 'log_bin_trust_function_creators'. Select 'Edit Parameters' and set the value to 1.
+
+Go back to RDS Console > Instances > YourInstance. In the Details pane, note your DB name, username, password, and host endpoint. Remember this for later.
+
+Now to connect to the database, if you have a mysql client such as SequelPro or MySQLWorkbench you can simply input the DB name, username, password, port=3306 and host endpoint into the input fields.
+
+Otherwise, on command line you can run
+
+`mysql -h <host endpoint> -P 3306 -u <username> -p <password>`
+
+Make sure you have MariaDB installed. Otherwise, run
+
+`sudo apt update -y`
+
+`sudo apt install -y mariadb-server`
+
+Start the MariaDB service
+
+`sudo systemctl start mariadb.service`
+
+`sudo systemctl enable mariadb.service`
+
+Secure the installation of MariaDB
+
+`sudo /usr/bin/mysql_secure_installation`
+
+Then login to the MySQL shell:
+
+`mysql -h <host endpoint> -P 3306 -u <username> -p <password>`
+
+You should then be inside the MariaDB monitor. Congrats you are connected to your database!
+
+
+###### Configuring the cloud host server
 
 We will be using EC2 to host our application. Create an EC2 instance. Choose Ubuntu Server 16.04 LTS as the Amazon Machine Image. The free tier is good enough for our needs.
 
