@@ -106,8 +106,8 @@ def create_article(channel_id,url,caption = None,preview_image = None,preview_ti
         for follower in channel_followers:
             if follower != user_id:
                 cursor.execute("""
-                    INSERT INTO notification (type, channel_id,type_id, type_user_id, is_read, user_id)
-                    VALUES ('article', %s, %s, %s, false, %s)""", [channel_id, channel_id, user_id, follower])
+                    INSERT INTO notification (type, article_id, channel_id, type_id, type_user_id, is_read, user_id)
+                    VALUES ('article', %s, %s, %s, %s, false, %s)""", [article_id, channel_id, channel_id, user_id, follower])
 
     return {}
 
