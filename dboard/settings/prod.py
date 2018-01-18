@@ -1,12 +1,5 @@
 from .base import *
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dboard',
-        'USER': 'dboard',
-        'PASSWORD': 'db1234567',
-        'HOST': 'mycontikey.cjivvjfjcng2.ap-southeast-1.rds.amazonaws.com',
-        'PORT': '3306',
-    }
-}
