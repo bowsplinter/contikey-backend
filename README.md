@@ -1,19 +1,19 @@
 # Contikey
 
-[Contikey](http://www.contikey.com) is an article-sharing web service.
+Contikey is an article-sharing web service.
 It uses Django on the backend, React on the frontend, and a MariaDB database on AWS's cloud storage.
 
 #### Main features
 Users can:
-- [Login via Facebook](http://www.contikey.com/login)
+- Login via Facebook
 - Create topic-based Channels using Tags
 - Post new Articles to share
 - View Articles posted by friends they follow on Feed
 - Subscribe to Friends' Channels
 - Like and Comment on other Articles
 - Get Notifications when someone likes, comments, or subscribes to their channels or articles
-- [View their own profile](http://www.contikey.com/profile)
-- [Explore most popular articles shared by their friends](http://www.contikey.com/explore)
+- View their own profile
+- Explore most popular articles shared by their friends
 
 #### Guides to using Django, React+Redux, and AWS
 (access the documentation from the GUIDES folder)
